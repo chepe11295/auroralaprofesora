@@ -256,6 +256,141 @@ input.cru-entrada[type=text]{position:absolute;left:0;top:0;width:1px;height:1px
 .ev-galeria{display:flex;flex-direction:column;gap:14px}
 .ev-item strong{display:block;color:var(--primario-osc);margin-bottom:6px}
 
+/* ---------- Fase 5 · Defiende tu planificación ---------- */
+.pl-sit{padding:14px}
+.pl-cab{display:flex;justify-content:space-between;align-items:center}
+.pl-num{display:inline-block;background:var(--cielo);color:var(--primario-osc);font-weight:800;font-size:.85rem;border-radius:99px;padding:4px 12px}
+.pl-sit h3{margin-top:12px;font-size:1.15rem}
+.pl-texto{font-size:1.05rem;line-height:1.45;background:#f7f3fb;border-radius:14px;padding:12px}
+.pl-pregunta{font-weight:800;color:var(--primario-osc);margin:10px 0 8px}
+.pl-opciones{display:flex;flex-direction:column;gap:10px}
+.pl-opcion{display:flex;align-items:flex-start;gap:10px;width:100%;min-height:60px;padding:12px;text-align:left;background:#fff;border:2px solid var(--borde);border-radius:16px;box-shadow:var(--sombra);cursor:pointer;touch-action:manipulation;font:inherit;color:inherit;position:relative}
+.pl-opcion:active{transform:scale(.99)}
+.pl-letra{flex:none;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--lila);color:var(--primario-osc);font-weight:900}
+.pl-txt{flex:1;line-height:1.4;font-size:.98rem;padding-top:4px}
+.pl-opcion.seleccionada{border-color:var(--primario);background:#f3ecfb;box-shadow:0 0 0 3px #e4d2fa}
+.pl-opcion.seleccionada .pl-letra{background:var(--primario);color:#fff}
+.pl-opcion.descartada{opacity:.6;background:#fbf8f3;border-style:dashed;cursor:not-allowed;box-shadow:none}
+.pl-opcion.adecuada{border-color:#7cc99d;background:#effaf3}
+.pl-opcion.adecuada .pl-letra{background:#7cc99d;color:#fff}
+.pl-marca{position:absolute;top:-10px;right:10px;font-size:.72rem;font-weight:800;background:#fff3e0;color:#8a5200;border-radius:99px;padding:2px 8px;border:1px solid #f0d2a8}
+.pl-marca.ok{background:#e3f6ea;color:var(--exito);border-color:#9fd8b7}
+.pl-retro{margin-top:12px}
+.pl-retro.ok .globo{border-color:#9fd8b7;background:#f4fcf7}
+.pl-retro.revisar .globo{border-color:#f0d2a8;background:#fffaf2}
+.pl-resumen{border-left:6px solid var(--cielo);background:#fcfaff;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.pl-resumen p{margin:4px 0}
+.pl-adecuada{color:var(--exito);font-weight:700}
+
+/* ---------- Fase 6 · Ruta de aprendizaje ---------- */
+.ruta-panel{padding:12px}
+.ruta-inicio,.ruta-meta{text-align:center;font-weight:800;color:var(--primario-osc);font-size:.92rem;margin:4px 0}
+.ruta-camino{list-style:none;margin:6px 0;padding:0;position:relative;display:flex;flex-direction:column;gap:10px}
+.ruta-camino::before{content:"";position:absolute;left:19px;top:10px;bottom:10px;width:4px;border-radius:4px;
+  background:repeating-linear-gradient(180deg,#cdbde0 0 8px,transparent 8px 16px)}
+.ruta-paso{position:relative;display:flex;align-items:center;gap:10px}
+.ruta-pos{position:relative;z-index:1;flex:none;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#fff;border:3px solid #cdbde0;font-weight:900;color:var(--primario-osc)}
+.ruta-pos.objetivo{animation:latido .8s ease-in-out infinite;border-color:#e0a800;background:#ffe9a6}
+.ruta-tarjeta{flex:1;position:relative;display:flex;align-items:center;gap:10px;min-height:72px;padding:10px 10px 10px 12px;border-radius:16px;background:#fff;border:2px solid var(--borde);
+  border-left:8px solid var(--color-est,#e9def8);box-shadow:var(--sombra);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.ruta-icono{font-size:28px;flex:none}
+.ruta-info{flex:1;display:flex;flex-direction:column;line-height:1.25}
+.ruta-info strong{font-size:.98rem;color:var(--primario-osc)}
+.ruta-info small{font-size:.82rem;margin-top:2px}
+.ruta-mover{display:flex;flex-direction:column;gap:4px;flex:none}
+.ruta-mover button{width:40px;height:32px;border:0;border-radius:10px;background:var(--lila);color:var(--primario-osc);font-size:.9rem;font-weight:900;cursor:pointer;touch-action:manipulation}
+.ruta-mover button:disabled{opacity:.35;cursor:default}
+.ruta-estado.ok{flex:none;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#7cc99d;color:#fff;font-weight:900}
+.ruta-paso.seleccionada .ruta-tarjeta{border-color:var(--primario);box-shadow:0 0 0 3px #e4d2fa;background:#f8f3fe}
+.ruta-paso.fija .ruta-tarjeta{background:#f1fbf5;border-color:#9fd8b7;cursor:default}
+.ruta-paso.fija .ruta-pos{border-color:#7cc99d;background:#e3f6ea;color:var(--exito)}
+.ruta-paso.revisar .ruta-tarjeta{border-color:#f0c48a;background:#fffaf2}
+.ruta-marca{position:absolute;top:-10px;right:10px;font-size:.72rem;font-weight:800;background:#fff3e0;color:#8a5200;border-radius:99px;padding:2px 8px;border:1px solid #f0d2a8}
+.ruta-tarjeta.pop{animation:pop .45s ease}
+.ruta-tarjeta.brillo-ruta{animation:brilloCarta .8s ease-in-out infinite;border-color:#e0a800}
+.ruta-camino.completa::before{background:linear-gradient(180deg,#f49ac1,#a77fd6,#7cc99d)}
+.ruta-camino.recorriendo .ruta-paso{animation:encender .6s ease both}
+.ruta-camino.recorriendo .ruta-paso:nth-child(2){animation-delay:.25s}
+.ruta-camino.recorriendo .ruta-paso:nth-child(3){animation-delay:.5s}
+.ruta-camino.recorriendo .ruta-paso:nth-child(4){animation-delay:.75s}
+.ruta-camino.recorriendo .ruta-paso:nth-child(5){animation-delay:1s}
+.ruta-camino.recorriendo .ruta-paso:nth-child(6){animation-delay:1.25s}
+.ruta-camino.recorriendo .ruta-paso:nth-child(7){animation-delay:1.5s}
+.ruta-camino.recorriendo .ruta-paso:nth-child(8){animation-delay:1.75s}
+@keyframes encender{0%{opacity:.25;transform:translateX(-8px)}100%{opacity:1;transform:none}}
+
+/* ---------- Fase 7 · Libro de recuerdos ---------- */
+.lr-portada{text-align:center}
+.lr-libro{display:flex;align-items:center;justify-content:center;width:110px;height:130px;margin:6px auto 14px;border-radius:8px 16px 16px 8px;
+  background:linear-gradient(135deg,#f9c5dc,#c9b2f0);box-shadow:inset 10px 0 0 rgba(255,255,255,.45),var(--sombra);font-size:48px;animation:flotar 4s ease-in-out infinite}
+.lr-progreso{text-align:center;margin:0 0 10px}
+.lr-puntos{display:flex;justify-content:center;gap:6px;margin-bottom:4px}
+.lr-punto{width:10px;height:10px;border-radius:50%;background:#e2d6ef;transition:transform .2s,background .2s}
+.lr-punto.visto{background:#c9a7f0}
+.lr-punto.actual{background:var(--primario);transform:scale(1.35)}
+.lr-hoja.desde-derecha{animation:hojaDerecha .35s ease}
+.lr-hoja.desde-izquierda{animation:hojaIzquierda .35s ease}
+@keyframes hojaDerecha{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes hojaIzquierda{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.lr-pagina{padding:16px;background:linear-gradient(180deg,#fff 0%,#fffafc 100%)}
+.lr-cab{display:flex;justify-content:space-between;align-items:center}
+.lr-num{display:inline-block;background:var(--rosa);color:var(--primario-osc);font-weight:800;font-size:.85rem;border-radius:99px;padding:4px 12px}
+.lr-confeti{font-size:22px;animation:latido 1.4s ease-in-out 2}
+.lr-pagina h3{margin:12px 0 4px;font-size:1.2rem}
+.lr-sub{font-weight:700;color:var(--primario-osc);margin:4px 0 8px}
+.lr-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.lr-chip{background:var(--lila);color:var(--primario-osc);border-radius:99px;padding:6px 12px;font-weight:700;font-size:.92rem}
+.lr-logros{display:flex;flex-direction:column;gap:8px}
+.lr-logro{display:flex;gap:10px;align-items:flex-start;background:#fffbea;border-radius:12px;padding:8px 10px}
+.lr-logro strong{display:block;letter-spacing:.04em;color:var(--primario-osc)}
+.lr-logro small{display:block}
+.lr-medalla{font-size:22px}
+.lr-album{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (min-width:600px){.lr-album{grid-template-columns:repeat(3,1fr)}}
+.lr-foto{display:flex;flex-direction:column;padding:6px 6px 8px;background:#fff;border:0;border-radius:10px;box-shadow:0 4px 12px rgba(60,30,90,.18);cursor:zoom-in;touch-action:manipulation;font:inherit;color:inherit}
+.lr-foto:nth-child(odd){transform:rotate(-1.2deg)}
+.lr-foto:nth-child(even){transform:rotate(1.2deg)}
+.lr-foto img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;background:#f4eefa}
+.lr-pie{font-size:.8rem;font-weight:700;margin-top:6px;line-height:1.25;color:var(--primario-osc)}
+.lr-foto.especial{box-shadow:0 0 0 3px #f49ac1,0 4px 12px rgba(60,30,90,.18)}
+.lr-defensa{margin-top:12px;background:#f3ecfb;border-radius:14px;padding:12px}
+.lr-defensa small{display:block;font-weight:700;color:var(--primario-osc);margin-bottom:6px}
+.lr-defensa blockquote{margin:0;font-size:1.05rem;line-height:1.5;font-style:italic;white-space:pre-wrap}
+.lr-vacio,.lr-prueba{border-radius:12px;padding:10px 12px;font-size:.95rem}
+.lr-vacio{background:#f7f3fb;color:var(--suave)}
+.lr-prueba{background:#fff3c4;border:2px dashed #c79a00;color:#5c4300}
+.lr-nav{margin-top:4px}
+.lr-nav .btn{margin-top:0}
+.lr-final{text-align:center}
+.lr-final .globo{text-align:left}
+.lr-sobre{position:relative;width:220px;height:140px;margin:14px auto 6px;border-radius:10px;background:#ffe0cc;box-shadow:var(--sombra);overflow:hidden}
+.lr-sobre::before{content:"";position:absolute;left:0;right:0;top:0;border-left:110px solid transparent;border-right:110px solid transparent;border-top:82px solid #ffcfb3}
+.lr-sobre::after{content:"";position:absolute;left:0;right:0;bottom:0;border-left:110px solid #ffd7c0;border-right:110px solid #ffd7c0;border-top:70px solid transparent}
+.lr-sello{position:absolute;z-index:1;left:50%;top:58px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;
+  background:#d9467f;color:#fff;font-size:20px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.lr-sobre{animation:flotar 3.5s ease-in-out infinite}
+.lr-sobre.brilla{box-shadow:0 0 0 6px #fff1b8,0 0 30px #ffd84d}
+.lr-visor{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:52px 12px 16px;background:rgba(30,15,45,.92);animation:aparecer .2s ease}
+.lr-visor figure{margin:0;max-width:100%;text-align:center}
+.lr-visor img{display:block;max-width:100%;max-height:68vh;margin:0 auto;border-radius:10px;touch-action:pinch-zoom}
+.lr-visor figcaption{color:#fff;margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.lr-visor figcaption small{color:#d8c9ea}
+.lr-cerrar{position:absolute;top:10px;right:12px;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:1.3rem;cursor:pointer}
+.lr-visor-nav{display:flex;gap:16px;margin-top:10px}
+.lr-visor-nav button{width:56px;height:48px;border:0;border-radius:14px;background:rgba(255,255,255,.2);color:#fff;font-size:1.8rem;cursor:pointer}
+.lr-visor-nav button:disabled{opacity:.3}
+
+/* ---------- Fase 8 · Despedida ---------- */
+.desp{position:relative;overflow:hidden;text-align:center;background:linear-gradient(180deg,#fff 0%,#fff7fb 100%)}
+.desp-confeti{position:absolute;inset:0;pointer-events:none}
+.desp-confeti span{position:absolute;top:-30px;left:calc(6% + var(--i) * 12%);font-size:22px;animation:caer 3.2s ease-in calc(var(--i) * .25s) 2 both}
+@keyframes caer{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(520px) rotate(220deg);opacity:0}}
+.desp-nombre{font-size:1.45rem;color:var(--primario-osc);margin:4px 0}
+.desp-contador{display:inline-block;background:var(--menta);color:var(--exito);font-weight:800;border-radius:99px;padding:6px 14px;margin:2px 0 14px}
+.desp-carta{text-align:left;margin-bottom:6px}
+.desp-carta p{margin:0 0 10px;line-height:1.55}
+.desp-carta .firma{font-weight:800;color:var(--primario);text-align:right;margin:0}
+
 /* ---------- Modo prueba docente ---------- */
 .btn-prueba{background:#fff8e1;color:#5c4300;border:2px dashed #c79a00;font-size:.92rem;min-height:44px}
 .banda-prueba{background:#fff3c4;border:2px dashed #c79a00;color:#5c4300;border-radius:14px;padding:8px 12px;margin:0 0 12px;font-weight:800;font-size:.85rem;text-align:center}
@@ -343,7 +478,7 @@ const CONFIG_DOCENTE = {
   // ⚠️ SOLO PARA VERIFICACIONES DEL DOCENTE. Cambiar a false ANTES DE PUBLICAR.
   // Activa un «perfil de prueba» separado (nunca toca la aventura real de una
   // estudiante) con los botones «Completar fase (prueba)» y «Reiniciar pruebas».
-  MODO_PRUEBA_DOCENTE: false
+  MODO_PRUEBA_DOCENTE: true
 };
 
 /* =========================================================
@@ -387,16 +522,16 @@ const FASES = [
     instrucciones:'Cumple tus retos fotográficos en el orden que prefieras. Toca «Tomar o subir fotografía» para usar la cámara o elegir una imagen de tu galería.',
     logro:'¡Reuniste tus evidencias!' },
   { id:'planificacion',numero:5,  emoji:'🛡️', color:'#d6e8fb', titulo:'Defiende tu planificación general',subtitulo:'Argumenta tus decisiones',
-    instrucciones:'Responde las preguntas para explicar y defender tu planificación general.',
+    instrucciones:'Lee cada situación, elige la decisión que tomarías como maestra y confírmala. Si conviene reconsiderarla, Aurora te explicará por qué y podrás intentarlo de nuevo.',
     logro:'¡Defendiste tu planificación!' },
-  { id:'ruta',         numero:6,  emoji:'🗓️', color:'#cdeedd', titulo:'Mi ruta de aprendizaje semanal',   subtitulo:'Reflexión de la semana',
-    instrucciones:'Describe tu ruta de aprendizaje de la semana.',
+  { id:'ruta',         numero:6,  emoji:'🗺️', color:'#cdeedd', titulo:'Mi ruta de aprendizaje semanal',   subtitulo:'Estaciones del curso',
+    instrucciones:'Organiza las ocho estaciones del curso, desde los fundamentos de la comunicación hasta su aplicación como maestra. Toca una estación y luego otra para intercambiarlas, o usa ▲ ▼. Cuando estés lista, presiona «Comprobar mi ruta».',
     logro:'¡Trazaste tu ruta de aprendizaje!' },
-  { id:'recorrido',    numero:7,  emoji:'🎞️', color:'#fbd3e3', titulo:'El recorrido de nuestra aventura',  subtitulo:'Siguiente recuerdo',
-    instrucciones:'Revive los momentos de tu aventura, recuerdo por recuerdo.',
+  { id:'recorrido',    numero:7,  emoji:'🎞️', color:'#fbd3e3', titulo:'El recorrido de nuestra aventura',  subtitulo:'Libro de recuerdos',
+    instrucciones:'Abre tu libro de recuerdos y recórrelo página por página con los botones «Anterior» y «Siguiente». Toca cualquier fotografía para verla en grande.',
     logro:'¡Reviviste tu aventura!' },
   { id:'despedida',    numero:8,  emoji:'🎓', color:'#fff0b3', titulo:'Felicitación y despedida',          subtitulo:'Palabras de Aurora',
-    instrucciones:'Recibe las palabras finales de Aurora y descarga tu aventura completa.',
+    instrucciones:'Lee el mensaje final de Aurora y guarda tu recuerdo: un archivo que podrás abrir sin internet.',
     logro:'¡Culminaste la última misión!' }
 ];
 
@@ -585,8 +720,126 @@ const BANCO_RETOS = {
       ideas:['Puede ser un lugar, un objeto, un cuaderno o un momento con tus compañeras.', 'Piensa: ¿qué te gustaría recordar dentro de muchos años?', 'Elige lo que te haga sonreír.'],
       mensajeAurora:'Guardaré este recuerdo con mucho cariño. ¡Gracias por compartirlo!' }
   ],
-  planificacion: [],  // Preguntas para defender la planificación
-  ruta: []            // Preguntas de la ruta semanal
+  // Fase 5 · «Defiende tu planificación general»: banco de 12 situaciones; cada estudiante recibe 5.
+  // Cada situación tiene 3 decisiones; una es la más adecuada (correcta:true).
+  planificacion: [
+    { id:'s01', emoji:'🗣️', tema:'Participación oral',
+      situacion:'Durante una actividad de narración, algunos niños participan mucho y otros permanecen callados.',
+      opciones:[
+        { id:'a', correcta:false, texto:'Obligar a todos a hablar frente al grupo inmediatamente.', retro:'Pedir que todos hablen de inmediato puede generar inseguridad. Piensa en cómo ayudar a los más tímidos a sentirse en confianza.' },
+        { id:'b', correcta:true, texto:'Utilizar títeres y pequeños grupos para favorecer la participación progresiva.' },
+        { id:'c', correcta:false, texto:'Continuar únicamente con los niños que desean hablar.', retro:'Así se mantiene el ritmo, pero algunos niños quedarían fuera. ¿Qué opción ayuda a que todos participen poco a poco?' } ],
+      acierto:'Los títeres y los grupos pequeños reducen la presión y dan confianza, de modo que cada niño se anima a hablar a su propio ritmo.',
+      pistas:['Piensa cuál opción permite que participen más niños.', 'Considera qué decisión respeta los diferentes ritmos de aprendizaje.', 'Recuerda que algunos niños necesitan sentirse seguros antes de hablar en público.'] },
+    { id:'s02', emoji:'🎵', tema:'Conciencia fonológica',
+      situacion:'Quieres ayudar a los niños a reconocer sonidos semejantes al final de las palabras.',
+      opciones:[
+        { id:'a', correcta:true, texto:'Organizar un juego de rimas con imágenes y palabras conocidas.' },
+        { id:'b', correcta:false, texto:'Pedir que copien diez palabras en su cuaderno.', retro:'Copiar palabras trabaja la escritura, pero aquí el propósito es escuchar y jugar con los sonidos. ¿Qué opción se centra en lo oral?' },
+        { id:'c', correcta:false, texto:'Explicarles una definición técnica y solicitar que la memoricen.', retro:'Una definición técnica es difícil de comprender a esta edad. Piensa en una experiencia concreta y divertida.' } ],
+      acierto:'Las rimas con imágenes conocidas permiten escuchar, comparar y jugar con los sonidos de forma significativa y divertida.',
+      pistas:['Recuerda que el juego puede favorecer la expresión y la comunicación.', 'Piensa qué opción les permite escuchar los sonidos, no solo verlos escritos.', 'Las palabras conocidas facilitan que los niños comparen sonidos.'] },
+    { id:'s03', emoji:'🤸', tema:'Expresión corporal',
+      situacion:'Un niño tiene dificultades para expresar verbalmente sus emociones.',
+      opciones:[
+        { id:'a', correcta:false, texto:'Evitar que participe en actividades expresivas.', retro:'Evitar las actividades lo alejaría de oportunidades para expresarse. Piensa en otras formas de comunicación que podrías ofrecerle.' },
+        { id:'b', correcta:false, texto:'Pedirle que permanezca callado hasta poder explicarse.', retro:'Esperar en silencio puede aumentar su frustración. ¿Qué opción le ofrece otros caminos para comunicar lo que siente?' },
+        { id:'c', correcta:true, texto:'Ofrecer juegos de gestos, dramatización y otras formas de expresión.' } ],
+      acierto:'Los gestos y la dramatización le ofrecen otros lenguajes para expresar emociones mientras gana confianza para hacerlo con palabras.',
+      pistas:['Recuerda que también nos comunicamos con el cuerpo.', 'Piensa qué opción le abre más oportunidades en lugar de limitarlas.'] },
+    { id:'s04', emoji:'📖', tema:'Literatura infantil',
+      situacion:'Quieres desarrollar la imaginación y la expresión oral mediante un cuento.',
+      opciones:[
+        { id:'a', correcta:false, texto:'Leer el cuento sin permitir ninguna participación.', retro:'Escuchar es importante, pero sin participación se pierde la oportunidad de imaginar y conversar. ¿Qué opción convierte a los niños en protagonistas?' },
+        { id:'b', correcta:true, texto:'Invitar a anticipar acontecimientos, representar personajes y conversar sobre la historia.' },
+        { id:'c', correcta:false, texto:'Pedir que memoricen el cuento palabra por palabra.', retro:'Memorizar palabra por palabra deja poco espacio para la imaginación. Piensa en una opción que invite a crear y expresarse.' } ],
+      acierto:'Anticipar, representar y conversar convierte el cuento en una experiencia activa que desarrolla la imaginación y el lenguaje oral.',
+      pistas:['Piensa qué opción hace que los niños hablen e imaginen, no solo que escuchen.', 'Recuerda que un cuento puede ser el punto de partida para conversar.'] },
+    { id:'s05', emoji:'📋', tema:'Evaluación',
+      situacion:'Durante un juego comunicativo, quieres identificar los avances de los niños.',
+      opciones:[
+        { id:'a', correcta:true, texto:'Observar sus interacciones y registrar evidencias mediante una lista de cotejo.' },
+        { id:'b', correcta:false, texto:'Evaluar únicamente quién termina primero.', retro:'La rapidez no muestra cómo se comunican los niños. Piensa en qué evidencias revelan sus avances en el lenguaje.' },
+        { id:'c', correcta:false, texto:'Calificar solamente a quienes hablan más fuerte.', retro:'Hablar fuerte no equivale a comunicarse mejor, y deja fuera a los más tímidos. ¿Qué opción permite observar a todos?' } ],
+      acierto:'La observación con una lista de cotejo permite registrar avances reales de cada niño durante el juego, sin interrumpir su experiencia.',
+      pistas:['Piensa qué opción toma en cuenta a todos los niños del grupo.', 'Recuerda que evaluar en preprimaria es, sobre todo, observar y registrar.'] },
+    { id:'s06', emoji:'🛒', tema:'Juego simbólico',
+      situacion:'En el rincón de la tiendita, los niños juegan a comprar y vender, pero casi no conversan entre ellos.',
+      opciones:[
+        { id:'a', correcta:true, texto:'Integrarte al juego como clienta y hacer preguntas abiertas que los inviten a describir productos y negociar.' },
+        { id:'b', correcta:false, texto:'Detener el juego y explicarles las frases exactas que deben usar para comprar y vender.', retro:'Darles las frases resueltas puede limitar su espontaneidad. Piensa en cómo enriquecer la conversación sin interrumpir el juego.' },
+        { id:'c', correcta:false, texto:'Dejarlos jugar libremente sin intervenir, porque el juego simbólico se desarrolla solo.', retro:'El juego libre es valioso, pero aquí el reto es ampliar la conversación. ¿Cómo podrías acompañarlos sin dirigirlo todo?' } ],
+      acierto:'Al participar como un personaje más, modelas el lenguaje y provocas diálogos auténticos sin romper la magia del juego.',
+      pistas:['Piensa cómo podrías enriquecer el juego desde adentro, sin detenerlo.', 'Recuerda que las preguntas abiertas invitan a conversar más.'] },
+    { id:'s07', emoji:'🐄', tema:'Vocabulario',
+      situacion:'Vas a trabajar el tema de los animales de la granja y quieres que los niños incorporen palabras nuevas.',
+      opciones:[
+        { id:'a', correcta:false, texto:'Mostrar una lámina con los nombres y pedir que los repitan en coro varias veces.', retro:'La repetición ayuda, pero sin contexto las palabras se olvidan pronto. ¿Qué opción conecta las palabras con experiencias?' },
+        { id:'b', correcta:true, texto:'Presentar las palabras en un cuento, imitar los sonidos y movimientos de los animales y usarlas en juegos durante la semana.' },
+        { id:'c', correcta:false, texto:'Entregar una hoja para colorear con el nombre escrito de cada animal.', retro:'Colorear puede ser agradable, pero no garantiza que usen las palabras al hablar. Busca la opción en la que las palabras se usen en situaciones reales.' } ],
+      acierto:'El vocabulario se aprende mejor cuando las palabras se escuchan en contexto, se viven con el cuerpo y se reutilizan en distintas situaciones.',
+      pistas:['Piensa en qué opción los niños usan las palabras, no solo las ven o las repiten.', 'Recuerda que las palabras se aprenden mejor cuando se viven varias veces.'] },
+    { id:'s08', emoji:'👂', tema:'Escucha activa',
+      situacion:'Durante la asamblea de la mañana, los niños se interrumpen constantemente y les cuesta esperar su turno.',
+      opciones:[
+        { id:'a', correcta:false, texto:'Pedir silencio cada vez que alguien interrumpe y anotar quién no respeta las reglas.', retro:'Llamar la atención detiene el momento, pero no enseña a escuchar. ¿Qué opción les ayuda a aprender a esperar su turno?' },
+        { id:'b', correcta:false, texto:'Acortar la asamblea para que hable principalmente la maestra y así evitar el desorden.', retro:'Así se evita el desorden, pero los niños pierden la oportunidad de expresarse. Piensa en una estrategia que mantenga su participación.' },
+        { id:'c', correcta:true, texto:'Usar un objeto de la palabra, como una pelota o un micrófono de juguete, y acordar juntos las normas para escuchar.' } ],
+      acierto:'Un apoyo concreto como el objeto de la palabra hace visible el turno, y las normas acordadas en grupo se respetan con más facilidad.',
+      pistas:['Piensa qué opción enseña a escuchar en lugar de solo pedir silencio.', 'Recuerda que a los niños les ayuda ver de forma concreta a quién le toca hablar.'] },
+    { id:'s09', emoji:'🎭', tema:'Dramatización',
+      situacion:'Después de leer «Los tres cerditos», quieres que los niños representen el cuento.',
+      opciones:[
+        { id:'a', correcta:true, texto:'Repartir los personajes de forma voluntaria, permitir que usen sus propias palabras y ofrecer elementos sencillos de vestuario.' },
+        { id:'b', correcta:false, texto:'Asignar los papeles a los niños que hablan mejor para que la presentación salga bien.', retro:'Pensar en el resultado final es comprensible, pero la dramatización es para aprender, no para lucirse. ¿Qué opción da oportunidades a todos?' },
+        { id:'c', correcta:false, texto:'Pedir que memoricen exactamente los diálogos del libro antes de representar.', retro:'La memorización exacta puede generar tensión y limitar la creatividad. Considera qué permite que se expresen con naturalidad.' } ],
+      acierto:'Cuando los niños eligen su personaje y usan sus propias palabras, la dramatización se convierte en una experiencia de expresión, creatividad y confianza.',
+      pistas:['Piensa qué es más importante: el resultado de la presentación o lo que aprenden los niños al representar.', 'Recuerda que expresarse con sus propias palabras desarrolla la oralidad.'] },
+    { id:'s10', emoji:'🤝', tema:'Inclusión y participación',
+      situacion:'En tu grupo hay una niña que acaba de llegar; habla principalmente un idioma maya y todavía comprende poco el español.',
+      opciones:[
+        { id:'a', correcta:false, texto:'Esperar a que aprenda español antes de incluirla en las actividades orales.', retro:'Esperar podría aislarla del grupo. Piensa cómo puede participar desde ahora con lo que ya sabe.' },
+        { id:'b', correcta:true, texto:'Integrarla con apoyos visuales, gestos y canciones, y valorar también palabras de su idioma materno dentro del grupo.' },
+        { id:'c', correcta:false, texto:'Sentarla junto a la maestra para que repita lo que ella le dice durante la actividad.', retro:'Estar cerca de la maestra le da seguridad, pero repetir no es lo mismo que participar. ¿Qué opción la integra con sus compañeros y valora su lengua?' } ],
+      acierto:'Valorar su idioma materno y ofrecer apoyos visuales y corporales le permite comunicarse y sentirse parte del grupo mientras aprende español.',
+      pistas:['Piensa qué opción le permite participar desde el primer día.', 'Recuerda que su lengua materna también es una riqueza para todo el grupo.'] },
+    { id:'s11', emoji:'🧺', tema:'Selección de recursos didácticos',
+      situacion:'Tienes poco presupuesto y quieres preparar materiales que favorezcan la expresión oral de tu grupo.',
+      opciones:[
+        { id:'a', correcta:false, texto:'Comprar un juego comercial costoso, aunque solo alcance para unos pocos niños.', retro:'Un material comercial puede ser atractivo, pero si pocos pueden usarlo, la participación se reduce. Piensa en recursos accesibles para todo el grupo.' },
+        { id:'b', correcta:false, texto:'Usar únicamente fichas impresas con imágenes para que los niños las describan.', retro:'Las fichas sirven, pero un solo tipo de recurso limita las experiencias. ¿Qué opción ofrece más variedad y participación?' },
+        { id:'c', correcta:true, texto:'Elaborar con material reciclado títeres, tarjetas y cajas sorpresa que inviten a narrar, describir y jugar.' } ],
+      acierto:'Los recursos elaborados con materiales cotidianos son accesibles, variados y despiertan la curiosidad, lo que invita a todos a hablar y crear.',
+      pistas:['Piensa qué opción llega a todos los niños del grupo.', 'Recuerda que la variedad de recursos multiplica las oportunidades de expresión.'] },
+    { id:'s12', emoji:'⏱️', tema:'Adaptación a las necesidades infantiles',
+      situacion:'Planificaste una actividad de narración de 30 minutos, pero a los 10 minutos los niños están inquietos y distraídos.',
+      opciones:[
+        { id:'a', correcta:true, texto:'Hacer una pausa activa con una canción de movimientos y retomar la narración de forma más breve y participativa.' },
+        { id:'b', correcta:false, texto:'Continuar con la actividad tal como estaba planificada para cumplir el tiempo previsto.', retro:'Cumplir el plan es importante, pero una planificación también debe ser flexible. Piensa en lo que los niños están mostrando que necesitan.' },
+        { id:'c', correcta:false, texto:'Suspender la actividad y dejarla para otro día.', retro:'Suspenderla evita el problema, pero se pierde la oportunidad de aprender. ¿Existe una opción que ajuste la actividad sin abandonarla?' } ],
+      acierto:'Observar a los niños y ajustar el ritmo muestra una planificación flexible; las pausas activas renuevan la atención y la disposición para escuchar.',
+      pistas:['Considera qué decisión respeta los diferentes ritmos de aprendizaje.', 'Piensa en una opción que ajuste la actividad sin abandonar su propósito.'] }
+  ],
+  // Fase 6 · «Mi ruta de aprendizaje semanal»: 8 estaciones temáticas (síntesis del curso,
+  // no semanas calendario). «orden» es la secuencia pedagógica que se comprueba.
+  ruta: [
+    { id:'e1', orden:1, icono:'💬', color:'#fbd3e3', titulo:'La comunicación comienza',
+      descripcion:'Lenguaje, comunicación e interacción: las bases para comprender cómo nos relacionamos.' },
+    { id:'e2', orden:2, icono:'👂', color:'#d6e8fb', titulo:'Aprendemos a escuchar',
+      descripcion:'Escucha activa y comprensión de lo que otras personas expresan.' },
+    { id:'e3', orden:3, icono:'🗣️', color:'#cdeedd', titulo:'Descubrimos el lenguaje oral',
+      descripcion:'Expresión oral y vocabulario para comunicar ideas y experiencias.' },
+    { id:'e4', orden:4, icono:'🧩', color:'#fff0b3', titulo:'Creamos estrategias comunicativas',
+      descripcion:'Actividades pensadas para favorecer el lenguaje infantil.' },
+    { id:'e5', orden:5, icono:'🎵', color:'#e9def8', titulo:'Jugamos con las palabras',
+      descripcion:'Rimas, retahílas y juegos lingüísticos.' },
+    { id:'e6', orden:6, icono:'🎭', color:'#ffe0cc', titulo:'Nos expresamos con el teatro',
+      descripcion:'Dramatización, personajes y títeres.' },
+    { id:'e7', orden:7, icono:'🪁', color:'#d3f0ec', titulo:'Aprendemos jugando',
+      descripcion:'El juego como recurso para desarrollar la comunicación.' },
+    { id:'e8', orden:8, icono:'🎓', color:'#f6d8f5', titulo:'Nos convertimos en futuras maestras',
+      descripcion:'Integración de los aprendizajes en experiencias pedagógicas.' }
+  ]
 };
 
 /* =========================================================
@@ -613,8 +866,9 @@ const BANCO_RETOS = {
      api.registrarEvento(texto, datos) -> anota algo en el intento
      api.agregarEvidencia(evidencia) -> guarda foto comprimida y devuelve su id
      api.quitarEvidencia(id)   -> elimina una foto de ESTA misión (reemplazo/reinicio)
-     api.completar(resultado, {mensaje, boton}) -> marca la fase como completada
-                               (mensaje y texto del botón opcionales en la felicitación)
+     api.completar(resultado, {mensaje, boton, permanecer}) -> marca la fase como completada
+                               (mensaje y botón opcionales; permanecer:true guarda sin ventana
+                               ni regreso automático, para que el juego muestre su propio cierre)
      api.aurora(texto)         -> mensaje de Aurora en una ventana
      api.registrarPista(texto) -> registra una ayuda dada desde el propio juego
      api.guardar()             -> fuerza el guardado
@@ -1381,7 +1635,7 @@ function crearAPIFase(fase){
       if (estado.evidencias.length < antes) { agregarHistorial('evidencia_eliminada', `Reemplazó o quitó una evidencia en «${fase.titulo}».`, fase.id); guardarAuto(); }
       return estado.evidencias.length < antes;
     },
-    completar(resultado, opciones){ completarFase(fase, resultado, opciones); },
+    completar(resultado, opciones){ return completarFase(fase, resultado, opciones); },
     registrarPista(texto){ if (CONFIG_DOCENTE.PERMITIR_PISTAS) registrarPistaFase(fase, texto); },
     aurora(texto){ return dialogo({ titulo: 'Aurora dice…', html: globoAurora(`<p>${esc(texto)}</p>`) }); },
     guardar(){ return guardarAhora(); }
@@ -1545,6 +1799,7 @@ async function completarFase(fase, resultado, opciones){
     agregarHistorial('final', '¡Terminó toda la aventura!');
   }
   await guardarAhora();
+  if (opciones && opciones.permanecer) return;   // El motor muestra su propia celebración y botón
   await dialogo({
     titulo: yaCompletada ? '🌟 ¡Lo lograste otra vez!' : '🎉 ¡Misión cumplida!',
     html: globoAurora((opciones && opciones.mensaje
@@ -3511,13 +3766,674 @@ registrarMotor('evidencias', {
 });
 
 /* =========================================================
-   14. RECORRIDO FINAL (fase 9: «El recorrido de nuestra aventura»)
+   13.5 MOTOR · FASE 5: «Defiende tu planificación general»
+   - asignar(): 5 de las 12 situaciones y el orden mezclado de sus
+     alternativas, UNA sola vez (estado.fases.planificacion.asignacion).
+   - Datos del intento (api.respuestas):
+       indice, decisiones {idSit: {intentos[{opcion, texto, adecuada,
+       retroalimentacion, fecha}], resuelta}}, estadoPistas {idSit: n},
+       borradorDefensa {texto}, defensa {pregunta, respuesta, fecha}
+   - No se califica la defensa escrita: solo se guarda tal cual.
+   ========================================================= */
+const Planificacion = {
+  CANTIDAD: 10,
+  MIN_CARACTERES: 30,
+  MAX_CARACTERES: 700,
+  PREGUNTA: 'De las estrategias que utilizaste en tus experiencias de aprendizaje durante el curso, ¿cuál consideras que te será más útil cuando trabajes con niños de preprimaria y por qué?',
+  PISTAS_DEFENSA: [
+    'Piensa en una actividad que preparaste durante el curso y que te haya gustado mucho.',
+    'Recuerda cómo reaccionaron tus compañeras o los niños cuando aplicaste esa estrategia.',
+    'Bastan dos o tres oraciones: qué estrategia elegirías y por qué te será útil.'
+  ],
+  vista: null,
+  timers: [],
+
+  datos(id){ return BANCO_RETOS.planificacion.find(x => x.id === id) || null; },
+  asignadas(api){
+    const a = api.asignacion;
+    return (a && Array.isArray(a.situaciones) ? a.situaciones : []).filter(id => this.datos(id));
+  },
+  orden(api, id){
+    const d = this.datos(id), a = api.asignacion;
+    const o = a && a.ordenes && Array.isArray(a.ordenes[id]) ? a.ordenes[id] : null;
+    const validas = d.opciones.map(x => x.id);
+    return o && o.length === validas.length && validas.every(x => o.includes(x)) ? o : validas;
+  },
+  decisiones(api){ const d = api.respuestas.decisiones; return d && typeof d === 'object' ? d : {}; },
+  resuelta(api, id){ const d = this.decisiones(api)[id]; return !!(d && d.resuelta); },
+  todasResueltas(api, ids){ return ids.every(id => this.resuelta(api, id)); },
+
+  limpiar(){ this.timers.forEach(t => clearTimeout(t)); this.timers = []; this.vista = null; },
+  despues(ms, fn){
+    const v = this.vista;
+    const t = setTimeout(() => {
+      this.timers = this.timers.filter(x => x !== t);
+      if (v && this.vista === v && v.cont.isConnected) fn(v);
+    }, ms);
+    this.timers.push(t);
+  },
+
+  /* ---------- Entrada ---------- */
+  montar(cont, api, esReinicio){
+    this.limpiar();
+    const ids = this.asignadas(api);
+    if (!ids.length) throw new Error('La asignación de situaciones no es válida.');
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return this.mostrarConsulta(cont, api, ids);
+    const idsJuego = this.ampliarAsignacion(api);
+    if (!api.respuestas.iniciado) {
+      const yaJugo = fe.intentos.some(i => i.respuestas && i.respuestas.iniciado);
+      if (!esReinicio && !yaJugo) return this.mostrarIntro(cont, api, idsJuego);
+      this.iniciarRespuestas(api);
+    }
+    this.vista = { cont, api, ids: idsJuego, seleccion: null, finalizando: false };
+    this.pintar();
+  },
+  /* Partidas iniciadas con la versión de 5 situaciones: se agregan las que faltan
+     al final, conservando las ya asignadas, su orden y todas las respuestas. */
+  ampliarAsignacion(api){
+    const fe = api.estadoFase, a = fe.asignacion;
+    const actuales = this.asignadas(api);
+    if (actuales.length >= this.CANTIDAD || !a) return actuales;
+    const disponibles = BANCO_RETOS.planificacion.map(x => x.id).filter(id => !actuales.includes(id));
+    const nuevas = Azar.elegir(disponibles, this.CANTIDAD - actuales.length);
+    const ordenes = Object.assign({}, a.ordenes || {});
+    nuevas.forEach(id => { ordenes[id] = Azar.barajar(this.datos(id).opciones.map(o => o.id)); });
+    fe.asignacion = Object.assign({}, a, { situaciones: actuales.concat(nuevas), ordenes, ampliadaDe: actuales.length, fechaAmpliacion: ahoraISO() });
+    api.registrarEvento(`La misión se amplió de ${actuales.length} a ${this.CANTIDAD} situaciones; se conservaron las respuestas anteriores.`);
+    api.guardar();
+    return this.asignadas(api);
+  },
+  iniciarRespuestas(api){
+    api.responder('iniciado', true);
+    api.responder('indice', 0);
+    api.responder('decisiones', {});
+    api.responder('estadoPistas', {});
+    api.registrarEvento('Comenzó a defender su planificación');
+    api.guardar();
+  },
+  mostrarIntro(cont, api, ids){
+    const n = esc(primerNombre(api.nombre));
+    cont.innerHTML = `
+      <div class="tarjeta">
+        ${globoAurora(`<p>¡<strong>${n}</strong>, hemos llegado a una misión muy especial! Durante este año aprendiste a crear experiencias para que los niños y las niñas se expresen, jueguen, escuchen y se comuniquen. Ahora quiero conocer cómo piensas como futura maestra. Te presentaré algunos desafíos y tú decidirás qué harías en cada situación. ¿Aceptas el reto?</p>`)}
+        <button type="button" id="btnPlComenzar" class="btn btn-primario btn-mision">¡Acepto el desafío!</button>
+      </div>`;
+    cont.querySelector('#btnPlComenzar').addEventListener('click', () => {
+      api.registrarEvento('Escuchó la presentación de Aurora');
+      this.iniciarRespuestas(api);
+      this.vista = { cont, api, ids, seleccion: null, finalizando: false };
+      this.pintar();
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+
+  /* ---------- Pantallas ---------- */
+  indiceActual(){
+    const v = this.vista;
+    const i = Number(v.api.respuestas.indice) || 0;
+    // Nunca adelantarse a una situación sin resolver las anteriores
+    const primeraPendiente = v.ids.findIndex(id => !this.resuelta(v.api, id));
+    return primeraPendiente < 0 ? Math.min(i, v.ids.length) : Math.min(i, primeraPendiente);
+  },
+  pintar(){
+    const v = this.vista; if (!v) return;
+    const i = this.indiceActual();
+    if (i >= v.ids.length) return this.pintarDefensa();
+    this.pintarSituacion(i);
+  },
+  pintarSituacion(i){
+    const v = this.vista, api = v.api, id = v.ids[i], d = this.datos(id);
+    const reg = this.decisiones(api)[id] || { intentos: [], resuelta: false };
+    const descartadas = new Set(reg.intentos.filter(x => !x.adecuada).map(x => x.opcion));
+    const correcta = d.opciones.find(o => o.correcta).id;
+    const letras = ['A', 'B', 'C', 'D'];
+    const opciones = this.orden(api, id).map((oid, k) => {
+      const o = d.opciones.find(x => x.id === oid);
+      const estadoOp = reg.resuelta && oid === correcta ? 'adecuada' : descartadas.has(oid) ? 'descartada' : (v.seleccion === oid ? 'seleccionada' : '');
+      const bloqueada = reg.resuelta || descartadas.has(oid);
+      return `<button type="button" class="pl-opcion ${estadoOp}" data-op="${oid}" role="radio" aria-checked="${v.seleccion === oid || (reg.resuelta && oid === correcta)}" ${bloqueada ? 'disabled' : ''}>
+        <span class="pl-letra">${letras[k]}</span><span class="pl-txt">${esc(o.texto)}</span>
+        ${estadoOp === 'descartada' ? '<span class="pl-marca">Reconsiderada</span>' : estadoOp === 'adecuada' ? '<span class="pl-marca ok">✓ Tu decisión</span>' : ''}</button>`;
+    }).join('');
+    const ultimo = reg.intentos[reg.intentos.length - 1];
+    let retro = '';
+    if (reg.resuelta) retro = `<div class="pl-retro ok">${globoAurora(`<p><strong>¡Buena decisión!</strong> ${esc(d.acierto)}</p>`)}</div>`;
+    else if (ultimo && !ultimo.adecuada) retro = `<div class="pl-retro revisar">${globoAurora(`<p><strong>Vale la pena reconsiderarlo.</strong> ${esc(ultimo.retroalimentacion)}</p><p>Elige otra opción y vuelve a confirmar.</p>`)}</div>`;
+    v.cont.innerHTML = `
+      <div class="tarjeta pl-sit">
+        <div class="pl-cab"><span class="pl-num">Desafío ${i + 1} de ${v.ids.length}</span></div>
+        <div class="barra"><span style="width:${Math.round(i / v.ids.length * 100)}%"></span></div>
+        <h3>${d.emoji} ${esc(d.tema)}</h3>
+        <p class="pl-texto">${esc(d.situacion)}</p>
+        <p class="pl-pregunta">¿Qué harías como maestra?</p>
+        <div class="pl-opciones" role="radiogroup" aria-label="Decisiones posibles">${opciones}</div>
+        <div id="plRetro" aria-live="polite">${retro}</div>
+        ${reg.resuelta
+          ? `<button type="button" id="plSiguiente" class="btn btn-primario">${i + 1 < v.ids.length ? 'Siguiente desafío ➡️' : 'Continuar ➡️'}</button>`
+          : `<button type="button" id="plConfirmar" class="btn btn-primario" ${v.seleccion ? '' : 'disabled'}>Confirmar mi decisión</button>`}
+      </div>`;
+    v.cont.querySelectorAll('.pl-opcion:not([disabled])').forEach(b => b.addEventListener('click', () => {
+      v.seleccion = b.dataset.op;
+      v.cont.querySelectorAll('.pl-opcion').forEach(x => {
+        const sel = x.dataset.op === v.seleccion;
+        x.classList.toggle('seleccionada', sel); x.setAttribute('aria-checked', sel);
+      });
+      const c = v.cont.querySelector('#plConfirmar'); if (c) c.disabled = false;
+    }));
+    const conf = v.cont.querySelector('#plConfirmar');
+    if (conf) conf.addEventListener('click', () => this.confirmar(i));
+    const sig = v.cont.querySelector('#plSiguiente');
+    if (sig) sig.addEventListener('click', () => {
+      v.api.responder('indice', i + 1); v.api.guardar(); v.seleccion = null;
+      this.pintar();
+      try { v.cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+  confirmar(i){
+    const v = this.vista, api = v.api, id = v.ids[i], d = this.datos(id);
+    if (!v.seleccion || this.resuelta(api, id)) return;
+    const o = d.opciones.find(x => x.id === v.seleccion); if (!o) return;
+    const dec = copiaProfunda(this.decisiones(api));
+    const reg = dec[id] || { intentos: [], resuelta: false };
+    const retroTexto = o.correcta ? d.acierto : o.retro;
+    reg.intentos.push({ opcion: o.id, texto: o.texto, adecuada: o.correcta, retroalimentacion: retroTexto, fecha: ahoraISO() });
+    if (o.correcta) reg.resuelta = true;
+    dec[id] = reg;
+    api.responder('decisiones', dec);
+    api.registrarEvento(`Desafío «${d.tema}»: ${o.correcta ? 'eligió la decisión más adecuada' : 'eligió una opción para reconsiderar'}`, { opcion: o.id });
+    api.guardar();
+    v.seleccion = null;
+    this.pintarSituacion(i);
+    try { v.cont.querySelector('#plRetro').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+  },
+
+  pintarDefensa(){
+    const v = this.vista, api = v.api;
+    const borr = api.respuestas.borradorDefensa && typeof api.respuestas.borradorDefensa === 'object' ? api.respuestas.borradorDefensa : {};
+    v.cont.innerHTML = `
+      <div class="tarjeta">
+        <div class="barra"><span style="width:100%"></span></div>
+        ${globoAurora(`<p>¡Superaste los ${v.ids.length === 10 ? 'diez' : v.ids.length} desafíos, <strong>${esc(primerNombre(api.nombre))}</strong>! Ahora quiero escucharte a ti. Responde con tus propias palabras; bastan dos o tres oraciones.</p>`)}
+        <h3>🛡️ Tu defensa personal</h3>
+        <p>${esc(this.PREGUNTA)}</p>
+        <label for="plDefensa">Tu respuesta</label>
+        <textarea id="plDefensa" rows="5" maxlength="${this.MAX_CARACTERES}" placeholder="Por ejemplo: la estrategia que elegiría es… porque…">${esc(borr.texto || '')}</textarea>
+        <small id="plConteo"></small>
+        <p class="error" id="plError" role="alert"></p>
+        <button type="button" id="plEntregar" class="btn btn-primario">📨 Entregar mi respuesta</button>
+      </div>
+      <div id="plFinal"></div>`;
+    const txt = v.cont.querySelector('#plDefensa'), conteo = v.cont.querySelector('#plConteo'), error = v.cont.querySelector('#plError');
+    const significativos = t => t.replace(/\s/g, '').length;
+    const refrescar = () => {
+      const k = significativos(txt.value);
+      conteo.textContent = k >= this.MIN_CARACTERES ? `✓ ${txt.value.trim().length} caracteres` : `Escribe al menos ${this.MIN_CARACTERES} caracteres (${k} por ahora)`;
+    };
+    refrescar();
+    txt.addEventListener('input', () => { refrescar(); error.textContent = ''; api.responder('borradorDefensa', { texto: txt.value }); });
+    v.cont.querySelector('#plEntregar').addEventListener('click', ev => {
+      if (!this.todasResueltas(api, v.ids)) { this.pintar(); return; }
+      const texto = txt.value.trim();
+      if (significativos(texto) < this.MIN_CARACTERES || (texto.match(/\p{L}/gu) || []).length < 15) {
+        error.textContent = 'Escribe una respuesta un poco más completa: qué estrategia elegirías y por qué.';
+        txt.focus(); return;
+      }
+      ev.currentTarget.disabled = true; txt.disabled = true;
+      api.responder('defensa', { pregunta: this.PREGUNTA, respuesta: texto, fecha: ahoraISO() });
+      api.registrarEvento('Entregó su defensa personal');
+      this.finalizar();
+    });
+    if (api.respuestas.defensa && api.respuestas.defensa.respuesta) this.finalizar();  // Ya la había entregado
+  },
+
+  finalizar(){
+    const v = this.vista;
+    if (!v || v.finalizando) return;
+    v.finalizando = true;
+    const api = v.api, fe = api.estadoFase, it = intentoAbierto(fe), dec = this.decisiones(api);
+    const texto = `¡Excelente trabajo, ${primerNombre(api.nombre)}! Has demostrado que puedes tomar decisiones pensando en las necesidades de los niños y las niñas. Una buena planificación no es solamente un documento: es una herramienta para crear oportunidades de aprendizaje. ¡Vamos por nuestra siguiente misión!`;
+    const final = v.cont.querySelector('#plFinal');
+    if (final) final.innerHTML = `<div class="tarjeta mem-celebracion"><span class="confeti" aria-hidden="true">🎉🛡️✨🛡️🎉</span>${globoAurora(`<p>${esc(texto)}</p>`)}</div>`;
+    const resultado = {
+      situaciones: v.ids.map((id, i) => {
+        const d = this.datos(id), r = dec[id] || { intentos: [] };
+        return { numero: i + 1, tema: d.tema, situacion: d.situacion,
+                 ordenAlternativas: this.orden(api, id).map(o => d.opciones.find(x => x.id === o).texto),
+                 decisionAdecuada: d.opciones.find(o => o.correcta).texto,
+                 decisionesElegidas: r.intentos.map(x => x.texto),
+                 intentos: r.intentos.length,
+                 retroalimentacion: r.intentos.map(x => x.retroalimentacion) };
+      }),
+      defensa: api.respuestas.defensa || null,
+      intentos: fe.intentos.length,
+      pistasIntento: it ? it.pistas : 0,
+      pistasTotales: fe.pistas.length,
+      pistasUtilizadas: fe.pistas.map(p => p.texto),
+      fechaInicio: fe.fechaInicio,
+      fechaFinalizacion: ahoraISO()
+    };
+    api.guardar();
+    this.despues(1400, () => api.completar(resultado, { mensaje: texto }));
+  },
+
+  /* ---------- Pistas ---------- */
+  pistaDisponible(api){
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return 'Ya completaste esta misión.';
+    if (!this.vista) return 'Primero presiona «¡Acepto el desafío!».';
+    if (this.vista.finalizando) return '¡Ya completaste los desafíos!';
+    return true;
+  },
+  pista(api){
+    const v = this.vista; if (!v) return null;
+    const i = this.indiceActual();
+    const st = Object.assign({}, api.respuestas.estadoPistas || {});
+    if (i >= v.ids.length) {
+      const n = Number(st.defensa) || 0; st.defensa = n + 1; api.responder('estadoPistas', st);
+      return this.PISTAS_DEFENSA[n % this.PISTAS_DEFENSA.length];
+    }
+    const id = v.ids[i], d = this.datos(id);
+    if (this.resuelta(api, id)) return '¡Ya encontraste la decisión más adecuada! Presiona «Siguiente desafío».';
+    const n = Number(st[id]) || 0; st[id] = n + 1; api.responder('estadoPistas', st);
+    return d.pistas[n % d.pistas.length];
+  },
+
+  /* ---------- Consulta ---------- */
+  mostrarConsulta(cont, api, ids){
+    const res = api.estadoFase.resultado || {};
+    const defensa = res.defensa && res.defensa.respuesta;
+    if (Array.isArray(res.situaciones) && res.situaciones.length) {
+      const porTema = {}; BANCO_RETOS.planificacion.forEach(d => { porTema[d.tema] = d.id; });
+      const delResultado = res.situaciones.map(x => porTema[x.tema]).filter(Boolean);
+      if (delResultado.length) ids = delResultado;
+    }
+    cont.innerHTML = `
+      <div class="tarjeta">
+        <h3>🛡️ Tus decisiones como futura maestra</h3>
+        ${ids.map((id, i) => { const d = this.datos(id); return `
+          <div class="pl-resumen"><strong>${i + 1}. ${d.emoji} ${esc(d.tema)}</strong>
+            <p>${esc(d.situacion)}</p>
+            <p class="pl-adecuada">✓ ${esc(d.opciones.find(o => o.correcta).texto)}</p>
+            <p><small>${esc(d.acierto)}</small></p></div>`; }).join('')}
+      </div>
+      ${defensa ? `<div class="tarjeta"><h3>💭 Tu defensa personal</h3><p><small>${esc(this.PREGUNTA)}</small></p><div class="cita">${esc(defensa)}</div></div>` : ''}
+      <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tus respuestas originales se conservan.</p>`;
+  }
+};
+
+registrarMotor('planificacion', {
+  asignar(azar, bancos){
+    const banco = (bancos && bancos.retos && bancos.retos.planificacion) || [];
+    const situaciones = azar.elegir(banco.map(x => x.id), Planificacion.CANTIDAD);
+    const ordenes = {};
+    situaciones.forEach(id => {
+      const ops = banco.find(x => x.id === id).opciones.map(o => o.id);
+      let o = azar.barajar(ops);
+      ordenes[id] = o;
+    });
+    // Evitar que la opción adecuada quede siempre en la misma posición
+    const pos = situaciones.map(id => ordenes[id].indexOf(banco.find(x => x.id === id).opciones.find(o => o.correcta).id));
+    if (new Set(pos).size === 1 && situaciones.length > 1) {
+      const id = situaciones[situaciones.length - 1];
+      ordenes[id] = ordenes[id].slice(1).concat(ordenes[id][0]);
+    }
+    return { situaciones, ordenes, fecha: ahoraISO() };
+  },
+  iniciar(contenedor, api){ Planificacion.montar(contenedor, api, false); },
+  reiniciar(contenedor, api){ Planificacion.montar(contenedor, api, true); },
+  pista(api){ return Planificacion.pista(api); },
+  pistaDisponible(api){ return Planificacion.pistaDisponible(api); }
+});
+
+/* =========================================================
+   13.6 MOTOR · FASE 6: «Mi ruta de aprendizaje semanal»
+   - Ocho estaciones temáticas (síntesis del curso, sin fechas).
+   - Se ordenan intercambiando tarjetas: tocar una y luego otra,
+     botones ▲ ▼, o arrastrar y soltar en computadoras.
+   - Datos del intento (api.respuestas):
+       ordenInicial [ids], orden [ids], fijas [ids correctas comprobadas],
+       revisar [ids], comprobaciones, historialComprobaciones
+       [{correctas, orden, fecha}], estadoPistas {n}, completa
+   ========================================================= */
+const Ruta = {
+  vista: null,
+  timers: [],
+  DURACION_PISTA: 3200,
+
+  estaciones(){ return BANCO_RETOS.ruta.slice().sort((a, b) => a.orden - b.orden); },
+  correcto(){ return this.estaciones().map(e => e.id); },
+  datos(id){ return BANCO_RETOS.ruta.find(e => e.id === id) || null; },
+  ordenValido(o){
+    const c = this.correcto();
+    return Array.isArray(o) && o.length === c.length && c.every(id => o.includes(id));
+  },
+  r(){ return this.vista.api.respuestas; },
+  orden(){ return this.r().orden.slice(); },
+  fijas(){ return new Set(Array.isArray(this.r().fijas) ? this.r().fijas : []); },
+  revisar(){ return new Set(Array.isArray(this.r().revisar) ? this.r().revisar : []); },
+  bienColocadas(orden){ const c = this.correcto(); return orden.filter((id, i) => c[i] === id); },
+
+  limpiar(){ this.timers.forEach(t => clearTimeout(t)); this.timers = []; this.vista = null; },
+  despues(ms, fn){
+    const v = this.vista;
+    const t = setTimeout(() => {
+      this.timers = this.timers.filter(x => x !== t);
+      if (v && this.vista === v && v.cont.isConnected) fn(v);
+    }, ms);
+    this.timers.push(t);
+  },
+
+  /* Mezcla que obliga a organizar: distinta del orden correcto, con 2 o menos en su lugar */
+  mezclar(anterior){
+    const c = this.correcto();
+    let o;
+    for (let k = 0; k < 200; k++) {
+      o = Azar.barajar(c);
+      if (this.bienColocadas(o).length <= 2 && (!anterior || JSON.stringify(o) !== JSON.stringify(anterior))) break;
+    }
+    return o;
+  },
+
+  /* ---------- Entrada ---------- */
+  montar(cont, api, esReinicio){
+    this.limpiar();
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return this.mostrarConsulta(cont, api);
+    if (!api.respuestas.iniciado || !this.ordenValido(api.respuestas.orden)) {
+      const yaJugo = fe.intentos.some(i => i.respuestas && i.respuestas.iniciado);
+      if (!api.respuestas.iniciado && !esReinicio && !yaJugo) return this.mostrarIntro(cont, api);
+      this.iniciarRespuestas(api);
+    }
+    this.mostrarJuego(cont, api);
+  },
+  iniciarRespuestas(api){
+    const fe = api.estadoFase;
+    const previo = fe.intentos.slice().reverse().find(i => i.estado !== 'en_curso' && i.respuestas && Array.isArray(i.respuestas.ordenInicial));
+    const o = this.mezclar(previo ? previo.respuestas.ordenInicial : null);
+    api.responder('iniciado', true);
+    api.responder('ordenInicial', o.slice());
+    api.responder('orden', o.slice());
+    api.responder('fijas', []);
+    api.responder('revisar', []);
+    api.responder('comprobaciones', 0);
+    api.responder('historialComprobaciones', []);
+    api.responder('estadoPistas', { n: 0 });
+    api.registrarEvento('Se mezclaron las estaciones de la ruta');
+    api.guardar();
+  },
+  mostrarIntro(cont, api){
+    const n = esc(primerNombre(api.nombre));
+    cont.innerHTML = `
+      <div class="tarjeta">
+        ${globoAurora(`<p>¡<strong>${n}</strong>, qué lejos hemos llegado! Durante nuestras clases descubrimos que la comunicación se desarrolla de muchas maneras: hablando, escuchando, jugando, contando historias y expresándonos con creatividad. Ahora vamos a reconstruir nuestra ruta de aprendizaje. ¿Podrás organizar las experiencias que nos ayudaron a llegar hasta aquí?</p>`)}
+        <button type="button" id="btnRutaComenzar" class="btn btn-primario btn-mision">¡Reconstruir mi ruta!</button>
+      </div>`;
+    cont.querySelector('#btnRutaComenzar').addEventListener('click', () => {
+      api.registrarEvento('Escuchó la presentación de Aurora');
+      this.iniciarRespuestas(api);
+      this.mostrarJuego(cont, api);
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+
+  /* ---------- Camino de estaciones ---------- */
+  htmlPaso(id, pos, opciones){
+    const d = this.datos(id);
+    const { fija, revisar, seleccionada, interactivo, primero, ultimo } = opciones;
+    const clases = ['ruta-paso', fija ? 'fija' : '', revisar ? 'revisar' : '', seleccionada ? 'seleccionada' : ''].join(' ');
+    return `<li class="${clases}" data-id="${id}" style="--color-est:${d.color}">
+      <span class="ruta-pos" data-pos="${pos}">${pos + 1}</span>
+      <div class="ruta-tarjeta" data-id="${id}" ${interactivo && !fija ? `role="button" tabindex="0" draggable="true" aria-pressed="${!!seleccionada}"` : ''}
+           aria-label="Posición ${pos + 1}: ${esc(d.titulo)}${fija ? ', en su lugar' : ''}">
+        <span class="ruta-icono" aria-hidden="true">${d.icono}</span>
+        <span class="ruta-info"><strong>${esc(d.titulo)}</strong><small>${esc(d.descripcion)}</small></span>
+        ${!interactivo ? '' : fija ? `<span class="ruta-estado ok" aria-hidden="true">✓</span>`
+          : `<span class="ruta-mover">
+               <button type="button" data-mover="-1" aria-label="Subir «${esc(d.titulo)}»" ${primero ? 'disabled' : ''}>▲</button>
+               <button type="button" data-mover="1" aria-label="Bajar «${esc(d.titulo)}»" ${ultimo ? 'disabled' : ''}>▼</button>
+             </span>`}
+        ${interactivo && revisar ? `<span class="ruta-marca">🔄 Cambiar</span>` : ''}
+      </div>
+    </li>`;
+  },
+  mostrarJuego(cont, api){
+    cont.innerHTML = `
+      <div class="tarjeta ruta-panel">
+        <p class="sopa-contador" id="rutaContador"></p>
+        <p class="ayuda" id="rutaAyuda" style="text-align:center;margin:4px 0 10px"></p>
+        <div class="ruta-inicio">🌱 Inicio del curso</div>
+        <ol class="ruta-camino" id="rutaCamino"></ol>
+        <div class="ruta-meta">🎓 Futuras maestras</div>
+        <p class="cru-mensaje" id="rutaMensaje" aria-live="polite"></p>
+        <button type="button" id="rutaComprobar" class="btn btn-primario">🧭 Comprobar mi ruta</button>
+      </div>
+      <div id="rutaFinal"></div>`;
+    this.vista = { cont, api, seleccion: null, finalizando: false };
+    this.pintar();
+    this.enlazar();
+    if (api.respuestas.completa) this.celebrar(false);
+  },
+  pintar(){
+    const v = this.vista; if (!v) return;
+    const orden = this.orden(), fijas = this.fijas(), revisar = this.revisar();
+    const libres = orden.map((id, i) => fijas.has(id) ? -1 : i).filter(i => i >= 0);
+    v.cont.querySelector('#rutaCamino').innerHTML = orden.map((id, i) => this.htmlPaso(id, i, {
+      fija: fijas.has(id), revisar: revisar.has(id), seleccionada: v.seleccion === id, interactivo: !v.finalizando,
+      primero: i <= libres[0], ultimo: i >= libres[libres.length - 1]
+    })).join('');
+    const k = Number(this.r().comprobaciones) || 0;
+    v.cont.querySelector('#rutaContador').textContent = k
+      ? `Estaciones correctas: ${fijas.size} de ${orden.length}` : `Organiza las ${orden.length} estaciones de tu ruta`;
+    v.cont.querySelector('#rutaAyuda').textContent = v.finalizando ? ''
+      : v.seleccion ? `Ahora toca la estación con la que quieres intercambiar «${this.datos(v.seleccion).titulo}».`
+      : 'Toca una estación y luego otra para intercambiarlas, o usa ▲ ▼. En computadora también puedes arrastrarlas.';
+    const btn = v.cont.querySelector('#rutaComprobar'); if (btn) btn.hidden = v.finalizando;
+  },
+  enlazar(){
+    const v = this.vista, camino = v.cont.querySelector('#rutaCamino');
+    camino.addEventListener('click', e => {
+      if (v.finalizando) return;
+      const mover = e.target.closest('button[data-mover]');
+      if (mover) { this.moverVecino(mover.closest('.ruta-paso').dataset.id, +mover.dataset.mover); return; }
+      const t = e.target.closest('.ruta-tarjeta'); if (!t) return;
+      this.tocar(t.dataset.id);
+    });
+    camino.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('ruta-tarjeta')) { e.preventDefault(); this.tocar(e.target.dataset.id); }
+    });
+    // Arrastrar y soltar (computadoras)
+    camino.addEventListener('dragstart', e => {
+      const t = e.target.closest('.ruta-tarjeta'); if (!t || v.finalizando) return;
+      v.arrastrando = t.dataset.id;
+      try { e.dataTransfer.setData('text/plain', t.dataset.id); e.dataTransfer.effectAllowed = 'move'; } catch (err) {}
+    });
+    camino.addEventListener('dragover', e => { if (v.arrastrando) e.preventDefault(); });
+    camino.addEventListener('drop', e => {
+      e.preventDefault();
+      const destino = e.target.closest('.ruta-paso');
+      if (v.arrastrando && destino) this.intercambiar(v.arrastrando, destino.dataset.id);
+      v.arrastrando = null;
+    });
+    camino.addEventListener('dragend', () => { v.arrastrando = null; });
+    v.cont.querySelector('#rutaComprobar').addEventListener('click', () => this.comprobar());
+  },
+  tocar(id){
+    const v = this.vista;
+    if (this.fijas().has(id)) { toast('✓ Esta estación ya está en su lugar'); return; }
+    if (!v.seleccion) { v.seleccion = id; this.pintar(); return; }
+    if (v.seleccion === id) { v.seleccion = null; this.pintar(); return; }
+    this.intercambiar(v.seleccion, id);
+  },
+  intercambiar(a, b){
+    const v = this.vista, fijas = this.fijas();
+    if (a === b || fijas.has(a) || fijas.has(b)) { v.seleccion = null; this.pintar(); return; }
+    const o = this.orden(), i = o.indexOf(a), j = o.indexOf(b);
+    if (i < 0 || j < 0) return;
+    [o[i], o[j]] = [o[j], o[i]];
+    this.guardarOrden(o, [a, b]);
+  },
+  moverVecino(id, paso){
+    const o = this.orden(), fijas = this.fijas();
+    let j = o.indexOf(id) + paso;
+    while (j >= 0 && j < o.length && fijas.has(o[j])) j += paso;    // Saltar estaciones ya fijas
+    if (j < 0 || j >= o.length) return;
+    this.intercambiar(id, o[j]);
+  },
+  guardarOrden(o, movidas){
+    const v = this.vista, api = v.api;
+    api.responder('orden', o);
+    api.responder('revisar', [...this.revisar()].filter(id => !movidas.includes(id)));
+    v.seleccion = null;
+    this.pintar();
+    movidas.forEach(id => { const el = v.cont.querySelector(`.ruta-paso[data-id="${id}"] .ruta-tarjeta`); if (el) { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); } });
+  },
+
+  /* ---------- Comprobación ---------- */
+  comprobar(){
+    const v = this.vista; if (!v || v.finalizando) return;
+    const api = v.api, o = this.orden(), c = this.correcto();
+    const correctas = o.filter((id, i) => c[i] === id), incorrectas = o.filter((id, i) => c[i] !== id);
+    const n = (Number(api.respuestas.comprobaciones) || 0) + 1;
+    api.responder('comprobaciones', n);
+    api.responder('fijas', correctas);
+    api.responder('revisar', incorrectas);
+    const hist = Array.isArray(api.respuestas.historialComprobaciones) ? api.respuestas.historialComprobaciones.slice() : [];
+    hist.push({ correctas: correctas.length, orden: o.slice(), fecha: ahoraISO() });
+    api.responder('historialComprobaciones', hist);
+    api.registrarEvento(`Comprobó su ruta: ${correctas.length} de ${o.length} estaciones correctas`);
+    api.guardar();
+    v.seleccion = null;
+    if (!incorrectas.length) { this.celebrar(true); return; }
+    this.pintar();
+    const el = v.cont.querySelector('#rutaMensaje');
+    el.textContent = correctas.length
+      ? `¡Vas muy bien! Las estaciones en verde ya están en su lugar. Mueve las marcadas con 🔄.`
+      : '¡Buen comienzo! Ninguna estación coincide todavía; piensa qué aprendimos primero y qué vino después.';
+  },
+
+  /* ---------- Celebración: el camino completo ---------- */
+  celebrar(nuevo){
+    const v = this.vista; if (!v || v.finalizando) return;
+    v.finalizando = true;
+    const api = v.api, fe = api.estadoFase, it = intentoAbierto(fe), r = api.respuestas;
+    if (nuevo) api.responder('completa', true);
+    this.pintar();
+    const camino = v.cont.querySelector('#rutaCamino');
+    camino.classList.add('completa');
+    v.cont.querySelector('#rutaMensaje').textContent = '';
+    const texto = `¡Lo conseguiste, ${primerNombre(api.nombre)}! Has reconstruido una ruta llena de aprendizajes. Cada experiencia nos ayudó a comprender mejor cómo acompañar el desarrollo comunicativo de los niños y las niñas. Y lo mejor es que ahora tienes herramientas para llevar esos aprendizajes a tu futura aula.`;
+    v.cont.querySelector('#rutaFinal').innerHTML = `
+      <div class="tarjeta mem-celebracion"><span class="confeti" aria-hidden="true">🎉🗺️✨🗺️🎉</span>${globoAurora(`<p>${esc(texto)}</p>`)}
+        <button type="button" id="rutaRecorrer" class="btn btn-secundario">▶️ Recorrer mi ruta</button>
+        <button type="button" id="rutaAlMapa" class="btn btn-primario">🗺️ Volver al mapa y descubrir mi siguiente misión</button>
+      </div>`;
+    const recorrer = () => { camino.classList.remove('recorriendo'); void camino.offsetWidth; camino.classList.add('recorriendo'); try { camino.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} };
+    v.cont.querySelector('#rutaRecorrer').addEventListener('click', recorrer);
+    v.cont.querySelector('#rutaAlMapa').addEventListener('click', () => volverAlMapa());
+    camino.classList.add('recorriendo');
+    const hist = Array.isArray(r.historialComprobaciones) ? r.historialComprobaciones : [];
+    const resultado = {
+      ordenInicial: (r.ordenInicial || []).map(id => this.datos(id).titulo),
+      ordenFinal: this.orden().map(id => this.datos(id).titulo),
+      comprobaciones: Number(r.comprobaciones) || 0,
+      historialComprobaciones: hist.map(h => ({ correctas: h.correctas, fecha: h.fecha })),
+      intentos: fe.intentos.length,
+      pistasIntento: it ? it.pistas : 0,
+      pistasTotales: fe.pistas.length,
+      pistasUtilizadas: fe.pistas.map(p => p.texto),
+      fechaInicio: fe.fechaInicio,
+      fechaFinalizacion: ahoraISO()
+    };
+    if (fe.estado !== 'completada' || it) {
+      api.registrarEvento('Reconstruyó la ruta completa');
+      api.completar(resultado, { mensaje: texto, permanecer: true });   // Se guarda ya; ella decide cuándo volver al mapa
+    }
+  },
+
+  /* ---------- Pistas prácticas ---------- */
+  pistaDisponible(api){
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return 'Ya completaste esta misión.';
+    const v = this.vista;
+    if (!v) return 'Primero presiona «¡Reconstruir mi ruta!».';
+    if (v.finalizando) return '¡Tu ruta ya está completa!';
+    if (v.pistaHasta && Date.now() < v.pistaHasta) return 'Observa la pista anterior antes de pedir otra.';
+    if (this.bienColocadas(this.orden()).length === this.orden().length) return 'Todo parece en orden: presiona «Comprobar mi ruta».';
+    return true;
+  },
+  pista(api){
+    const v = this.vista; if (!v) return null;
+    const o = this.orden(), c = this.correcto(), fijas = this.fijas();
+    const st = Object.assign({ n: 0 }, api.respuestas.estadoPistas || {});
+    const bien = o.filter((id, i) => c[i] === id && !fijas.has(id));
+    const mal = o.filter((id, i) => c[i] !== id);
+    let tipo = ['primera', 'correcta', 'posicion'][st.n % 3];
+    if (tipo === 'primera' && o[0] === c[0]) tipo = 'correcta';
+    if (tipo === 'correcta' && !bien.length) tipo = 'posicion';
+    let texto, objetivo = null, posicion = null;
+    if (tipo === 'primera') {
+      objetivo = c[0]; posicion = 0;
+      texto = `La ruta comienza con «${this.datos(c[0]).titulo}». Búscala (va a brillar) y colócala en la posición 1.`;
+    } else if (tipo === 'correcta') {
+      objetivo = bien[Azar.entero(bien.length)];
+      texto = 'La estación que va a brillar ya está en su posición correcta. ¡Déjala ahí!';
+    } else {
+      objetivo = mal[Azar.entero(mal.length)]; posicion = c.indexOf(objetivo);
+      texto = `«${this.datos(objetivo).titulo}» va en la posición ${posicion + 1}. Fíjate en el número que va a brillar.`;
+    }
+    v.pistaPendiente = { objetivo, posicion };
+    api.responder('estadoPistas', { n: st.n + 1 });
+    api.registrarEvento(`Pista «${tipo}»`, { estacion: objetivo, posicion });
+    return texto;
+  },
+  alCerrarPista(){
+    const v = this.vista; if (!v || !v.pistaPendiente) return;
+    const { objetivo, posicion } = v.pistaPendiente; v.pistaPendiente = null;
+    const tarjeta = v.cont.querySelector(`.ruta-paso[data-id="${objetivo}"] .ruta-tarjeta`);
+    const numero = posicion !== null ? v.cont.querySelectorAll('.ruta-pos')[posicion] : null;
+    if (tarjeta) { tarjeta.classList.add('brillo-ruta'); try { tarjeta.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} }
+    if (numero) numero.classList.add('objetivo');
+    v.pistaHasta = Date.now() + this.DURACION_PISTA;
+    this.despues(this.DURACION_PISTA, vv => {
+      vv.cont.querySelectorAll('.brillo-ruta').forEach(x => x.classList.remove('brillo-ruta'));
+      vv.cont.querySelectorAll('.ruta-pos.objetivo').forEach(x => x.classList.remove('objetivo'));
+    });
+  },
+
+  /* ---------- Consulta ---------- */
+  mostrarConsulta(cont, api){
+    const c = this.correcto();
+    cont.innerHTML = `
+      <div class="tarjeta ruta-panel">
+        <p class="sopa-contador">✅ Estaciones correctas: ${c.length} de ${c.length}</p>
+        <div class="ruta-inicio">🌱 Inicio del curso</div>
+        <ol class="ruta-camino completa recorriendo" id="rutaCamino">${c.map((id, i) => this.htmlPaso(id, i, { fija: true, interactivo: false })).join('')}</ol>
+        <div class="ruta-meta">🎓 Futuras maestras</div>
+        <button type="button" id="rutaRecorrer" class="btn btn-secundario">▶️ Recorrer mi ruta</button>
+      </div>
+      <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tu logro original se conserva.</p>`;
+    const camino = cont.querySelector('#rutaCamino');
+    cont.querySelector('#rutaRecorrer').addEventListener('click', () => { camino.classList.remove('recorriendo'); void camino.offsetWidth; camino.classList.add('recorriendo'); });
+  }
+};
+
+registrarMotor('ruta', {
+  asignar(){ return { estaciones: Ruta.correcto(), fecha: ahoraISO() }; },
+  iniciar(contenedor, api){ Ruta.montar(contenedor, api, false); },
+  reiniciar(contenedor, api){ Ruta.montar(contenedor, api, true); },
+  pista(api){ return Ruta.pista(api); },
+  pistaDisponible(api){ return Ruta.pistaDisponible(api); },
+  alCerrarPista(api){ Ruta.alCerrarPista(api); }
+});
+
+/* =========================================================
+   14. RECORRIDO FINAL (fase 7: «El recorrido de nuestra aventura»)
    Construye los recuerdos SOLO con datos reales guardados:
    juegos completados, logros, fotografías, respuestas
    pedagógicas y momentos (reintentos, pistas, fechas).
    Si una categoría no tiene datos, ese recuerdo se omite.
-   Pendiente: fase 8 (felicitación y «Descargar mi aventura
-   completa» con informe HTML independiente).
+   La fase 8 (despedida y recuerdo descargable) está en 14.2.
    ========================================================= */
 function fechaDia(iso){
   try { return new Date(iso).toLocaleDateString('es-GT', { day:'numeric', month:'long', year:'numeric' }); }
@@ -3547,100 +4463,594 @@ function fotoValida(ev){
   return typeof src === 'string' && /^data:image\/(jpeg|jpg|png|webp);base64,/i.test(src) ? src : null;
 }
 
-function construirRecuerdos(){
-  const n = esc(primerNombre(estado.nombre));
-  const recuerdos = [];
-  const hechas = FASES.filter(f => f.id !== 'recorrido' && f.id !== 'despedida' && faseCompletada(f.id));
+/* ---------- Libro de recuerdos (motor de la fase 7) ----------
+   Reutiliza fotoValida() y lee SOLO los resultados reales guardados por
+   cada misión (fe.resultado y estado.evidencias). Si una fase se completó
+   en modo de prueba o le faltan datos, lo indica sin inventar contenido.
+   Datos del intento (api.respuestas): iniciado, pagina, paginasVistas. */
+const RETO_FINAL_ALBUM = 'Un recuerdo para Aurora';   // Si existe, se presenta al final del álbum
 
-  recuerdos.push({ emoji:'🎞️', titulo:`Nuestro recorrido, ${n}`,
-    html:`<p>Antes de despedirnos, quiero que recordemos juntas todo lo que viviste en esta aventura.</p><p>Presiona «Siguiente recuerdo» para comenzar.</p>` });
+const LibroRecuerdos = {
+  vista: null,
 
-  if (hechas.length) {
-    recuerdos.push({ emoji:'🏆', titulo:'Los juegos que completaste',
-      html:`<ul>${hechas.map(f => `<li>${f.emoji} <strong>${esc(f.titulo)}</strong></li>`).join('')}</ul>` });
-    recuerdos.push({ emoji:'🌟', titulo:'Algunos de tus logros',
-      html:`<ul>${hechas.map(f => `<li>${esc(f.logro)}</li>`).join('')}</ul>` });
+  /* ---------- Lectura de datos reales ---------- */
+  fase(id){ return estado.fases[id]; },
+  enPrueba(id){ const fe = this.fase(id); return !!(fe && fe.completadaEnPrueba); },
+  resultado(id){ const fe = this.fase(id); return fe && fe.resultado && !fe.completadaEnPrueba ? fe.resultado : null; },
+
+  fotosAlbum(){
+    // Orden: el de los retos de la cacería completada; si no existe, el número de reto.
+    const res = this.resultado('evidencias');
+    let fotos = [];
+    if (res && Array.isArray(res.retos)) {
+      fotos = res.retos.slice().sort((a, b) => (a.numero || 0) - (b.numero || 0))
+        .map(r => estado.evidencias.find(ev => ev.id === r.evidencia && ev.fase === 'evidencias'))
+        .filter(ev => ev && fotoValida(ev));
+    } else {
+      fotos = estado.evidencias.filter(ev => ev.fase === 'evidencias' && fotoValida(ev))
+        .sort((a, b) => (a.numero || 0) - (b.numero || 0));
+    }
+    const finales = fotos.filter(ev => ev.reto === RETO_FINAL_ALBUM);
+    return fotos.filter(ev => ev.reto !== RETO_FINAL_ALBUM).concat(finales);
+  },
+
+  /* ---------- Contenido de cada página ---------- */
+  aviso(id){
+    if (this.enPrueba(id)) return `<p class="lr-prueba">🧪 Completada en modo de prueba: no hay recuerdos registrados para esta misión.</p>`;
+    return `<p class="lr-vacio">No encontramos recuerdos guardados de esta misión.</p>`;
+  },
+  paginas(){
+    const n = esc(primerNombre(estado.nombre));
+    const P = [];
+    // 1. Palabras escondidas
+    (() => {
+      const r = this.resultado('sopa');
+      const palabras = r && Array.isArray(r.palabrasEncontradas) ? r.palabrasEncontradas : [];
+      P.push({ id: 'sopa', emoji: '🔤', titulo: 'Las primeras palabras',
+        aurora: 'Todo comenzó con unas palabras escondidas. Cada una nos recordó la importancia de la comunicación.',
+        html: palabras.length ? `
+          <p class="lr-sub">Las palabras que descubriste:</p>
+          <div class="lr-chips">${palabras.map(p => `<span class="lr-chip">${esc(p)}</span>`).join('')}</div>
+          ${r.reflexion ? `<div class="cita"><small>Tu reflexión${r.palabraReflexion ? ` sobre «${esc(r.palabraReflexion)}»` : ''}</small>${esc(r.reflexion)}</div>` : ''}`
+          : this.aviso('sopa') });
+    })();
+    // 2. Memoria
+    (() => {
+      const r = this.resultado('memoria');
+      const encontradas = r && Array.isArray(r.parejasEncontradas) ? r.parejasEncontradas : [];
+      const parejas = r && Array.isArray(r.parejasAsignadas) ? r.parejasAsignadas.filter(p => encontradas.includes(p.concepto)) : [];
+      P.push({ id: 'memoria', emoji: '🧠', titulo: 'Los recuerdos de nuestra memoria',
+        aurora: 'Tu memoria encontró cada concepto con su significado. ¡Así se construye el conocimiento!',
+        html: parejas.length ? `
+          <p class="lr-sub">Las parejas que encontraste:</p>
+          <div class="mem-relaciones">${parejas.map((p, i) => `<div class="mem-relacion" style="--fondo-carta:${Memoria.FONDOS[i % Memoria.FONDOS.length]}"><strong>${esc(p.concepto)}</strong><span>↔ ${esc(p.pareja)}</span></div>`).join('')}</div>`
+          : this.aviso('memoria') });
+    })();
+    // 3. Crucigrama
+    (() => {
+      const r = this.resultado('crucigrama');
+      const palabras = r && Array.isArray(r.palabras) ? r.palabras : [];
+      P.push({ id: 'crucigrama', emoji: '🧩', titulo: 'El misterio resuelto',
+        aurora: 'Pista a pista, resolviste el misterio. Cada palabra completada fue un pequeño logro.',
+        html: palabras.length ? `
+          <p class="lr-sub">Las ${palabras.length} palabras que completaste:</p>
+          <div class="lr-logros">${palabras.map(w => `<div class="lr-logro"><span class="lr-medalla" aria-hidden="true">🏅</span><span><strong>${esc(w.respuesta)}</strong><small>${esc(w.pista || '')}</small></span></div>`).join('')}</div>`
+          : this.aviso('crucigrama') });
+    })();
+    // 4. Álbum de la cacería (dinámico: 5, 10 o las que existan)
+    (() => {
+      const fotos = this.fotosAlbum();
+      P.push({ id: 'evidencias', emoji: '📸', titulo: 'Nuestra galería de recuerdos',
+        aurora: fotos.length ? `Mira cuántos momentos especiales capturaste, ${primerNombre(estado.nombre)}. Toca cualquier fotografía para verla en grande.` : 'Este es el lugar de tus fotografías.',
+        html: fotos.length ? `
+          <p class="lr-sub">${fotos.length === 1 ? '1 fotografía' : `${fotos.length} fotografías`} de tu cacería:</p>
+          <div class="lr-album">${fotos.map((ev, i) => `
+            <button type="button" class="lr-foto${ev.reto === RETO_FINAL_ALBUM ? ' especial' : ''}" data-foto="${i}" aria-label="Ampliar fotografía: ${esc(ev.reto || `Reto ${i + 1}`)}">
+              <img src="${ev.imagen}" alt="" loading="lazy">
+              <span class="lr-pie">${ev.reto === RETO_FINAL_ALBUM ? '💌 ' : ''}${esc(ev.reto || `Reto ${i + 1}`)}</span>
+            </button>`).join('')}</div>`
+          : this.aviso('evidencias'),
+        fotos });
+    })();
+    // 5. Planificación
+    (() => {
+      const r = this.resultado('planificacion');
+      const sits = r && Array.isArray(r.situaciones) ? r.situaciones : [];
+      const defensa = r && r.defensa && r.defensa.respuesta;
+      P.push({ id: 'planificacion', emoji: '🛡️', titulo: 'Mis decisiones como futura maestra',
+        aurora: sits.length ? `Superaste ${sits.length} situaciones pedagógicas pensando siempre en los niños y las niñas.` : 'Aquí se guardan tus decisiones como futura maestra.',
+        html: sits.length ? `
+          <p class="lr-sub">Situaciones que resolviste:</p>
+          <div class="lr-chips">${sits.map(s => `<span class="lr-chip">${esc(s.tema)}</span>`).join('')}</div>
+          ${defensa ? `<div class="lr-defensa"><small>Tu estrategia más útil para preprimaria, en tus palabras:</small><blockquote>${esc(defensa)}</blockquote></div>` : ''}`
+          : this.aviso('planificacion') });
+    })();
+    // 6. Ruta
+    (() => {
+      const r = this.resultado('ruta');
+      const titulos = r && Array.isArray(r.ordenFinal) ? r.ordenFinal : [];
+      const estaciones = titulos.map(t => BANCO_RETOS.ruta.find(e => e.titulo === t)).filter(Boolean);
+      P.push({ id: 'ruta', emoji: '🗺️', titulo: 'Mi ruta de aprendizaje',
+        aurora: 'Reconstruiste el camino que recorrimos juntas, desde las primeras palabras hasta convertirte en futura maestra.',
+        html: estaciones.length ? `
+          <div class="ruta-inicio">🌱 Inicio del curso</div>
+          <ol class="ruta-camino completa recorriendo">${estaciones.map((e, i) => Ruta.htmlPaso(e.id, i, { fija: true, interactivo: false })).join('')}</ol>
+          <div class="ruta-meta">🎓 Futuras maestras</div>`
+          : this.aviso('ruta') });
+    })();
+    return P;
+  },
+
+  /* ---------- Entrada del motor ---------- */
+  montar(cont, api, esReinicio){
+    this.cerrarFoto();
+    const fe = api.estadoFase;
+    const consulta = fe.estado === 'completada' && !intentoAbierto(fe);
+    if (!consulta && !api.respuestas.iniciado) {
+      const yaJugo = fe.intentos.some(i => i.respuestas && i.respuestas.iniciado);
+      if (!esReinicio && !yaJugo) return this.mostrarIntro(cont, api);
+      this.iniciar(api);
+    }
+    const paginas = this.paginas();
+    const total = paginas.length + 1;   // + página final
+    const pagina = consulta ? 0 : Math.min(Math.max(0, Number(api.respuestas.pagina) || 0), total - 1);
+    this.vista = { cont, api, paginas, total, pagina, consulta, finalizando: false };
+    this.pintar(false);
+  },
+  iniciar(api){
+    api.responder('iniciado', true);
+    api.responder('pagina', 0);
+    api.responder('paginasVistas', 1);
+    api.registrarEvento('Abrió su libro de recuerdos');
+    api.guardar();
+  },
+  mostrarIntro(cont, api){
+    const n = esc(primerNombre(api.nombre));
+    cont.innerHTML = `
+      <div class="tarjeta lr-portada">
+        <div class="lr-libro" aria-hidden="true"><span>📖</span></div>
+        ${globoAurora(`<p>¡<strong>${n}</strong>, hemos llegado a un momento muy especial! Antes de terminar nuestra aventura, quiero que recordemos todo lo que hemos vivido. Cada desafío, cada descubrimiento y cada recuerdo forman parte de tu historia como futura maestra. He preparado algo especialmente para ti. ¿Quieres verlo?</p>`)}
+        <button type="button" id="btnLrAbrir" class="btn btn-primario btn-mision">Abrir mi libro de recuerdos</button>
+      </div>`;
+    cont.querySelector('#btnLrAbrir').addEventListener('click', () => {
+      this.iniciar(api);
+      this.montar(cont, api, true);
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+
+  /* ---------- Páginas ---------- */
+  pintar(animar){
+    const v = this.vista; if (!v) return;
+    const i = v.pagina, esFinal = i === v.total - 1;
+    const puntos = Array.from({ length: v.total }, (_, k) => `<span class="lr-punto${k === i ? ' actual' : k < i ? ' visto' : ''}"></span>`).join('');
+    let cuerpo;
+    if (esFinal) {
+      const n = esc(primerNombre(estado.nombre));
+      cuerpo = `
+        <div class="tarjeta lr-pagina lr-final">
+          <span class="lr-num">Última página</span>
+          ${globoAurora(`<p><strong>${n}</strong>, cuando comenzamos esta aventura, teníamos muchas palabras por descubrir, historias por contar y experiencias por vivir. Hoy puedes mirar hacia atrás y reconocer todo lo que has aprendido. Pero todavía tengo algo muy especial que quiero entregarte...</p>`)}
+          <div class="lr-sobre" aria-hidden="true"><span class="lr-sello">✦</span></div>
+          ${v.consulta
+            ? `<p class="ayuda" style="text-align:center">Ya completaste esta misión. Tu sorpresa te espera en la misión 8.</p>`
+            : `<button type="button" id="btnLrFinal" class="btn btn-primario btn-mision">Estoy lista para mi última misión</button>`}
+        </div>`;
+    } else {
+      const p = v.paginas[i];
+      cuerpo = `
+        <div class="tarjeta lr-pagina">
+          <div class="lr-cab"><span class="lr-num">Estación ${i + 1} de ${v.paginas.length}</span><span class="lr-confeti" aria-hidden="true">✨</span></div>
+          <h3><span aria-hidden="true">${p.emoji}</span> ${esc(p.titulo)}</h3>
+          ${globoAurora(`<p>${esc(p.aurora)}</p>`)}
+          <div class="lr-contenido">${p.html}</div>
+        </div>`;
+    }
+    v.cont.innerHTML = `
+      <div class="lr-progreso" aria-label="Página ${i + 1} de ${v.total}"><div class="lr-puntos">${puntos}</div><small>Página ${i + 1} de ${v.total}</small></div>
+      <div class="lr-hoja${animar ? ' ' + animar : ''}">${cuerpo}</div>
+      <div class="fila-botones lr-nav">
+        <button type="button" id="btnLrAnterior" class="btn btn-secundario" ${i === 0 ? 'disabled' : ''}>⬅️ Anterior</button>
+        <button type="button" id="btnLrSiguiente" class="btn btn-primario" ${esFinal ? 'disabled' : ''}>Siguiente ➡️</button>
+      </div>`;
+    v.cont.querySelector('#btnLrAnterior').addEventListener('click', () => this.ir(-1));
+    v.cont.querySelector('#btnLrSiguiente').addEventListener('click', () => this.ir(1));
+    v.cont.querySelectorAll('[data-foto]').forEach(b => b.addEventListener('click', () => this.abrirFoto(+b.dataset.foto)));
+    const fin = v.cont.querySelector('#btnLrFinal');
+    if (fin) fin.addEventListener('click', () => this.completar(fin));
+  },
+  ir(paso){
+    const v = this.vista; if (!v || v.finalizando) return;
+    const nueva = Math.min(Math.max(0, v.pagina + paso), v.total - 1);
+    if (nueva === v.pagina) return;
+    v.pagina = nueva;
+    if (!v.consulta) {
+      v.api.responder('pagina', nueva);
+      v.api.responder('paginasVistas', Math.max(Number(v.api.respuestas.paginasVistas) || 0, nueva + 1));
+      v.api.guardar();
+    }
+    this.pintar(paso > 0 ? 'desde-derecha' : 'desde-izquierda');
+    try { v.cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+  },
+  completar(boton){
+    const v = this.vista; if (!v || v.finalizando || v.pagina !== v.total - 1) return;
+    v.finalizando = true; boton.disabled = true;
+    const api = v.api, fe = api.estadoFase, it = intentoAbierto(fe);
+    v.cont.querySelector('.lr-sobre').classList.add('brilla');
+    api.registrarEvento('Completó el recorrido de recuerdos');
+    api.completar({
+      paginasRecorridas: v.total,
+      estaciones: v.paginas.map(p => ({ estacion: p.titulo, conDatos: !p.html.includes('lr-vacio') && !p.html.includes('lr-prueba') })),
+      fotografiasEnAlbum: (v.paginas.find(p => p.id === 'evidencias') || {}).fotos ? v.paginas.find(p => p.id === 'evidencias').fotos.length : 0,
+      intentos: fe.intentos.length,
+      fechaInicio: fe.fechaInicio,
+      fechaFinalizacion: ahoraISO()
+    }, { mensaje: `¡Qué bonito recorrido, ${primerNombre(api.nombre)}! Gracias por revivir cada recuerdo conmigo.` });
+  },
+
+  /* ---------- Ampliar fotografías (visor a pantalla completa) ---------- */
+  abrirFoto(i){
+    const v = this.vista; if (!v) return;
+    const fotos = (v.paginas.find(p => p.id === 'evidencias') || {}).fotos || [];
+    if (!fotos.length) return;
+    this.cerrarFoto();
+    const visor = document.createElement('div');
+    visor.className = 'lr-visor';
+    visor.setAttribute('role', 'dialog'); visor.setAttribute('aria-modal', 'true');
+    const mostrar = k => {
+      const ev = fotos[k];
+      visor.dataset.k = k;
+      visor.innerHTML = `
+        <button type="button" class="lr-cerrar" aria-label="Cerrar">✕</button>
+        <figure><img src="${ev.imagen}" alt="${esc(ev.reto || 'Fotografía')}">
+          <figcaption><strong>${ev.reto === RETO_FINAL_ALBUM ? '💌 ' : ''}${esc(ev.reto || `Reto ${k + 1}`)}</strong>${ev.mensajeAurora ? `<span>${esc(ev.mensajeAurora)}</span>` : ''}<small>${k + 1} de ${fotos.length}</small></figcaption></figure>
+        <div class="lr-visor-nav">
+          <button type="button" data-v="-1" ${k === 0 ? 'disabled' : ''} aria-label="Fotografía anterior">‹</button>
+          <button type="button" data-v="1" ${k === fotos.length - 1 ? 'disabled' : ''} aria-label="Fotografía siguiente">›</button>
+        </div>`;
+      visor.querySelector('.lr-cerrar').addEventListener('click', () => this.cerrarFoto());
+      visor.querySelectorAll('[data-v]').forEach(b => b.addEventListener('click', () => mostrar(Math.min(Math.max(0, k + +b.dataset.v), fotos.length - 1))));
+    };
+    visor.addEventListener('click', e => { if (e.target === visor) this.cerrarFoto(); });
+    this.teclaVisor = e => {
+      if (e.key === 'Escape') this.cerrarFoto();
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const k = +visor.dataset.k + (e.key === 'ArrowRight' ? 1 : -1);
+        if (k >= 0 && k < fotos.length) mostrar(k);
+      }
+    };
+    document.addEventListener('keydown', this.teclaVisor);
+    mostrar(i);
+    document.body.appendChild(visor);
+    this.visor = visor;
+  },
+  cerrarFoto(){
+    if (this.visor) { this.visor.remove(); this.visor = null; }
+    if (this.teclaVisor) { document.removeEventListener('keydown', this.teclaVisor); this.teclaVisor = null; }
   }
+};
+// Cerrar el visor si la estudiante sale de la pantalla (botón atrás de Android, mapa)
+window.addEventListener('popstate', () => LibroRecuerdos.cerrarFoto());
 
-  const resEv = estado.fases.evidencias && estado.fases.evidencias.resultado;
-  const fotosCaceria = resEv && Array.isArray(resEv.retos) ? new Set(resEv.retos.map(x => x.evidencia)) : null;
-  const fotos = estado.evidencias.filter(ev => fotoValida(ev) && (ev.fase !== 'evidencias' || !fotosCaceria || fotosCaceria.has(ev.id)));
-  fotos.forEach((ev, i) => {
-    const titulo = ev.reto || ev.titulo || '';
-    recuerdos.push({ emoji:'📸', titulo: fotos.length > 1 ? `Tu fotografía ${i + 1} de ${fotos.length}` : 'Tu fotografía',
-      html:`${titulo ? `<p><strong>${esc(titulo)}</strong></p>` : ''}<img class="foto" src="${fotoValida(ev)}" alt="Evidencia fotográfica ${i + 1}">${ev.descripcion ? `<p>${esc(ev.descripcion)}</p>` : ''}${ev.mensajeAurora ? globoAurora(`<p>${esc(ev.mensajeAurora)}</p>`) : ''}` });
+/* =========================================================
+   14.2 MOTOR · FASE 8: «Felicitación y despedida»
+   - Al llegar (con las 7 misiones anteriores completadas) se registra
+     la finalización de la misión 8 ANTES de generar el recuerdo.
+   - «Guardar mi recuerdo de Aurora» descarga un HTML autónomo con:
+     · Presentación visual (nombre, curso, mensaje, misiones, logros,
+       fotografías reales incrustadas, reflexión de la misión 5, fecha).
+     · Copia íntegra del estado guardado en
+       <script type="application/json" id="registro-docente">.
+       (Está oculta a la vista, pero NO cifrada.)
+     · Consulta docente: abrir el archivo agregando #docente al final
+       de la dirección. No hay botones docentes en la vista normal.
+   ========================================================= */
+const MENSAJE_DESPEDIDA = [
+  '¡{n}, llegamos al final de nuestra aventura!',
+  'Durante este tiempo descubriste palabras, resolviste desafíos, pusiste a prueba tu memoria, compartiste momentos especiales y reflexionaste sobre la maestra que deseas llegar a ser.',
+  'Quiero que recuerdes algo: enseñar no consiste solamente en transmitir conocimientos. También significa escuchar, acompañar, imaginar, jugar y ayudar a que cada niño y cada niña encuentre su propia voz.',
+  'Hoy termina esta aventura, pero tu camino como futura maestra apenas comienza.',
+  'Gracias por permitirme acompañarte. Sigue aprendiendo, sigue creando y nunca pierdas la alegría de enseñar.',
+  '¡Con mucho cariño, Aurora!'
+];
+
+function blobADataURL(blob){
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result));
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
   });
-
-  ['sopa', 'planificacion', 'ruta'].forEach(id => {
-    if (!faseCompletada(id)) return;
-    const lista = respuestasDeFase(id).slice(0, 3);
-    if (!lista.length) return;
-    const f = FASES.find(x => x.id === id);
-    recuerdos.push({ emoji: f.emoji, titulo:`Tus palabras en «${esc(f.titulo)}»`,
-      html: lista.map(r => `<div class="cita">${r.pregunta ? `<small>${esc(r.pregunta)}</small>` : ''}${r.palabra ? `<strong>${esc(r.palabra)}:</strong> ` : ''}${esc(r.respuesta)}</div>`).join('') });
-  });
-
-  const reintentos = FASES.reduce((s, f) => s + estado.fases[f.id].intentos.filter(i => i.estado === 'reiniciado').length, 0);
-  const pistas = FASES.reduce((s, f) => s + estado.fases[f.id].pistas.length, 0);
-  const momentos = [`El ${fechaDia(estado.fechaInicio)} comenzaste esta aventura con entusiasmo.`];
-  if (reintentos) momentos.push(`Volviste a intentarlo ${reintentos} ${reintentos === 1 ? 'vez' : 'veces'}: las buenas maestras no se rinden.`);
-  if (pistas) momentos.push(`Pediste ayuda ${pistas} ${pistas === 1 ? 'vez' : 'veces'} cuando lo necesitaste, y eso también es aprender.`);
-  if (fotos.length) momentos.push(`Capturaste ${fotos.length} ${fotos.length === 1 ? 'evidencia' : 'evidencias'} de tu camino.`);
-  if (hechas.length) momentos.push(`Superaste ${hechas.length} ${hechas.length === 1 ? 'misión' : 'misiones'} junto a Aurora.`);
-  recuerdos.push({ emoji:'💞', titulo:'Momentos que compartimos', html:`<ul>${momentos.map(m => `<li>${m}</li>`).join('')}</ul>` });
-
-  recuerdos.push({ aurora:true, titulo:'Un mensaje de Aurora',
-    html:`<p><strong>${n}</strong>, recorriste cada misión con esfuerzo, creatividad y corazón de maestra.</p>
-          <p>Cada juego, cada fotografía y cada reflexión muestran cuánto has crecido. Reconozco tu dedicación: estás construyendo la maestra que los niños y las niñas necesitan.</p>` });
-  return recuerdos;
+}
+/* JSON seguro para incrustar en HTML: < > & y separadores de línea Unicode
+   se escriben como secuencias \uXXXX (sigue siendo JSON válido). */
+function jsonParaHTML(obj){
+  return JSON.stringify(obj)
+    .replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+}
+function nombreArchivoRecuerdo(e){
+  const base = String(e.nombre || 'Estudiante').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'Estudiante';
+  return `${e.perfilPrueba ? 'PRUEBA_' : ''}Recuerdo_Aurora_${base}.html`;
 }
 
-registrarMotor('recorrido', {
-  iniciar(contenedor, api){
-    const recuerdos = construirRecuerdos();
-    let i = Math.min(Math.max(0, Number(api.respuestas.recuerdoActual) || 0), recuerdos.length - 1);
-    api.responder('recuerdosPreparados', recuerdos.map(r => r.titulo.replace(/<[^>]+>/g, '')));
-
-    const pintar = (desplazar) => {
-      const r = recuerdos[i];
-      const ultimo = i === recuerdos.length - 1;
-      const yaCompletada = faseCompletada('recorrido');
-      contenedor.innerHTML = `
-        <div class="tarjeta recuerdo">
-          <span class="contador-recuerdo">Recuerdo ${i + 1} de ${recuerdos.length}</span>
-          ${r.aurora ? imgAurora('grande') : `<span class="emoji-recuerdo" aria-hidden="true">${r.emoji}</span>`}
-          <h3>${r.titulo}</h3>
-          ${r.html}
-        </div>
-        <div class="fila-botones">
-          ${i > 0 ? `<button type="button" id="btnRecAnterior" class="btn btn-secundario">⬅️ Anterior</button>` : ''}
-          ${!ultimo ? `<button type="button" id="btnRecSiguiente" class="btn btn-primario">Siguiente recuerdo ➡️</button>` : ''}
-        </div>
-        ${ultimo && !yaCompletada ? `<button type="button" id="btnRecFin" class="btn btn-primario">🎓 Terminar el recorrido</button>` : ''}`;
-      const ir = (paso) => {
-        i = Math.min(Math.max(0, i + paso), recuerdos.length - 1);
-        api.responder('recuerdoActual', i);
-        api.responder('recuerdosVistos', Math.max(Number(api.respuestas.recuerdosVistos) || 0, i + 1));
-        pintar(true);
-      };
-      const ant = contenedor.querySelector('#btnRecAnterior');
-      const sig = contenedor.querySelector('#btnRecSiguiente');
-      const fin = contenedor.querySelector('#btnRecFin');
-      if (ant) ant.addEventListener('click', () => ir(-1));
-      if (sig) sig.addEventListener('click', () => ir(1));
-      if (fin) fin.addEventListener('click', () => {
-        fin.disabled = true;
-        api.registrarEvento('Terminó el recorrido de recuerdos', { recuerdos: recuerdos.length });
-        api.completar({ recuerdosVistos: recuerdos.length });
-      });
-      if (desplazar) { try { contenedor.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
-    };
-    pintar(false);
-  },
-  reiniciar(contenedor, api){
-    api.responder('recuerdoActual', 0);
-    this.iniciar(contenedor, api);
+/* Script de la consulta docente que viaja DENTRO del recuerdo descargado.
+   Solo usa textContent/createElement: el contenido de las estudiantes nunca
+   se interpreta como HTML. Se activa con #docente en la dirección. */
+function scriptConsultaDocente(){
+  var nodo = document.getElementById('registro-docente');
+  var datos = null;
+  try { datos = JSON.parse(nodo.textContent); } catch (e) { datos = null; }
+  var seccion = document.getElementById('consulta-docente');
+  var recuerdo = document.getElementById('recuerdo');
+  var construido = false;
+  function el(tag, texto, clase){ var x = document.createElement(tag); if (texto != null) x.textContent = String(texto); if (clase) x.className = clase; return x; }
+  function fecha(iso){ try { return iso ? new Date(iso).toLocaleString('es-GT') : '—'; } catch (e) { return String(iso); } }
+  function sinImagenes(v){
+    if (typeof v === 'string' && v.indexOf('data:image/') === 0) return '[imagen incrustada · ' + Math.round(v.length * 0.75 / 1024) + ' KB]';
+    if (Array.isArray(v)) return v.map(sinImagenes);
+    if (v && typeof v === 'object') { var o = {}; Object.keys(v).forEach(function (k) { o[k] = sinImagenes(v[k]); }); return o; }
+    return v;
   }
+  function bloque(titulo, valor){
+    var d = el('details'); d.appendChild(el('summary', titulo));
+    d.appendChild(el('pre', JSON.stringify(sinImagenes(valor), null, 2)));
+    return d;
+  }
+  function descargar(){
+    var texto = JSON.stringify(datos, null, 2);
+    var url = URL.createObjectURL(new Blob([texto], { type: 'application/json' }));
+    var a = document.createElement('a'); a.href = url;
+    a.download = 'registro_' + ((datos.estado && datos.estado.nombre) || 'estudiante').replace(/[^A-Za-z0-9]+/g, '_') + '.json';
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 4000);
+  }
+  function construir(){
+    construido = true;
+    seccion.textContent = '';
+    if (!datos || !datos.estado) { seccion.appendChild(el('p', 'No se pudo leer el registro incrustado.')); return; }
+    var e = datos.estado;
+    seccion.appendChild(el('h1', 'Consulta docente'));
+    seccion.appendChild(el('p', 'Registro completo guardado por la aplicación. Esta vista solo organiza los datos: el archivo no está cifrado ni protegido.', 'nota'));
+    var acciones = el('div', null, 'acciones');
+    var b1 = el('button', 'Descargar JSON completo'); b1.type = 'button'; b1.onclick = descargar;
+    var b2 = el('button', 'Volver al recuerdo'); b2.type = 'button'; b2.onclick = function () { location.hash = ''; };
+    acciones.appendChild(b1); acciones.appendChild(b2); seccion.appendChild(acciones);
+    var t = el('table');
+    [['Estudiante', e.nombre], ['Identificador', e.id], ['Perfil de prueba docente', e.perfilPrueba ? 'Sí' : 'No'],
+     ['Inicio', fecha(e.fechaInicio)], ['Finalización', fecha(e.fechaFinalizacion)], ['Última actualización', fecha(e.actualizado)],
+     ['Registro generado', fecha(datos.generado)], ['Versión del formato', e.version]].forEach(function (f) {
+      var tr = el('tr'); tr.appendChild(el('th', f[0])); tr.appendChild(el('td', f[1] == null ? '—' : f[1])); t.appendChild(tr);
+    });
+    seccion.appendChild(t);
+    seccion.appendChild(el('h2', 'Misiones'));
+    var orden = (datos.misiones || []);
+    Object.keys(e.fases || {}).forEach(function (id) {
+      var fe = e.fases[id], info = orden.filter(function (m) { return m.id === id; })[0];
+      var d = el('details', null, 'mision');
+      var estadoTxt = fe.estado + (fe.completadaEnPrueba ? ' · Completada en modo prueba' : '');
+      d.appendChild(el('summary', (info ? info.numero + '. ' + info.titulo : id) + ' — ' + estadoTxt));
+      var tt = el('table');
+      [['Estado', estadoTxt], ['Inicio', fecha(fe.fechaInicio)], ['Fin', fecha(fe.fechaFin)],
+       ['Intentos', (fe.intentos || []).length], ['Pistas', (fe.pistas || []).length]].forEach(function (f) {
+        var tr = el('tr'); tr.appendChild(el('th', f[0])); tr.appendChild(el('td', f[1])); tt.appendChild(tr);
+      });
+      d.appendChild(tt);
+      (fe.pistas || []).forEach(function (p) { d.appendChild(el('p', '💡 ' + fecha(p.fecha) + ' — ' + p.texto, 'pista')); });
+      d.appendChild(bloque('Asignación aleatoria', fe.asignacion));
+      d.appendChild(bloque('Respuestas del último intento', fe.respuestas));
+      d.appendChild(bloque('Intentos y eventos (' + (fe.intentos || []).length + ')', fe.intentos));
+      d.appendChild(bloque('Resultado', fe.resultado));
+      seccion.appendChild(d);
+    });
+    if (e.fasesEliminadas) seccion.appendChild(bloque('Datos de misiones eliminadas (versión anterior)', e.fasesEliminadas));
+    seccion.appendChild(el('h2', 'Fotografías (' + (e.evidencias || []).length + ')'));
+    var g = el('div', null, 'fotos-docente');
+    (e.evidencias || []).forEach(function (ev) {
+      var f = el('figure');
+      if (typeof ev.imagen === 'string' && ev.imagen.indexOf('data:image/') === 0) { var img = document.createElement('img'); img.src = ev.imagen; img.alt = ''; f.appendChild(img); }
+      f.appendChild(el('figcaption', (ev.numero ? ev.numero + '. ' : '') + (ev.reto || 'Sin título') + ' · ' + fecha(ev.fecha) + ' · intento ' + (ev.intento == null ? '—' : ev.intento)));
+      g.appendChild(f);
+    });
+    seccion.appendChild(g);
+    seccion.appendChild(el('h2', 'Historial técnico (' + (e.historial || []).length + ' eventos)'));
+    var h = el('table', null, 'historial');
+    var cab = el('tr'); ['Fecha', 'Tipo', 'Fase', 'Detalle'].forEach(function (x) { cab.appendChild(el('th', x)); }); h.appendChild(cab);
+    (e.historial || []).forEach(function (r) {
+      var tr = el('tr'); [fecha(r.fecha), r.tipo, r.fase || '—', r.texto].forEach(function (x) { tr.appendChild(el('td', x)); }); h.appendChild(tr);
+    });
+    seccion.appendChild(h);
+    seccion.appendChild(bloque('JSON completo (las imágenes se resumen aquí; el archivo descargable las incluye)', datos));
+  }
+  function mostrar(){
+    var docente = location.hash === '#docente';
+    seccion.hidden = !docente; recuerdo.hidden = docente;
+    if (docente && !construido) construir();
+  }
+  window.addEventListener('hashchange', mostrar);
+  mostrar();
+}
+
+async function generarRecuerdoHTML(){
+  const e = estado;
+  let aurora = null;
+  try {
+    const r = await fetch(APP.imagenAurora, { cache: 'force-cache' });
+    if (r.ok) { const b = await r.blob(); if (/^image\//.test(b.type)) aurora = await blobADataURL(b); }
+  } catch (err) { /* Sin imagen: se usa un emoji */ }
+  const n = esc(primerNombre(e.nombre));
+  const R = id => LibroRecuerdos.resultado(id);
+  const fotos = LibroRecuerdos.fotosAlbum();
+  const completadas = indiceMisionActual();
+  const estadoMision = f => {
+    const fe = e.fases[f.id];
+    if (faseCompletada(f.id)) return fe.completadaEnPrueba ? { t: '🧪 Completada en modo prueba', c: 'prueba' } : { t: '✅ ' + f.logro, c: 'ok' };
+    return { t: 'Pendiente', c: 'pend' };
+  };
+  // Logros reales (solo con datos guardados)
+  const sopa = R('sopa'), mem = R('memoria'), cru = R('crucigrama'), pl = R('planificacion'), ruta = R('ruta');
+  const logros = [];
+  if (sopa && Array.isArray(sopa.palabrasEncontradas) && sopa.palabrasEncontradas.length)
+    logros.push(`<h3>🔤 Palabras que descubriste</h3><p class="chips">${sopa.palabrasEncontradas.map(p => `<span>${esc(p)}</span>`).join('')}</p>
+      ${sopa.reflexion ? `<blockquote><small>Tu reflexión${sopa.palabraReflexion ? ` sobre «${esc(sopa.palabraReflexion)}»` : ''}</small>${esc(sopa.reflexion)}</blockquote>` : ''}`);
+  if (mem && Array.isArray(mem.parejasAsignadas)) {
+    const ps = mem.parejasAsignadas.filter(p => (mem.parejasEncontradas || []).includes(p.concepto));
+    if (ps.length) logros.push(`<h3>🧠 Parejas que encontraste</h3><ul>${ps.map(p => `<li><strong>${esc(p.concepto)}</strong> — ${esc(p.pareja)}</li>`).join('')}</ul>`);
+  }
+  if (cru && Array.isArray(cru.palabras) && cru.palabras.length)
+    logros.push(`<h3>🧩 Palabras del crucigrama</h3><p class="chips">${cru.palabras.map(w => `<span>🏅 ${esc(w.respuesta)}</span>`).join('')}</p>`);
+  if (pl && Array.isArray(pl.situaciones) && pl.situaciones.length)
+    logros.push(`<h3>🛡️ Tus decisiones como futura maestra</h3><p>Superaste ${pl.situaciones.length} situaciones pedagógicas.</p>
+      ${pl.defensa && pl.defensa.respuesta ? `<blockquote class="defensa"><small>Tu estrategia más útil para preprimaria, en tus palabras:</small>${esc(pl.defensa.respuesta)}</blockquote>` : ''}`);
+  if (ruta && Array.isArray(ruta.ordenFinal) && ruta.ordenFinal.length)
+    logros.push(`<h3>🗺️ Tu ruta de aprendizaje</h3><ol>${ruta.ordenFinal.map(t => `<li>${esc(t)}</li>`).join('')}</ol>`);
+  const galeria = fotos.length ? `
+    <section class="tarjeta"><h2>📸 Nuestra galería de recuerdos</h2>
+      <div class="galeria">${fotos.map((ev, i) => `
+        <figure class="${ev.reto === RETO_FINAL_ALBUM ? 'especial' : ''}"><img src="${ev.imagen}" alt="${esc(ev.reto || `Fotografía ${i + 1}`)}">
+          <figcaption><strong>${esc(ev.reto || `Fotografía ${i + 1}`)}</strong>${ev.mensajeAurora ? `<span>${esc(ev.mensajeAurora)}</span>` : ''}</figcaption></figure>`).join('')}</div>
+    </section>` : '';
+  const registro = {
+    formato: 'registro-docente-aurora',
+    app: APP.id, appVersion: APP.version, curso: APP.curso, programa: APP.programa,
+    generado: ahoraISO(),
+    configuracionDocente: CONFIG_DOCENTE,
+    misiones: FASES.map(f => ({ id: f.id, numero: f.numero, titulo: f.titulo })),
+    estado: e                                              // Copia íntegra del estado persistido
+  };
+  const css = `
+    *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#33283f;line-height:1.5;
+    background:linear-gradient(180deg,#fde7f1 0%,#fff8f1 35%,#eef5ff 100%)}main{max-width:760px;margin:0 auto;padding:20px 16px 40px}
+    .portada{text-align:center;padding:10px 0 4px}.aurora{width:150px;height:150px;border-radius:50%;object-fit:cover;border:5px solid #fff;box-shadow:0 6px 18px rgba(106,61,158,.2);background:#e9def8}
+    .aurora-emoji{display:inline-flex;align-items:center;justify-content:center;font-size:80px}
+    h1{color:#522d7d;margin:12px 0 4px;font-size:1.8rem}h2{color:#522d7d;font-size:1.25rem;margin:0 0 10px}h3{color:#6a3d9e;font-size:1.05rem;margin:16px 0 6px}
+    .curso{color:#5f526d;margin:0}.tarjeta{background:#fff;border:2px solid #eadff0;border-radius:20px;padding:18px;margin:16px 0;box-shadow:0 4px 14px rgba(106,61,158,.12)}
+    .carta p{margin:0 0 10px}.carta .firma{font-weight:800;color:#6a3d9e;text-align:right}
+    .misiones{list-style:none;padding:0;margin:0}.misiones li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #eadff0}
+    .misiones .em{font-size:24px}.misiones small{display:block}.ok small{color:#1d6e46;font-weight:700}.prueba small{color:#8a6100;font-weight:700}.pend small{color:#5f526d}
+    .chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{background:#e9def8;color:#522d7d;border-radius:99px;padding:4px 10px;font-weight:700;font-size:.92rem}
+    blockquote{margin:10px 0;background:#f3ecfb;border-left:5px solid #a77fd6;border-radius:10px;padding:10px 12px;white-space:pre-wrap;font-style:italic}
+    blockquote small{display:block;font-style:normal;font-weight:700;color:#6a3d9e;margin-bottom:4px}
+    .galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+    figure{margin:0;background:#fff;border-radius:12px;padding:8px;box-shadow:0 4px 12px rgba(60,30,90,.15)}figure img{width:100%;border-radius:8px;display:block}
+    figure.especial{box-shadow:0 0 0 3px #f49ac1,0 4px 12px rgba(60,30,90,.15)}figcaption{font-size:.9rem;margin-top:6px}figcaption span{display:block;color:#5f526d}
+    .pie{text-align:center;color:#5f526d;font-size:.85rem;margin-top:24px}
+    #consulta-docente{max-width:1000px;margin:0 auto;padding:20px 16px;font-size:.92rem}#consulta-docente table{border-collapse:collapse;width:100%;margin:8px 0 14px;background:#fff}
+    #consulta-docente th,#consulta-docente td{border:1px solid #ddd;padding:6px 8px;text-align:left;vertical-align:top}#consulta-docente th{background:#f3ecfb}
+    #consulta-docente pre{white-space:pre-wrap;word-break:break-word;background:#1f1a26;color:#f4eefa;padding:10px;border-radius:8px;max-height:480px;overflow:auto}
+    #consulta-docente details{background:#fff;border:1px solid #e2d6ef;border-radius:10px;padding:8px 12px;margin:8px 0}#consulta-docente summary{font-weight:700;cursor:pointer}
+    #consulta-docente .acciones button{font:inherit;font-weight:700;margin:4px 8px 4px 0;padding:10px 14px;border-radius:10px;border:2px solid #6a3d9e;background:#fff;color:#522d7d;cursor:pointer}
+    #consulta-docente .nota{background:#fff3c4;border-radius:8px;padding:8px 10px}.fotos-docente{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+    .pista{margin:4px 0;color:#5f526d}@media print{#consulta-docente{display:none}}`;
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recuerdo de Aurora · ${esc(e.nombre)}</title>
+<style>${css}</style>
+</head>
+<body>
+<!-- Recuerdo generado por «La última misión de Aurora». Funciona sin conexión.
+     Revisión docente: abre este archivo agregando #docente al final de la dirección.
+     El registro completo está en el bloque de datos JSON con id «registro-docente»
+     (oculto a la vista, NO cifrado). -->
+<main id="recuerdo">
+  <header class="portada">
+    ${aurora ? `<img class="aurora" src="${aurora}" alt="Aurora, la profesora">` : `<span class="aurora aurora-emoji" role="img" aria-label="Aurora, la profesora">👩‍🏫</span>`}
+    <h1>Un recuerdo de Aurora para ${esc(e.nombre)}</h1>
+    <p class="curso">${esc(APP.curso)}</p>
+    <p class="curso">${esc(APP.programa)}</p>
+    ${e.fechaFinalizacion ? `<p class="curso"><strong>Aventura completada el ${esc(fechaDia(e.fechaFinalizacion))}</strong></p>` : ''}
+    ${e.perfilPrueba ? `<p class="curso">🧪 Archivo generado desde el perfil de prueba docente.</p>` : ''}
+  </header>
+  <section class="tarjeta carta">
+    ${MENSAJE_DESPEDIDA.map((p, i) => `<p class="${i === MENSAJE_DESPEDIDA.length - 1 ? 'firma' : ''}">${esc(p.replace('{n}', primerNombre(e.nombre)))}</p>`).join('')}
+  </section>
+  <section class="tarjeta">
+    <h2>🗺️ Las ocho misiones de tu aventura · ${completadas} de ${FASES.length} completadas</h2>
+    <ul class="misiones">${FASES.map(f => { const s = estadoMision(f); return `<li class="${s.c}"><span class="em" aria-hidden="true">${f.emoji}</span><span><strong>Misión ${f.numero}: ${esc(f.titulo)}</strong><small>${esc(s.t)}</small></span></li>`; }).join('')}</ul>
+  </section>
+  ${logros.length ? `<section class="tarjeta"><h2>🏅 Tus logros</h2>${logros.join('')}</section>` : ''}
+  ${galeria}
+  <p class="pie">Recuerdo generado el ${esc(fechaLegible(registro.generado))} · ${n}, ¡nunca pierdas la alegría de enseñar!</p>
+</main>
+<section id="consulta-docente" hidden></section>
+<script type="application/json" id="registro-docente">${jsonParaHTML(registro)}<\/script>
+<script>(${scriptConsultaDocente.toString()})();<\/script>
+</body>
+</html>`;
+  return html;
+}
+
+const Despedida = {
+  vista: null,
+  async montar(cont, api){
+    const btnR = document.getElementById('btnReiniciar'); if (btnR) btnR.hidden = true;   // No aplica a la despedida
+    const fe = api.estadoFase;
+    this.vista = { cont, api };
+    if (fe.estado !== 'completada' || intentoAbierto(fe)) {
+      // La octava misión se registra al llegar a esta pantalla
+      api.registrarEvento('Llegó a la despedida de Aurora');
+      await api.completar({ mensajeMostrado: true, misionesCompletadas: FASES.length, fechaFinalizacion: ahoraISO() }, { permanecer: true });
+    }
+    if (this.vista && this.vista.cont === cont) this.pintar();
+  },
+  pintar(){
+    const v = this.vista, nombre = estado.nombre, n = primerNombre(nombre);
+    const k = indiceMisionActual();
+    v.cont.innerHTML = `
+      <div class="tarjeta desp">
+        <div class="desp-confeti" aria-hidden="true">${['🎉','✨','🎓','💜','⭐','🎊','✨','🌸'].map((c, i) => `<span style="--i:${i}">${c}</span>`).join('')}</div>
+        ${imgAurora('grande')}
+        <h2 class="desp-nombre">${esc(nombre)}</h2>
+        <p class="desp-contador">🎓 ${k} de ${FASES.length} misiones completadas</p>
+        <div class="globo desp-carta">
+          <span class="quien">Aurora</span>
+          ${MENSAJE_DESPEDIDA.map((p, i) => `<p class="${i === MENSAJE_DESPEDIDA.length - 1 ? 'firma' : ''}">${i === 0 ? `¡<strong>${esc(n)}</strong>, llegamos al final de nuestra aventura!` : esc(p)}</p>`).join('')}
+        </div>
+        <button type="button" id="btnRecuerdo" class="btn btn-primario btn-mision">💌 Guardar mi recuerdo de Aurora</button>
+        <p class="ayuda" id="despEstado" style="text-align:center">Se descargará un archivo que podrás abrir sin internet. Puedes volver a descargarlo cuando quieras.</p>
+      </div>`;
+    v.cont.querySelector('#btnRecuerdo').addEventListener('click', e => this.descargar(e.currentTarget));
+  },
+  async descargar(boton){
+    const v = this.vista; if (!v) return;
+    boton.disabled = true;
+    const estadoTxt = v.cont.querySelector('#despEstado');
+    estadoTxt.textContent = 'Preparando tu recuerdo…';
+    try {
+      const archivo = nombreArchivoRecuerdo(estado);
+      // Registrar la descarga ANTES de copiar el estado, para que quede en el registro
+      const previas = Array.isArray(v.api.respuestas.descargasRecuerdo) ? v.api.respuestas.descargasRecuerdo.slice() : [];
+      previas.push({ fecha: ahoraISO(), archivo });
+      v.api.responder('descargasRecuerdo', previas);
+      agregarHistorial('recuerdo', `Descargó su recuerdo de Aurora (${archivo}).`, 'despedida');
+      await guardarAhora();
+      const html = await generarRecuerdoHTML();
+      const mb = new Blob([html]).size / 1048576;
+      if (mb > APP.limiteAvisoMB) {
+        await dialogo({ titulo: 'Archivo grande', mensaje: `Tu recuerdo pesa aproximadamente ${mb.toFixed(1)} MB porque incluye tus fotografías. Se descargará igual; usa una conexión estable si vas a enviarlo.`,
+                        botones: [{ texto: 'Descargar', valor: true, clase: 'btn-primario' }] });
+      }
+      descargarArchivo(archivo, html, 'text/html');
+      estadoTxt.textContent = `✅ Recuerdo guardado: ${archivo}. Puedes volver a descargarlo cuando quieras.`;
+      toast('💌 ¡Tu recuerdo de Aurora se descargó!');
+    } catch (err) {
+      console.error(err);
+      estadoTxt.textContent = 'No se pudo generar el recuerdo. Intenta de nuevo.';
+    } finally { boton.disabled = false; }
+  }
+};
+
+registrarMotor('despedida', {
+  iniciar(contenedor, api){ Despedida.montar(contenedor, api); },
+  reiniciar(contenedor, api){ Despedida.montar(contenedor, api); }
+});
+
+registrarMotor('recorrido', {
+  iniciar(contenedor, api){ LibroRecuerdos.montar(contenedor, api, false); },
+  reiniciar(contenedor, api){ LibroRecuerdos.montar(contenedor, api, true); }
 });
 
 /* =========================================================
