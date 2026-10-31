@@ -254,6 +254,10 @@ input.cru-entrada[type=text]{position:absolute;left:0;top:0;width:1px;height:1px
 .ev-tira{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}
 .ev-tira img{width:56px;height:56px;object-fit:cover;border-radius:10px;border:2px solid #fff;box-shadow:var(--sombra)}
 .ev-galeria{display:flex;flex-direction:column;gap:14px}
+.ev-reto.especial{background:linear-gradient(180deg,#fff 0%,#fff4f8 100%);border:3px solid #f49ac1;box-shadow:0 0 0 4px #fde3ef,var(--sombra)}
+.ev-reto.especial .ev-num{background:#f49ac1;color:#fff}
+.ev-reto.especial.ok .ev-num{background:#d9467f}
+.tarjeta-ampliar{background:var(--amarillo);border-color:#f2dc86}
 .ev-item strong{display:block;color:var(--primario-osc);margin-bottom:6px}
 
 /* ---------- Fase 5 · Defiende tu planificación ---------- */
@@ -387,9 +391,29 @@ input.cru-entrada[type=text]{position:absolute;left:0;top:0;width:1px;height:1px
 @keyframes caer{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(520px) rotate(220deg);opacity:0}}
 .desp-nombre{font-size:1.45rem;color:var(--primario-osc);margin:4px 0}
 .desp-contador{display:inline-block;background:var(--menta);color:var(--exito);font-weight:800;border-radius:99px;padding:6px 14px;margin:2px 0 14px}
-.desp-carta{text-align:left;margin-bottom:6px}
-.desp-carta p{margin:0 0 10px;line-height:1.55}
-.desp-carta .firma{font-weight:800;color:var(--primario);text-align:right;margin:0}
+.desp-carta{position:relative;text-align:left;margin:18px 0 4px;padding:30px 16px 16px;border-radius:16px;
+  background:#fffdf7 repeating-linear-gradient(180deg,transparent 0 29px,#f3e8d8 29px 30px);border:2px solid #f0dcc0;box-shadow:0 0 0 5px #fde3ef}
+.desp-sello{position:absolute;top:-20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--primario);color:#fff;font-size:22px;box-shadow:var(--sombra)}
+.desp-carta p{margin:0 0 10px;line-height:1.6}
+.desp-carta p.inicio{font-size:1.25rem;font-weight:700;color:#8a3d74;text-align:center}
+.desp-carta .firma{font-weight:800;color:var(--primario);text-align:right;margin:0;font-style:italic}
+.desp-carta .firma:last-child{font-size:1.3rem}
+.tarea-final{border:3px solid var(--primario);background:linear-gradient(180deg,#fff 0%,#f6f0ff 100%);box-shadow:0 8px 24px rgba(106,61,158,.22)}
+.tarea-final h2{color:var(--primario-osc);font-size:1.3rem;margin-bottom:10px}
+.tarea-clave{background:var(--amarillo);border:2px solid #f2dc86;border-radius:14px;padding:10px 12px;font-size:1.05rem}
+.tarea-celular{background:#eef6ff;border-radius:12px;padding:10px 12px;font-size:.95rem;margin-top:12px}
+/* Preguntas abiertas (misiones 5 y 6) */
+.pa-guia{background:#f7f3fb;border-radius:12px;padding:8px 12px;font-size:.92rem;color:var(--suave)}
+.pa-item{margin:16px 0}
+.pa-item label{display:flex;gap:10px;align-items:flex-start;font-weight:700;line-height:1.4;margin-bottom:8px}
+.pa-num{flex:none;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--primario);color:#fff;font-size:.9rem}
+.pa-item textarea{min-height:150px}
+.pa-conteo{display:block;text-align:right;margin-top:4px}
+.pa-anterior{margin:10px 0}
+.pa-anterior small{font-weight:700;color:var(--primario-osc)}
+.pa-leida{margin:12px 0}
+.pa-leida strong{display:block;color:var(--primario-osc);line-height:1.4}
+.pa-leida .cita{white-space:pre-wrap}
 
 /* ---------- Modo prueba docente ---------- */
 .btn-prueba{background:#fff8e1;color:#5c4300;border:2px dashed #c79a00;font-size:.92rem;min-height:44px}
@@ -478,7 +502,7 @@ const CONFIG_DOCENTE = {
   // ⚠️ SOLO PARA VERIFICACIONES DEL DOCENTE. Cambiar a false ANTES DE PUBLICAR.
   // Activa un «perfil de prueba» separado (nunca toca la aventura real de una
   // estudiante) con los botones «Completar fase (prueba)» y «Reiniciar pruebas».
-  MODO_PRUEBA_DOCENTE: true
+  MODO_PRUEBA_DOCENTE: false
 };
 
 /* =========================================================
@@ -531,7 +555,7 @@ const FASES = [
     instrucciones:'Abre tu libro de recuerdos y recórrelo página por página con los botones «Anterior» y «Siguiente». Toca cualquier fotografía para verla en grande.',
     logro:'¡Reviviste tu aventura!' },
   { id:'despedida',    numero:8,  emoji:'🎓', color:'#fff0b3', titulo:'Felicitación y despedida',          subtitulo:'Palabras de Aurora',
-    instrucciones:'Lee el mensaje final de Aurora y guarda tu recuerdo: un archivo que podrás abrir sin internet.',
+    instrucciones:'Lee el mensaje final de Aurora y descarga tu álbum digital: es el archivo que debes subir como tarea a la plataforma de tu curso.',
     logro:'¡Culminaste la última misión!' }
 ];
 
@@ -715,7 +739,7 @@ const BANCO_RETOS = {
       instruccion:'Crea con una compañera un gesto o pose que simbolice el compañerismo.',
       ideas:['Pueden juntar las manos formando un corazón o chocar los puños.', 'Inventen un saludo especial solo de ustedes.', 'También puedes crear el gesto con tus manos u objetos.'],
       mensajeAurora:'El compañerismo también se aprende y se cuida.' },
-    { id:'r15', titulo:'Un recuerdo para Aurora', conOtras:false,
+    { id:'r15', titulo:'Un recuerdo para Aurora', conOtras:false, especial:true,   // Reto fijo n.º 10 (no entra en el sorteo)
       instruccion:'Toma una fotografía que te gustaría conservar como recuerdo de tu primer año de formación docente.',
       ideas:['Puede ser un lugar, un objeto, un cuaderno o un momento con tus compañeras.', 'Piensa: ¿qué te gustaría recordar dentro de muchos años?', 'Elige lo que te haga sonreír.'],
       mensajeAurora:'Guardaré este recuerdo con mucho cariño. ¡Gracias por compartirlo!' }
@@ -866,7 +890,7 @@ const BANCO_RETOS = {
      api.registrarEvento(texto, datos) -> anota algo en el intento
      api.agregarEvidencia(evidencia) -> guarda foto comprimida y devuelve su id
      api.quitarEvidencia(id)   -> elimina una foto de ESTA misión (reemplazo/reinicio)
-     api.completar(resultado, {mensaje, boton, permanecer}) -> marca la fase como completada
+     api.completar(resultado, {mensaje, boton, permanecer, actualizarResultado}) -> marca la fase como completada
                                (mensaje y botón opcionales; permanecer:true guarda sin ventana
                                ni regreso automático, para que el juego muestre su propio cierre)
      api.aurora(texto)         -> mensaje de Aurora en una ventana
@@ -1784,7 +1808,13 @@ async function completarFase(fase, resultado, opciones){
   const yaCompletada = faseCompletada(fase.id);
   if (!intentoAbierto(fe)) iniciarIntento(fe);
   cerrarIntento(fe, 'completado', resultado ?? null);
-  if (yaCompletada) {
+  if (yaCompletada && opciones && opciones.actualizarResultado) {
+    // Ampliación de una fase ya superada (p. ej., fotografías añadidas): se conserva
+    // la fecha y el logro original, y el resultado anterior queda en resultadosAnteriores.
+    fe.resultadosAnteriores = (Array.isArray(fe.resultadosAnteriores) ? fe.resultadosAnteriores : []).concat([fe.resultado]);
+    fe.resultado = resultado ?? fe.resultado;
+    agregarHistorial('ampliacion', `Amplió los resultados de la fase ${fase.numero}: ${fase.titulo}.`, fase.id);
+  } else if (yaCompletada) {
     // Repetición de una fase ya superada: se registra el intento,
     // pero se conservan el resultado y la fecha originales.
     agregarHistorial('repeticion', `Volvió a completar la fase ${fase.numero}: ${fase.titulo}.`, fase.id);
@@ -3474,7 +3504,8 @@ registrarMotor('crucigrama', {
      nunca las de una misión ya completada ni las de otras misiones.
    ========================================================= */
 const Evidencias = {
-  CANTIDAD: 5,
+  CANTIDAD: 10,                       // 9 retos al azar + «Un recuerdo para Aurora» fijo en la posición 10
+  MENSAJE_ESPECIAL: '¡{n}, llegamos a nuestra última fotografía! Quiero pedirte algo muy especial: elige o toma una fotografía que represente un recuerdo bonito de este primer año de formación docente. Puede ser un momento con tus compañeras, un lugar especial, una actividad que disfrutaste o algo que te recuerde lo que hemos vivido. Esta fotografía será nuestro recuerdo especial de esta aventura.',
   AVISO: 'Antes de tomar fotografías con otras personas, pide su permiso. Evita fotografiar a niños o niñas y respeta los espacios donde no esté permitido tomar imágenes.',
   ALTERNATIVA: 'Si no puedes fotografiar a otra persona, represéntalo con objetos, un dibujo o una fotografía tuya.',
   vista: null,
@@ -3482,6 +3513,27 @@ const Evidencias = {
 
   /* ---------- Datos ---------- */
   datos(id){ return BANCO_RETOS.evidencias.find(x => x.id === id) || null; },
+  fijo(){ const r = BANCO_RETOS.evidencias.find(x => x.especial); return r ? r.id : null; },
+  /* Partidas con la versión anterior (5 retos): se conservan los retos y fotografías,
+     se completan hasta 9 retos variables sin duplicados y el reto fijo pasa al n.º 10. */
+  ampliarAsignacion(api){
+    const fe = api.estadoFase, a = fe.asignacion, fijo = this.fijo();
+    if (!a || !fijo) return;
+    const ids = this.asignados(api);
+    if (ids.length === this.CANTIDAD && ids[ids.length - 1] === fijo && new Set(ids).size === ids.length) return;
+    const variables = [...new Set(ids.filter(id => id !== fijo))].slice(0, this.CANTIDAD - 1);
+    const disponibles = BANCO_RETOS.evidencias.map(x => x.id).filter(id => id !== fijo && !variables.includes(id));
+    const nuevos = Azar.elegir(disponibles, this.CANTIDAD - 1 - variables.length);
+    fe.asignacion = Object.assign({}, a, { retos: variables.concat(nuevos, [fijo]), ampliadaDe: ids.length, fechaAmpliacion: ahoraISO() });
+    api.registrarEvento(`La cacería se amplió de ${ids.length} a ${this.CANTIDAD} retos; se conservaron los retos y fotografías anteriores.`);
+    api.guardar();
+  },
+  /* Fotografías que faltan respecto del resultado guardado (misión completada con 5) */
+  faltantesDelResultado(api, ids){
+    const res = api.estadoFase.resultado;
+    const hechos = new Set(res && Array.isArray(res.retos) ? res.retos.map(r => r.retoId) : []);
+    return ids.filter(id => !hechos.has(id));
+  },
   asignados(api){
     const a = api.asignacion;
     return (a && Array.isArray(a.retos) ? a.retos : []).filter(id => this.datos(id));
@@ -3509,6 +3561,7 @@ const Evidencias = {
   /* ---------- Entrada del motor ---------- */
   montar(cont, api, esReinicio){
     this.limpiar();
+    this.ampliarAsignacion(api);
     const ids = this.asignados(api);
     if (!ids.length) throw new Error('La asignación de retos no es válida.');
     const btnPista = document.getElementById('btnPista');
@@ -3523,10 +3576,17 @@ const Evidencias = {
     this.mostrarJuego(cont, api, ids);
   },
   iniciarRespuestas(api){
+    const fe = api.estadoFase, ids = this.asignados(api);
+    const res = fe.resultado;
+    // Misión completada con menos fotografías: se parte de las ya guardadas para añadir las restantes
+    const ampliacion = fe.estado === 'completada' && res && Array.isArray(res.retos) && this.faltantesDelResultado(api, ids).length > 0;
+    const retos = {};
+    if (ampliacion) res.retos.forEach(r => { if (ids.includes(r.retoId) && this.evidencia(r.evidencia)) retos[r.retoId] = { evidencia: r.evidencia, fecha: r.fecha }; });
     api.responder('iniciado', true);
-    api.responder('retos', {});
+    api.responder('retos', retos);
     api.responder('estadoIdeas', {});
-    api.registrarEvento('Comenzó la cacería de evidencias');
+    if (ampliacion) api.responder('ampliacion', { desde: res.retos.length, hasta: ids.length });
+    api.registrarEvento(ampliacion ? `Comenzó a añadir las fotografías restantes (${res.retos.length} de ${ids.length} ya guardadas)` : 'Comenzó la cacería de evidencias');
     api.guardar();
   },
   borrarFotosDelIntentoCerrado(api){
@@ -3603,21 +3663,22 @@ const Evidencias = {
       botones = '';
     } else if (previa) {
       foto = `<img class="ev-previa" src="${previa.dataURL}" alt="Vista previa para el reto ${n}">`;
-      botones = `<button type="button" class="btn btn-primario" data-accion="usar">✅ Usar esta fotografía</button>
+      botones = `<button type="button" class="btn btn-primario" data-accion="usar">${d.especial ? '💌 Guardar mi recuerdo para Aurora' : '✅ Usar esta fotografía'}</button>
                  <button type="button" class="btn btn-secundario" data-accion="elegir">🔁 Elegir otra</button>
                  <button type="button" class="btn btn-texto" data-accion="cancelar">Cancelar</button>`;
     } else if (ev) {
       foto = `<img src="${ev.imagen}" alt="Fotografía del reto ${n}: ${esc(d.titulo)}">`;
       botones = `<button type="button" class="btn btn-secundario" data-accion="elegir">🔄 Cambiar fotografía</button>`;
     } else {
-      foto = `<div class="ev-vacia"><span aria-hidden="true">📷</span>Aquí aparecerá tu fotografía</div>`;
-      botones = `<button type="button" class="btn btn-primario" data-accion="elegir">📷 Tomar o subir fotografía</button>
+      foto = `<div class="ev-vacia"><span aria-hidden="true">${d.especial ? '💌' : '📷'}</span>Aquí aparecerá tu fotografía</div>`;
+      botones = `<button type="button" class="btn btn-primario" data-accion="elegir">${d.especial ? '📷 Tomar o elegir mi recuerdo' : '📷 Tomar o subir fotografía'}</button>
                  ${CONFIG_DOCENTE.PERMITIR_PISTAS ? `<button type="button" class="btn btn-suave" data-accion="idea">💡 Necesito una idea</button>` : ''}`;
     }
+    el.classList.toggle('especial', !!d.especial);
     el.innerHTML = `
       <div class="ev-cab"><span class="ev-num">${n}</span>
-        <div><h3>${esc(d.titulo)}</h3><span class="ev-estado">${previa ? '👀 Revisa tu fotografía' : ev ? '✅ Reto completado' : '⏳ Pendiente'}</span></div></div>
-      <p>${esc(d.instruccion)}</p>
+        <div><h3>${d.especial ? '💌 ' : ''}${esc(d.titulo)}</h3><span class="ev-estado">${previa ? '👀 Revisa tu fotografía' : ev ? '✅ Reto completado' : '⏳ Pendiente'}</span></div></div>
+      ${d.especial ? globoAurora(`<p>${esc(this.MENSAJE_ESPECIAL.replace('{n}', primerNombre(v.api.nombre)))}</p>`) : `<p>${esc(d.instruccion)}</p>`}
       ${d.conOtras ? `<p class="ev-alt">🤝 ${esc(this.ALTERNATIVA)}</p>` : ''}
       <div class="ev-foto">${foto}</div>
       <div class="ev-botones">${botones}</div>`;
@@ -3625,7 +3686,7 @@ const Evidencias = {
   actualizarContador(){
     const v = this.vista; if (!v) return;
     const k = this.completados(v.api, v.ids).length;
-    v.cont.querySelector('#evContador').textContent = `Retos completados: ${k} de ${v.ids.length}`;
+    v.cont.querySelector('#evContador').textContent = `Fotografías completadas: ${k} de ${v.ids.length}`;
     v.cont.querySelector('#evBarra').style.width = Math.round(k / v.ids.length * 100) + '%';
   },
 
@@ -3665,7 +3726,7 @@ const Evidencias = {
     this.actualizarContador();
     const k = this.completados(api, v.ids).length;
     if (k >= v.ids.length) this.finalizar();
-    else toast(`📸 ¡Reto completado! Llevas ${k} de ${v.ids.length}`);
+    else toast(d.especial ? '💌 ¡Tu recuerdo para Aurora quedó guardado!' : `📸 ¡Reto completado! Llevas ${k} de ${v.ids.length}`);
   },
 
   /* ---------- Ideas prácticas (pistas) ---------- */
@@ -3724,8 +3785,9 @@ const Evidencias = {
       fechaInicio: fe.fechaInicio,
       fechaFinalizacion: ahoraISO()
     };
-    api.registrarEvento('Completó los cinco retos fotográficos');
-    this.despues(1500, () => api.completar(resultado, { mensaje: texto, boton: '🗺️ Volver al mapa y descubrir mi siguiente misión' }));
+    const ampliacion = !!api.respuestas.ampliacion && fe.estado === 'completada';
+    api.registrarEvento(`Completó los ${fotos.length} retos fotográficos`);
+    this.despues(1500, () => api.completar(resultado, { mensaje: texto, boton: '🗺️ Volver al mapa y descubrir mi siguiente misión', actualizarResultado: ampliacion }));
   },
 
   /* ---------- Consulta ---------- */
@@ -3741,22 +3803,40 @@ const Evidencias = {
     }).join('')}</div>`;
   },
   mostrarConsulta(cont, api, ids){
+    const fe = api.estadoFase;
+    const res = fe.resultado || {};
+    const hechas = Array.isArray(res.retos) ? res.retos.length : 0;
+    const faltan = fe.completadaEnPrueba ? [] : this.faltantesDelResultado(api, ids);
     cont.innerHTML = `
-      <div class="tarjeta"><p class="sopa-contador">✅ Retos completados: ${ids.length} de ${ids.length}</p>
+      ${faltan.length ? `
+        <div class="tarjeta tarjeta-ampliar">
+          ${globoAurora(`<p>¡Tu cacería creció, <strong>${esc(primerNombre(api.nombre))}</strong>! Ahora tiene ${ids.length} retos. Ya guardaste ${hechas} fotografías: puedes añadir las ${faltan.length} restantes, incluida «Un recuerdo para Aurora». Tu logro y tus misiones desbloqueadas se conservan.</p>`)}
+          <button type="button" id="btnEvAmpliar" class="btn btn-primario">📸 Añadir mis fotografías restantes</button>
+        </div>` : ''}
+      <div class="tarjeta"><p class="sopa-contador">✅ Fotografías completadas: ${hechas} de ${ids.length}</p>
         <h3 style="margin-top:10px">📸 Tus recuerdos de la cacería</h3>${this.htmlGaleria(api, ids)}</div>
       <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tus fotografías originales se conservan.</p>`;
+    const b = cont.querySelector('#btnEvAmpliar');
+    if (b) b.addEventListener('click', () => {
+      iniciarIntento(fe);                  // Nuevo intento que parte de las fotografías ya guardadas
+      this.iniciarRespuestas(api);
+      this.mostrarJuego(cont, api, ids);
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
   },
   mensajeReinicio(api){
     return api.estadoFase.estado === 'completada'
-      ? 'Comenzarás una nueva cacería con tus mismos cinco retos. Las fotografías de tu misión completada se conservan; solo se borrarán las que tomes en este nuevo intento si vuelves a reiniciar.'
-      : 'La cacería volverá a empezar con tus mismos cinco retos. Se eliminarán las fotografías de este intento. Las fotografías y resultados de otras misiones no se tocan.';
+      ? 'Comenzarás una nueva cacería con tus mismos retos. Las fotografías de tu misión completada se conservan; solo se borrarán las que tomes en este nuevo intento si vuelves a reiniciar.'
+      : 'La cacería volverá a empezar con tus mismos retos. Se eliminarán las fotografías de este intento. Las fotografías y resultados de otras misiones no se tocan.';
   }
 };
 
 registrarMotor('evidencias', {
   asignar(azar, bancos){
-    const banco = ((bancos && bancos.retos && bancos.retos.evidencias) || []).map(x => x.id);
-    return { retos: azar.elegir(banco, Evidencias.CANTIDAD), fecha: ahoraISO() };
+    const banco = (bancos && bancos.retos && bancos.retos.evidencias) || [];
+    const fijo = banco.find(x => x.especial);
+    const variables = azar.elegir(banco.filter(x => !x.especial).map(x => x.id), Evidencias.CANTIDAD - 1);
+    return { retos: fijo ? variables.concat(fijo.id) : variables, fecha: ahoraISO() };
   },
   iniciar(contenedor, api){ Evidencias.montar(contenedor, api, false); },
   reiniciar(contenedor, api){ Evidencias.borrarFotosDelIntentoCerrado(api); Evidencias.montar(contenedor, api, true); },
@@ -3775,15 +3855,60 @@ registrarMotor('evidencias', {
        borradorDefensa {texto}, defensa {pregunta, respuesta, fecha}
    - No se califica la defensa escrita: solo se guarda tal cual.
    ========================================================= */
+/* =========================================================
+   13.5a PREGUNTAS ABIERTAS (misiones 5 y 6)
+   - Cada respuesta se guarda íntegra con su pregunta y su misión:
+     {mision, numero, pregunta, respuesta, fecha}.
+   - No se califican: solo se pide un mínimo para evitar respuestas
+     vacías. La orientación de 50 a 120 palabras es una sugerencia.
+   ========================================================= */
+const PreguntasAbiertas = {
+  MIN_PALABRAS: 8,
+  palabras(t){ return (String(t || '').match(/[\p{L}\p{N}]+/gu) || []).length; },
+  html(prefijo, preguntas, valores){
+    return preguntas.map((p, i) => `
+      <div class="pa-item">
+        <label for="${prefijo}${i}"><span class="pa-num">${i + 1}</span><span>${esc(p)}</span></label>
+        <textarea id="${prefijo}${i}" data-pa="${i}" rows="6" maxlength="4000" placeholder="Escribe con tus propias palabras…">${esc(valores[i] || '')}</textarea>
+        <small class="pa-conteo" data-pa-conteo="${i}"></small>
+      </div>`).join('');
+  },
+  textos(cont, n){ return Array.from({ length: n }, (_, i) => { const t = cont.querySelector(`[data-pa="${i}"]`); return t ? t.value : ''; }); },
+  enlazar(cont, n, alCambiar){
+    const refrescar = i => {
+      const k = this.palabras(cont.querySelector(`[data-pa="${i}"]`).value);
+      cont.querySelector(`[data-pa-conteo="${i}"]`).textContent = `${k} ${k === 1 ? 'palabra' : 'palabras'}`;
+    };
+    for (let i = 0; i < n; i++) {
+      refrescar(i);
+      cont.querySelector(`[data-pa="${i}"]`).addEventListener('input', () => { refrescar(i); alCambiar(this.textos(cont, n)); });
+    }
+  },
+  primeraIncompleta(textos){ return textos.findIndex(t => this.palabras(t) < this.MIN_PALABRAS); },
+  registro(mision, preguntas, textos){
+    const fecha = ahoraISO();
+    return preguntas.map((p, i) => ({ mision, numero: i + 1, pregunta: p, respuesta: String(textos[i] || '').trim(), fecha }));
+  },
+  lectura(registro){
+    return (registro || []).map(r => `<div class="pa-leida"><strong>${r.numero}. ${esc(r.pregunta)}</strong><div class="cita">${esc(r.respuesta)}</div></div>`).join('');
+  }
+};
+
 const Planificacion = {
   CANTIDAD: 10,
   MIN_CARACTERES: 30,
   MAX_CARACTERES: 700,
   PREGUNTA: 'De las estrategias que utilizaste en tus experiencias de aprendizaje durante el curso, ¿cuál consideras que te será más útil cuando trabajes con niños de preprimaria y por qué?',
+  PREGUNTAS_TRABAJO: [
+    '¿Cuál es el propósito principal de tu planificación y cómo contribuye al desarrollo de la competencia comunicativa de los niños y las niñas?',
+    '¿Qué estrategias incluiste en tu planificación para favorecer la expresión oral, la escucha y la participación infantil?',
+    '¿Por qué seleccionaste esas actividades y recursos didácticos para trabajar con niños de preprimaria?',
+    '¿Cómo comprobarías que los niños y las niñas están desarrollando las habilidades comunicativas que planteaste?'
+  ],
   PISTAS_DEFENSA: [
-    'Piensa en una actividad que preparaste durante el curso y que te haya gustado mucho.',
-    'Recuerda cómo reaccionaron tus compañeras o los niños cuando aplicaste esa estrategia.',
-    'Bastan dos o tres oraciones: qué estrategia elegirías y por qué te será útil.'
+    'Ten a la mano la planificación que elaboraste durante el curso y revisa su propósito y sus actividades.',
+    'Piensa en una actividad concreta de tu planificación y en cómo participarían los niños y las niñas.',
+    'Escribe con tus propias palabras; como orientación, entre 50 y 120 palabras por respuesta.'
   ],
   vista: null,
   timers: [],
@@ -3948,43 +4073,43 @@ const Planificacion = {
     try { v.cont.querySelector('#plRetro').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
   },
 
+  /* Sección final: «Ahora defiende tu propio trabajo» (4 preguntas abiertas) */
   pintarDefensa(){
-    const v = this.vista, api = v.api;
-    const borr = api.respuestas.borradorDefensa && typeof api.respuestas.borradorDefensa === 'object' ? api.respuestas.borradorDefensa : {};
+    const v = this.vista, api = v.api, n = this.PREGUNTAS_TRABAJO.length;
+    if (Array.isArray(api.respuestas.preguntasAbiertas) && api.respuestas.preguntasAbiertas.length === n) {
+      v.cont.innerHTML = `<div class="tarjeta"><h3>🛡️ Ahora defiende tu propio trabajo</h3>${PreguntasAbiertas.lectura(api.respuestas.preguntasAbiertas)}</div><div id="plFinal"></div>`;
+      return this.finalizar();
+    }
+    const borr = api.respuestas.borradorTrabajo && Array.isArray(api.respuestas.borradorTrabajo.textos) ? api.respuestas.borradorTrabajo.textos : [];
+    const anterior = api.respuestas.defensa && api.respuestas.defensa.respuesta;
     v.cont.innerHTML = `
-      <div class="tarjeta">
+      <div class="tarjeta pa-seccion">
         <div class="barra"><span style="width:100%"></span></div>
-        ${globoAurora(`<p>¡Superaste los ${v.ids.length === 10 ? 'diez' : v.ids.length} desafíos, <strong>${esc(primerNombre(api.nombre))}</strong>! Ahora quiero escucharte a ti. Responde con tus propias palabras; bastan dos o tres oraciones.</p>`)}
-        <h3>🛡️ Tu defensa personal</h3>
-        <p>${esc(this.PREGUNTA)}</p>
-        <label for="plDefensa">Tu respuesta</label>
-        <textarea id="plDefensa" rows="5" maxlength="${this.MAX_CARACTERES}" placeholder="Por ejemplo: la estrategia que elegiría es… porque…">${esc(borr.texto || '')}</textarea>
-        <small id="plConteo"></small>
+        ${globoAurora(`<p>¡Superaste los ${v.ids.length === 10 ? 'diez' : v.ids.length} desafíos, <strong>${esc(primerNombre(api.nombre))}</strong>! Ahora quiero conocer tu propio trabajo. Ten a la mano la planificación que elaboraste durante el curso y responde con tus propias palabras.</p>`)}
+        <h3>🛡️ Ahora defiende tu propio trabajo</h3>
+        <p class="pa-guia">Como orientación, escribe entre 50 y 120 palabras por respuesta. No es un límite: lo importante es que expliques tu trabajo.</p>
+        ${anterior ? `<div class="pa-anterior"><small>Tu reflexión anterior quedó guardada:</small><div class="cita">${esc(anterior)}</div></div>` : ''}
+        ${PreguntasAbiertas.html('plPa', this.PREGUNTAS_TRABAJO, borr)}
         <p class="error" id="plError" role="alert"></p>
-        <button type="button" id="plEntregar" class="btn btn-primario">📨 Entregar mi respuesta</button>
+        <button type="button" id="plEntregar" class="btn btn-primario">📨 Entregar mis respuestas</button>
       </div>
       <div id="plFinal"></div>`;
-    const txt = v.cont.querySelector('#plDefensa'), conteo = v.cont.querySelector('#plConteo'), error = v.cont.querySelector('#plError');
-    const significativos = t => t.replace(/\s/g, '').length;
-    const refrescar = () => {
-      const k = significativos(txt.value);
-      conteo.textContent = k >= this.MIN_CARACTERES ? `✓ ${txt.value.trim().length} caracteres` : `Escribe al menos ${this.MIN_CARACTERES} caracteres (${k} por ahora)`;
-    };
-    refrescar();
-    txt.addEventListener('input', () => { refrescar(); error.textContent = ''; api.responder('borradorDefensa', { texto: txt.value }); });
+    const error = v.cont.querySelector('#plError');
+    PreguntasAbiertas.enlazar(v.cont, n, textos => { error.textContent = ''; api.responder('borradorTrabajo', { textos }); });
     v.cont.querySelector('#plEntregar').addEventListener('click', ev => {
       if (!this.todasResueltas(api, v.ids)) { this.pintar(); return; }
-      const texto = txt.value.trim();
-      if (significativos(texto) < this.MIN_CARACTERES || (texto.match(/\p{L}/gu) || []).length < 15) {
-        error.textContent = 'Escribe una respuesta un poco más completa: qué estrategia elegirías y por qué.';
-        txt.focus(); return;
+      const textos = PreguntasAbiertas.textos(v.cont, n);
+      const k = PreguntasAbiertas.primeraIncompleta(textos);
+      if (k >= 0) {
+        error.textContent = `Completa la respuesta ${k + 1} con tus propias palabras antes de entregar.`;
+        v.cont.querySelector(`[data-pa="${k}"]`).focus(); return;
       }
-      ev.currentTarget.disabled = true; txt.disabled = true;
-      api.responder('defensa', { pregunta: this.PREGUNTA, respuesta: texto, fecha: ahoraISO() });
-      api.registrarEvento('Entregó su defensa personal');
+      ev.currentTarget.disabled = true;
+      v.cont.querySelectorAll('[data-pa]').forEach(t => { t.disabled = true; });
+      api.responder('preguntasAbiertas', PreguntasAbiertas.registro('planificacion', this.PREGUNTAS_TRABAJO, textos));
+      api.registrarEvento('Entregó sus respuestas de «Ahora defiende tu propio trabajo»');
       this.finalizar();
     });
-    if (api.respuestas.defensa && api.respuestas.defensa.respuesta) this.finalizar();  // Ya la había entregado
   },
 
   finalizar(){
@@ -4005,7 +4130,8 @@ const Planificacion = {
                  intentos: r.intentos.length,
                  retroalimentacion: r.intentos.map(x => x.retroalimentacion) };
       }),
-      defensa: api.respuestas.defensa || null,
+      defensa: api.respuestas.defensa || null,                       // Reflexión anterior (si existía), se conserva
+      preguntasAbiertas: api.respuestas.preguntasAbiertas || null,   // «Ahora defiende tu propio trabajo»
       intentos: fe.intentos.length,
       pistasIntento: it ? it.pistas : 0,
       pistasTotales: fe.pistas.length,
@@ -4048,7 +4174,19 @@ const Planificacion = {
       const delResultado = res.situaciones.map(x => porTema[x.tema]).filter(Boolean);
       if (delResultado.length) ids = delResultado;
     }
+    const fe = api.estadoFase;
+    const abiertas = Array.isArray(res.preguntasAbiertas) ? res.preguntasAbiertas : null;
+    const pedir = !abiertas && !fe.completadaEnPrueba;
     cont.innerHTML = `
+      ${abiertas ? `<div class="tarjeta"><h3>🛡️ Ahora defiende tu propio trabajo</h3>${PreguntasAbiertas.lectura(abiertas)}</div>` : ''}
+      ${pedir ? `<div class="tarjeta pa-seccion tarjeta-ampliar" id="plAmpliar">
+        ${globoAurora(`<p><strong>${esc(primerNombre(api.nombre))}</strong>, ahora esta misión incluye una sección para defender tu propio trabajo. Tu logro se conserva; responde estas preguntas tomando como referencia la planificación que elaboraste.</p>`)}
+        <h3>🛡️ Ahora defiende tu propio trabajo</h3>
+        <p class="pa-guia">Como orientación, escribe entre 50 y 120 palabras por respuesta.</p>
+        ${PreguntasAbiertas.html('plPa', this.PREGUNTAS_TRABAJO, (fe.respuestas.borradorTrabajo && fe.respuestas.borradorTrabajo.textos) || [])}
+        <p class="error" id="plError" role="alert"></p>
+        <button type="button" id="plGuardarAbiertas" class="btn btn-primario">📨 Entregar mis respuestas</button>
+      </div>` : ''}
       <div class="tarjeta">
         <h3>🛡️ Tus decisiones como futura maestra</h3>
         ${ids.map((id, i) => { const d = this.datos(id); return `
@@ -4057,8 +4195,27 @@ const Planificacion = {
             <p class="pl-adecuada">✓ ${esc(d.opciones.find(o => o.correcta).texto)}</p>
             <p><small>${esc(d.acierto)}</small></p></div>`; }).join('')}
       </div>
-      ${defensa ? `<div class="tarjeta"><h3>💭 Tu defensa personal</h3><p><small>${esc(this.PREGUNTA)}</small></p><div class="cita">${esc(defensa)}</div></div>` : ''}
+      ${defensa ? `<div class="tarjeta"><h3>💭 Tu reflexión anterior</h3><p><small>${esc(this.PREGUNTA)}</small></p><div class="cita">${esc(defensa)}</div></div>` : ''}
       <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tus respuestas originales se conservan.</p>`;
+    if (pedir) this.enlazarAmpliacion(cont, api, ids);
+  },
+  /* Misión completada antes de esta versión: agregar las 4 respuestas sin perder el logro */
+  enlazarAmpliacion(cont, api, ids){
+    const fe = api.estadoFase, n = this.PREGUNTAS_TRABAJO.length, error = cont.querySelector('#plError');
+    PreguntasAbiertas.enlazar(cont, n, textos => { error.textContent = ''; fe.respuestas.borradorTrabajo = { textos }; guardarAuto(); });
+    cont.querySelector('#plGuardarAbiertas').addEventListener('click', async ev => {
+      const textos = PreguntasAbiertas.textos(cont, n);
+      const k = PreguntasAbiertas.primeraIncompleta(textos);
+      if (k >= 0) { error.textContent = `Completa la respuesta ${k + 1} con tus propias palabras antes de entregar.`; cont.querySelector(`[data-pa="${k}"]`).focus(); return; }
+      ev.currentTarget.disabled = true;
+      const registro = PreguntasAbiertas.registro('planificacion', this.PREGUNTAS_TRABAJO, textos);
+      iniciarIntento(fe);
+      api.responder('preguntasAbiertas', registro);
+      api.registrarEvento('Agregó sus respuestas de «Ahora defiende tu propio trabajo» a la misión completada');
+      await api.completar(Object.assign({}, fe.resultado, { preguntasAbiertas: registro, fechaPreguntasAbiertas: ahoraISO() }), { actualizarResultado: true, permanecer: true });
+      toast('📨 ¡Tus respuestas quedaron guardadas!');
+      this.mostrarConsulta(cont, api, ids);
+    });
   }
 };
 
@@ -4100,6 +4257,20 @@ const Ruta = {
   vista: null,
   timers: [],
   DURACION_PISTA: 3200,
+  PREGUNTAS_AULA: [
+    'Al revisar el trabajo que desarrollaste durante el curso, ¿qué aprendizajes consideras más importantes para tu formación como futura docente de preprimaria?',
+    '¿Cómo se relacionan las actividades y estrategias que organizaste con el desarrollo del lenguaje y la comunicación infantil?',
+    'Selecciona una de las experiencias de aprendizaje que elaboraste y explica cómo la aplicarías con un grupo de niños y niñas de preprimaria.',
+    '¿Qué mejorarías o adaptarías de tu trabajo para atender las diferentes necesidades y ritmos de aprendizaje de los niños y las niñas?'
+  ],
+  htmlFormularioAula(valores, boton){
+    return `
+      <h3>🎒 Los aprendizajes que llevaré a mi aula</h3>
+      <p class="pa-guia">Responde con base en los documentos y experiencias que elaboraste durante el curso. Como orientación, entre 50 y 120 palabras por respuesta. Puedes revisar y editar tus respuestas antes de finalizar.</p>
+      ${PreguntasAbiertas.html('rutaPa', this.PREGUNTAS_AULA, valores)}
+      <p class="error" id="rutaError" role="alert"></p>
+      <button type="button" id="rutaGuardarAbiertas" class="btn btn-primario">${boton}</button>`;
+  },
 
   estaciones(){ return BANCO_RETOS.ruta.slice().sort((a, b) => a.orden - b.orden); },
   correcto(){ return this.estaciones().map(e => e.id); },
@@ -4313,42 +4484,63 @@ const Ruta = {
   },
 
   /* ---------- Celebración: el camino completo ---------- */
+  /* Ruta correcta: el camino se transforma y aparecen las 4 preguntas abiertas.
+     La misión se completa solo al guardar las respuestas. */
   celebrar(nuevo){
     const v = this.vista; if (!v || v.finalizando) return;
     v.finalizando = true;
-    const api = v.api, fe = api.estadoFase, it = intentoAbierto(fe), r = api.respuestas;
-    if (nuevo) api.responder('completa', true);
+    const api = v.api, fe = api.estadoFase, r = api.respuestas;
+    if (nuevo) { api.responder('completa', true); api.registrarEvento('Reconstruyó la ruta completa'); api.guardar(); }
     this.pintar();
     const camino = v.cont.querySelector('#rutaCamino');
     camino.classList.add('completa');
     v.cont.querySelector('#rutaMensaje').textContent = '';
     const texto = `¡Lo conseguiste, ${primerNombre(api.nombre)}! Has reconstruido una ruta llena de aprendizajes. Cada experiencia nos ayudó a comprender mejor cómo acompañar el desarrollo comunicativo de los niños y las niñas. Y lo mejor es que ahora tienes herramientas para llevar esos aprendizajes a tu futura aula.`;
+    // Borrador propio, o las respuestas anteriores si vuelve a jugar una misión ya completada
+    const previas = fe.resultado && Array.isArray(fe.resultado.preguntasAbiertas) ? fe.resultado.preguntasAbiertas.map(x => x.respuesta) : [];
+    const borr = r.borradorAula && Array.isArray(r.borradorAula.textos) ? r.borradorAula.textos : previas;
     v.cont.querySelector('#rutaFinal').innerHTML = `
       <div class="tarjeta mem-celebracion"><span class="confeti" aria-hidden="true">🎉🗺️✨🗺️🎉</span>${globoAurora(`<p>${esc(texto)}</p>`)}
         <button type="button" id="rutaRecorrer" class="btn btn-secundario">▶️ Recorrer mi ruta</button>
-        <button type="button" id="rutaAlMapa" class="btn btn-primario">🗺️ Volver al mapa y descubrir mi siguiente misión</button>
+      </div>
+      <div class="tarjeta pa-seccion" id="rutaAula">
+        ${globoAurora(`<p>Antes de terminar esta misión, quiero saber qué aprendizajes llevarás a tu futura aula. Responde con tus propias palabras.</p>`)}
+        ${this.htmlFormularioAula(borr, '📨 Guardar mis respuestas y finalizar')}
       </div>`;
     const recorrer = () => { camino.classList.remove('recorriendo'); void camino.offsetWidth; camino.classList.add('recorriendo'); try { camino.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} };
     v.cont.querySelector('#rutaRecorrer').addEventListener('click', recorrer);
-    v.cont.querySelector('#rutaAlMapa').addEventListener('click', () => volverAlMapa());
     camino.classList.add('recorriendo');
-    const hist = Array.isArray(r.historialComprobaciones) ? r.historialComprobaciones : [];
-    const resultado = {
-      ordenInicial: (r.ordenInicial || []).map(id => this.datos(id).titulo),
-      ordenFinal: this.orden().map(id => this.datos(id).titulo),
-      comprobaciones: Number(r.comprobaciones) || 0,
-      historialComprobaciones: hist.map(h => ({ correctas: h.correctas, fecha: h.fecha })),
-      intentos: fe.intentos.length,
-      pistasIntento: it ? it.pistas : 0,
-      pistasTotales: fe.pistas.length,
-      pistasUtilizadas: fe.pistas.map(p => p.texto),
-      fechaInicio: fe.fechaInicio,
-      fechaFinalizacion: ahoraISO()
-    };
-    if (fe.estado !== 'completada' || it) {
-      api.registrarEvento('Reconstruyó la ruta completa');
-      api.completar(resultado, { mensaje: texto, permanecer: true });   // Se guarda ya; ella decide cuándo volver al mapa
-    }
+    const zona = v.cont.querySelector('#rutaAula'), error = zona.querySelector('#rutaError'), n = this.PREGUNTAS_AULA.length;
+    PreguntasAbiertas.enlazar(zona, n, textos => { error.textContent = ''; api.responder('borradorAula', { textos }); });
+    zona.querySelector('#rutaGuardarAbiertas').addEventListener('click', async ev => {
+      const textos = PreguntasAbiertas.textos(zona, n);
+      const k = PreguntasAbiertas.primeraIncompleta(textos);
+      if (k >= 0) { error.textContent = `Completa la respuesta ${k + 1} con tus propias palabras antes de finalizar.`; zona.querySelector(`[data-pa="${k}"]`).focus(); return; }
+      ev.currentTarget.disabled = true;
+      const registro = PreguntasAbiertas.registro('ruta', this.PREGUNTAS_AULA, textos);
+      api.responder('preguntasAbiertas', registro);
+      api.registrarEvento('Guardó sus respuestas de «Los aprendizajes que llevaré a mi aula»');
+      const it = intentoAbierto(fe);
+      const hist = Array.isArray(r.historialComprobaciones) ? r.historialComprobaciones : [];
+      const resultado = {
+        ordenInicial: (r.ordenInicial || []).map(id => this.datos(id).titulo),
+        ordenFinal: this.orden().map(id => this.datos(id).titulo),
+        comprobaciones: Number(r.comprobaciones) || 0,
+        historialComprobaciones: hist.map(h => ({ correctas: h.correctas, fecha: h.fecha })),
+        preguntasAbiertas: registro,
+        intentos: fe.intentos.length,
+        pistasIntento: it ? it.pistas : 0,
+        pistasTotales: fe.pistas.length,
+        pistasUtilizadas: fe.pistas.map(p => p.texto),
+        fechaInicio: fe.fechaInicio,
+        fechaFinalizacion: ahoraISO()
+      };
+      await api.completar(resultado, { mensaje: texto, permanecer: true });
+      zona.innerHTML = `<h3>🎒 Los aprendizajes que llevaré a mi aula</h3>${PreguntasAbiertas.lectura(registro)}
+        <button type="button" id="rutaAlMapa" class="btn btn-primario">🗺️ Volver al mapa y descubrir mi siguiente misión</button>`;
+      zona.querySelector('#rutaAlMapa').addEventListener('click', () => volverAlMapa());
+      toast('📨 ¡Tus respuestas quedaron guardadas!');
+    });
   },
 
   /* ---------- Pistas prácticas ---------- */
@@ -4403,7 +4595,9 @@ const Ruta = {
 
   /* ---------- Consulta ---------- */
   mostrarConsulta(cont, api){
-    const c = this.correcto();
+    const c = this.correcto(), fe = api.estadoFase, res = fe.resultado || {};
+    const abiertas = Array.isArray(res.preguntasAbiertas) ? res.preguntasAbiertas : null;
+    const pedir = !abiertas && !fe.completadaEnPrueba;
     cont.innerHTML = `
       <div class="tarjeta ruta-panel">
         <p class="sopa-contador">✅ Estaciones correctas: ${c.length} de ${c.length}</p>
@@ -4412,9 +4606,31 @@ const Ruta = {
         <div class="ruta-meta">🎓 Futuras maestras</div>
         <button type="button" id="rutaRecorrer" class="btn btn-secundario">▶️ Recorrer mi ruta</button>
       </div>
+      ${abiertas ? `<div class="tarjeta"><h3>🎒 Los aprendizajes que llevaré a mi aula</h3>${PreguntasAbiertas.lectura(abiertas)}</div>` : ''}
+      ${pedir ? `<div class="tarjeta pa-seccion tarjeta-ampliar" id="rutaAula">
+        ${globoAurora(`<p><strong>${esc(primerNombre(api.nombre))}</strong>, ahora esta misión incluye preguntas sobre los aprendizajes que llevarás a tu aula. Tu logro se conserva.</p>`)}
+        ${this.htmlFormularioAula((fe.respuestas.borradorAula && fe.respuestas.borradorAula.textos) || [], '📨 Guardar mis respuestas')}
+      </div>` : ''}
       <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tu logro original se conserva.</p>`;
     const camino = cont.querySelector('#rutaCamino');
     cont.querySelector('#rutaRecorrer').addEventListener('click', () => { camino.classList.remove('recorriendo'); void camino.offsetWidth; camino.classList.add('recorriendo'); });
+    if (pedir) {
+      const zona = cont.querySelector('#rutaAula'), error = zona.querySelector('#rutaError'), n = this.PREGUNTAS_AULA.length;
+      PreguntasAbiertas.enlazar(zona, n, textos => { error.textContent = ''; fe.respuestas.borradorAula = { textos }; guardarAuto(); });
+      zona.querySelector('#rutaGuardarAbiertas').addEventListener('click', async ev => {
+        const textos = PreguntasAbiertas.textos(zona, n);
+        const k = PreguntasAbiertas.primeraIncompleta(textos);
+        if (k >= 0) { error.textContent = `Completa la respuesta ${k + 1} con tus propias palabras antes de guardar.`; zona.querySelector(`[data-pa="${k}"]`).focus(); return; }
+        ev.currentTarget.disabled = true;
+        const registro = PreguntasAbiertas.registro('ruta', this.PREGUNTAS_AULA, textos);
+        iniciarIntento(fe);
+        api.responder('preguntasAbiertas', registro);
+        api.registrarEvento('Agregó sus respuestas de «Los aprendizajes que llevaré a mi aula» a la misión completada');
+        await api.completar(Object.assign({}, fe.resultado, { preguntasAbiertas: registro, fechaPreguntasAbiertas: ahoraISO() }), { actualizarResultado: true, permanecer: true });
+        toast('📨 ¡Tus respuestas quedaron guardadas!');
+        this.mostrarConsulta(cont, api);
+      });
+    }
   }
 };
 
@@ -4479,12 +4695,20 @@ const LibroRecuerdos = {
   resultado(id){ const fe = this.fase(id); return fe && fe.resultado && !fe.completadaEnPrueba ? fe.resultado : null; },
 
   fotosAlbum(){
-    // Orden: el de los retos de la cacería completada; si no existe, el número de reto.
+    // Fotografías reales de la cacería, en el orden de los retos asignados (dinámico: 5, 10…).
     const res = this.resultado('evidencias');
+    const fe = this.fase('evidencias');
     let fotos = [];
     if (res && Array.isArray(res.retos)) {
-      fotos = res.retos.slice().sort((a, b) => (a.numero || 0) - (b.numero || 0))
-        .map(r => estado.evidencias.find(ev => ev.id === r.evidencia && ev.fase === 'evidencias'))
+      const porReto = {};
+      res.retos.forEach(r => { porReto[r.retoId || ('#' + r.numero)] = r.evidencia; });
+      // Fotografías añadidas en una ampliación aún abierta (misión completada antes con menos retos)
+      const abierto = fe && intentoAbierto(fe);
+      if (abierto && fe.respuestas && fe.respuestas.ampliacion && fe.respuestas.retos)
+        Object.keys(fe.respuestas.retos).forEach(id => { if (!porReto[id]) porReto[id] = fe.respuestas.retos[id].evidencia; });
+      const orden = fe && fe.asignacion && Array.isArray(fe.asignacion.retos) ? fe.asignacion.retos : [];
+      const claves = orden.filter(id => porReto[id]).concat(Object.keys(porReto).filter(k => !orden.includes(k)));
+      fotos = claves.map(k => estado.evidencias.find(ev => ev.id === porReto[k] && ev.fase === 'evidencias'))
         .filter(ev => ev && fotoValida(ev));
     } else {
       fotos = estado.evidencias.filter(ev => ev.fase === 'evidencias' && fotoValida(ev))
@@ -4562,7 +4786,8 @@ const LibroRecuerdos = {
         html: sits.length ? `
           <p class="lr-sub">Situaciones que resolviste:</p>
           <div class="lr-chips">${sits.map(s => `<span class="lr-chip">${esc(s.tema)}</span>`).join('')}</div>
-          ${defensa ? `<div class="lr-defensa"><small>Tu estrategia más útil para preprimaria, en tus palabras:</small><blockquote>${esc(defensa)}</blockquote></div>` : ''}`
+          ${defensa ? `<div class="lr-defensa"><small>Tu estrategia más útil para preprimaria, en tus palabras:</small><blockquote>${esc(defensa)}</blockquote></div>` : ''}
+          ${Array.isArray(r.preguntasAbiertas) ? r.preguntasAbiertas.map(x => `<div class="lr-defensa"><small>${esc(x.pregunta)}</small><blockquote>${esc(x.respuesta)}</blockquote></div>`).join('') : ''}`
           : this.aviso('planificacion') });
     })();
     // 6. Ruta
@@ -4575,7 +4800,8 @@ const LibroRecuerdos = {
         html: estaciones.length ? `
           <div class="ruta-inicio">🌱 Inicio del curso</div>
           <ol class="ruta-camino completa recorriendo">${estaciones.map((e, i) => Ruta.htmlPaso(e.id, i, { fija: true, interactivo: false })).join('')}</ol>
-          <div class="ruta-meta">🎓 Futuras maestras</div>`
+          <div class="ruta-meta">🎓 Futuras maestras</div>
+          ${Array.isArray(r.preguntasAbiertas) ? `<p class="lr-sub" style="margin-top:14px">Los aprendizajes que llevarás a tu aula:</p>${r.preguntasAbiertas.map(x => `<div class="lr-defensa"><small>${esc(x.pregunta)}</small><blockquote>${esc(x.respuesta)}</blockquote></div>`).join('')}` : ''}`
           : this.aviso('ruta') });
     })();
     return P;
@@ -4736,9 +4962,10 @@ window.addEventListener('popstate', () => LibroRecuerdos.cerrarFoto());
    14.2 MOTOR · FASE 8: «Felicitación y despedida»
    - Al llegar (con las 7 misiones anteriores completadas) se registra
      la finalización de la misión 8 ANTES de generar el recuerdo.
-   - «Guardar mi recuerdo de Aurora» descarga un HTML autónomo con:
-     · Presentación visual (nombre, curso, mensaje, misiones, logros,
-       fotografías reales incrustadas, reflexión de la misión 5, fecha).
+   - «Guardar mi recuerdo de Aurora» descarga un álbum HTML autónomo con:
+     · Portada, mensaje de Aurora, las ocho misiones, aprendizajes,
+       álbum fotográfico (todas las fotos reales, ampliables) y la sección
+       destacada «Mi recuerdo especial para Aurora» (fotografía n.º 10).
      · Copia íntegra del estado guardado en
        <script type="application/json" id="registro-docente">.
        (Está oculta a la vista, pero NO cifrada.)
@@ -4746,13 +4973,19 @@ window.addEventListener('popstate', () => LibroRecuerdos.cerrarFoto());
        de la dirección. No hay botones docentes en la vista normal.
    ========================================================= */
 const MENSAJE_DESPEDIDA = [
-  '¡{n}, llegamos al final de nuestra aventura!',
-  'Durante este tiempo descubriste palabras, resolviste desafíos, pusiste a prueba tu memoria, compartiste momentos especiales y reflexionaste sobre la maestra que deseas llegar a ser.',
-  'Quiero que recuerdes algo: enseñar no consiste solamente en transmitir conocimientos. También significa escuchar, acompañar, imaginar, jugar y ayudar a que cada niño y cada niña encuentre su propia voz.',
-  'Hoy termina esta aventura, pero tu camino como futura maestra apenas comienza.',
-  'Gracias por permitirme acompañarte. Sigue aprendiendo, sigue creando y nunca pierdas la alegría de enseñar.',
-  '¡Con mucho cariño, Aurora!'
+  '¡{n}, lo lograste!',
+  'Hoy no solamente has terminado una aventura conmigo. Hoy celebramos algo mucho más importante: ¡has culminado tu primer año de formación como futura maestra de preprimaria!',
+  'Detrás de este logro hay esfuerzo, dedicación, aprendizajes, desafíos y momentos que seguramente guardarás con mucho cariño.',
+  'Durante este año descubriste que enseñar va mucho más allá de explicar contenidos. Ser maestra significa escuchar con paciencia, comprender con el corazón, despertar la imaginación, acompañar los pequeños descubrimientos y ayudar a que cada niño y cada niña encuentre su propia voz.',
+  'Quiero que te sientas orgullosa de todo lo que has conseguido. Todavía tienes mucho por aprender, nuevas experiencias por vivir y retos por superar, pero cada paso te está acercando a la maestra que sueñas ser.',
+  'Confía en tus capacidades. Sigue preparándote, sigue creando y nunca pierdas esa sensibilidad que hace tan especial la educación de los más pequeños.',
+  'Estoy segura de que, con compromiso, vocación y mucho cariño, llegarás a ser una excelente maestra y dejarás huellas bonitas en la vida de muchos niños y niñas.',
+  '¡Felicidades por culminar tu primer año! Sigue adelante, porque esta historia apenas comienza.',
+  'Con mucho cariño y admiración,',
+  'Aurora'
 ];
+const LINEAS_FIRMA = 2;   // Las dos últimas líneas son la firma
+const esFirma = i => i >= MENSAJE_DESPEDIDA.length - LINEAS_FIRMA;
 
 function blobADataURL(blob){
   return new Promise((resolve, reject) => {
@@ -4823,6 +5056,21 @@ function scriptConsultaDocente(){
       var tr = el('tr'); tr.appendChild(el('th', f[0])); tr.appendChild(el('td', f[1] == null ? '—' : f[1])); t.appendChild(tr);
     });
     seccion.appendChild(t);
+    // Respuestas abiertas para la evaluación docente (texto original, sin calificación automática)
+    var abiertas = [];
+    Object.keys(e.fases || {}).forEach(function (id) {
+      var r = e.fases[id] && e.fases[id].resultado;
+      if (r && Array.isArray(r.preguntasAbiertas)) abiertas = abiertas.concat(r.preguntasAbiertas);
+      if (r && r.defensa && r.defensa.respuesta) abiertas.push({ mision: id, numero: '—', pregunta: r.defensa.pregunta, respuesta: r.defensa.respuesta, fecha: r.defensa.fecha });
+      if (r && r.reflexion) abiertas.push({ mision: id, numero: '—', pregunta: r.pregunta || 'Reflexión', respuesta: r.reflexion, fecha: r.fechaFinalizacion });
+    });
+    seccion.appendChild(el('h2', 'Respuestas abiertas (' + abiertas.length + ')'));
+    var ta = el('table');
+    var ca = el('tr'); ['Misión', 'N.º', 'Pregunta', 'Respuesta original', 'Fecha'].forEach(function (x) { ca.appendChild(el('th', x)); }); ta.appendChild(ca);
+    abiertas.forEach(function (x) {
+      var tr = el('tr'); [x.mision, x.numero, x.pregunta, x.respuesta, fecha(x.fecha)].forEach(function (v) { var td = el('td', v); td.style.whiteSpace = 'pre-wrap'; tr.appendChild(td); }); ta.appendChild(tr);
+    });
+    seccion.appendChild(ta);
     seccion.appendChild(el('h2', 'Misiones'));
     var orden = (datos.misiones || []);
     Object.keys(e.fases || {}).forEach(function (id) {
@@ -4871,6 +5119,51 @@ function scriptConsultaDocente(){
   mostrar();
 }
 
+/* Visor de fotografías que viaja DENTRO del álbum descargado (sin dependencias).
+   Copia la imagen ya incorporada; el contenido se inserta con textContent. */
+function scriptAlbum(){
+  var album = Array.prototype.slice.call(document.querySelectorAll('[data-ampliar]'));
+  var fotos = album, capa = null, actual = 0;
+  function cerrar(){ if (capa) { capa.remove(); capa = null; document.removeEventListener('keydown', tecla); } }
+  function tecla(e){
+    if (e.key === 'Escape') cerrar();
+    else if (e.key === 'ArrowRight') mostrar(actual + 1);
+    else if (e.key === 'ArrowLeft') mostrar(actual - 1);
+  }
+  function boton(texto, etiqueta, fn, desactivado){
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = texto; b.setAttribute('aria-label', etiqueta);
+    b.disabled = !!desactivado; b.onclick = fn; return b;
+  }
+  function mostrar(i){
+    if (i < 0 || i >= fotos.length) return;
+    actual = i;
+    var f = fotos[i], img = f.querySelector('img');
+    if (!capa) {
+      capa = document.createElement('div'); capa.className = 'visor'; capa.setAttribute('role', 'dialog'); capa.setAttribute('aria-modal', 'true');
+      capa.addEventListener('click', function (e) { if (e.target === capa) cerrar(); });
+      document.body.appendChild(capa); document.addEventListener('keydown', tecla);
+    }
+    capa.textContent = '';
+    var x = boton('✕', 'Cerrar', cerrar); x.className = 'cerrar'; capa.appendChild(x);
+    var g = document.createElement('img'); g.src = img.src; g.alt = img.alt; capa.appendChild(g);
+    var t = document.createElement('p'); t.className = 'titulo'; t.textContent = f.getAttribute('data-titulo') || ''; capa.appendChild(t);
+    var nav = document.createElement('div'); nav.className = 'nav';
+    nav.appendChild(boton('‹', 'Fotografía anterior', function () { mostrar(actual - 1); }, i === 0));
+    var c = document.createElement('span'); c.textContent = (i + 1) + ' de ' + fotos.length; nav.appendChild(c);
+    nav.appendChild(boton('›', 'Fotografía siguiente', function () { mostrar(actual + 1); }, i === fotos.length - 1));
+    capa.appendChild(nav);
+  }
+  function enlazar(lista){
+    lista.forEach(function (f, i) {
+      var abrir = function () { fotos = lista; mostrar(i); };
+      f.addEventListener('click', abrir);
+      f.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } });
+    });
+  }
+  enlazar(album);
+  enlazar(Array.prototype.slice.call(document.querySelectorAll('[data-ampliar-solo]')));   // Foto especial: se abre sola
+}
+
 async function generarRecuerdoHTML(){
   const e = estado;
   let aurora = null;
@@ -4878,38 +5171,88 @@ async function generarRecuerdoHTML(){
     const r = await fetch(APP.imagenAurora, { cache: 'force-cache' });
     if (r.ok) { const b = await r.blob(); if (/^image\//.test(b.type)) aurora = await blobADataURL(b); }
   } catch (err) { /* Sin imagen: se usa un emoji */ }
-  const n = esc(primerNombre(e.nombre));
+  const n = primerNombre(e.nombre);
   const R = id => LibroRecuerdos.resultado(id);
   const fotos = LibroRecuerdos.fotosAlbum();
+  const especial = fotos.find(ev => ev.reto === RETO_FINAL_ALBUM) || null;
   const completadas = indiceMisionActual();
-  const estadoMision = f => {
-    const fe = e.fases[f.id];
-    if (faseCompletada(f.id)) return fe.completadaEnPrueba ? { t: '🧪 Completada en modo prueba', c: 'prueba' } : { t: '✅ ' + f.logro, c: 'ok' };
-    return { t: 'Pendiente', c: 'pend' };
+  const imgAuroraHTML = clase => aurora
+    ? `<img class="${clase}" src="${aurora}" alt="Aurora, la profesora">`
+    : `<span class="${clase} emoji" role="img" aria-label="Aurora, la profesora">👩‍🏫</span>`;
+
+  /* ---- Resumen real por misión (sin inventar datos) ---- */
+  const sopa = R('sopa'), mem = R('memoria'), cru = R('crucigrama'), ev4 = R('evidencias'), pl = R('planificacion'), ruta = R('ruta');
+  const resumen = {
+    sopa: sopa && Array.isArray(sopa.palabrasEncontradas) ? `${sopa.palabrasEncontradas.length} palabras descubiertas` : '',
+    memoria: mem && Array.isArray(mem.parejasEncontradas) ? `${mem.parejasEncontradas.length} parejas encontradas` : '',
+    crucigrama: cru && Array.isArray(cru.palabras) ? `${cru.palabras.length} palabras resueltas` : '',
+    evidencias: fotos.length ? `${fotos.length} ${fotos.length === 1 ? 'fotografía' : 'fotografías'} en tu álbum` : '',
+    planificacion: pl && Array.isArray(pl.situaciones) ? `${pl.situaciones.length} situaciones pedagógicas superadas` : '',
+    ruta: ruta && Array.isArray(ruta.ordenFinal) ? `${ruta.ordenFinal.length} estaciones organizadas` : '',
+    recorrido: R('recorrido') ? 'Libro de recuerdos recorrido' : '',
+    despedida: R('despedida') ? 'Aventura completada' : ''
   };
-  // Logros reales (solo con datos guardados)
-  const sopa = R('sopa'), mem = R('memoria'), cru = R('crucigrama'), pl = R('planificacion'), ruta = R('ruta');
-  const logros = [];
+  const tarjetasMision = FASES.map(f => {
+    const fe = e.fases[f.id];
+    let clase = 'pend', estadoTxt = 'Pendiente';
+    if (faseCompletada(f.id)) {
+      if (fe.completadaEnPrueba) { clase = 'prueba'; estadoTxt = '🧪 Completada en modo prueba'; }
+      else { clase = 'ok'; estadoTxt = '✅ ' + f.logro; }
+    }
+    return `<li class="mision ${clase}" style="--c:${f.color}">
+      <span class="num">${f.numero}</span><span class="em" aria-hidden="true">${f.emoji}</span>
+      <strong>${esc(f.titulo)}</strong><small class="estado">${esc(estadoTxt)}</small>
+      ${clase === 'ok' && resumen[f.id] ? `<small class="dato">${esc(resumen[f.id])}</small>` : ''}</li>`;
+  }).join('');
+
+  /* ---- Mis aprendizajes ---- */
+  const aprend = [];
   if (sopa && Array.isArray(sopa.palabrasEncontradas) && sopa.palabrasEncontradas.length)
-    logros.push(`<h3>🔤 Palabras que descubriste</h3><p class="chips">${sopa.palabrasEncontradas.map(p => `<span>${esc(p)}</span>`).join('')}</p>
-      ${sopa.reflexion ? `<blockquote><small>Tu reflexión${sopa.palabraReflexion ? ` sobre «${esc(sopa.palabraReflexion)}»` : ''}</small>${esc(sopa.reflexion)}</blockquote>` : ''}`);
+    aprend.push(`<article class="hoja"><h3>🔤 Palabras escondidas</h3><p class="chips">${sopa.palabrasEncontradas.map(p => `<span>${esc(p)}</span>`).join('')}</p></article>`);
   if (mem && Array.isArray(mem.parejasAsignadas)) {
     const ps = mem.parejasAsignadas.filter(p => (mem.parejasEncontradas || []).includes(p.concepto));
-    if (ps.length) logros.push(`<h3>🧠 Parejas que encontraste</h3><ul>${ps.map(p => `<li><strong>${esc(p.concepto)}</strong> — ${esc(p.pareja)}</li>`).join('')}</ul>`);
+    if (ps.length) aprend.push(`<article class="hoja"><h3>🧠 Memoria de una futura maestra</h3><ul class="parejas">${ps.map(p => `<li><strong>${esc(p.concepto)}</strong><span>${esc(p.pareja)}</span></li>`).join('')}</ul></article>`);
   }
   if (cru && Array.isArray(cru.palabras) && cru.palabras.length)
-    logros.push(`<h3>🧩 Palabras del crucigrama</h3><p class="chips">${cru.palabras.map(w => `<span>🏅 ${esc(w.respuesta)}</span>`).join('')}</p>`);
+    aprend.push(`<article class="hoja"><h3>🧩 Crucigrama misterioso</h3><p class="chips oro">${cru.palabras.map(w => `<span>🏅 ${esc(w.respuesta)}</span>`).join('')}</p></article>`);
   if (pl && Array.isArray(pl.situaciones) && pl.situaciones.length)
-    logros.push(`<h3>🛡️ Tus decisiones como futura maestra</h3><p>Superaste ${pl.situaciones.length} situaciones pedagógicas.</p>
-      ${pl.defensa && pl.defensa.respuesta ? `<blockquote class="defensa"><small>Tu estrategia más útil para preprimaria, en tus palabras:</small>${esc(pl.defensa.respuesta)}</blockquote>` : ''}`);
+    aprend.push(`<article class="hoja"><h3>🛡️ Defiende tu planificación</h3><p>Superaste ${pl.situaciones.length} situaciones pedagógicas tomando decisiones pensadas para los niños y las niñas.</p>
+      <p class="chips">${pl.situaciones.map(x => `<span>${esc(x.tema)}</span>`).join('')}</p></article>`);
   if (ruta && Array.isArray(ruta.ordenFinal) && ruta.ordenFinal.length)
-    logros.push(`<h3>🗺️ Tu ruta de aprendizaje</h3><ol>${ruta.ordenFinal.map(t => `<li>${esc(t)}</li>`).join('')}</ol>`);
-  const galeria = fotos.length ? `
-    <section class="tarjeta"><h2>📸 Nuestra galería de recuerdos</h2>
-      <div class="galeria">${fotos.map((ev, i) => `
-        <figure class="${ev.reto === RETO_FINAL_ALBUM ? 'especial' : ''}"><img src="${ev.imagen}" alt="${esc(ev.reto || `Fotografía ${i + 1}`)}">
-          <figcaption><strong>${esc(ev.reto || `Fotografía ${i + 1}`)}</strong>${ev.mensajeAurora ? `<span>${esc(ev.mensajeAurora)}</span>` : ''}</figcaption></figure>`).join('')}</div>
-    </section>` : '';
+    aprend.push(`<article class="hoja"><h3>🗺️ Mi ruta de aprendizaje</h3><ol class="ruta">${ruta.ordenFinal.map(t => {
+      const est = BANCO_RETOS.ruta.find(x => x.titulo === t);
+      return `<li><span aria-hidden="true">${est ? est.icono : '•'}</span>${esc(t)}</li>`; }).join('')}</ol></article>`);
+  const hayPrueba = FASES.some(f => e.fases[f.id] && e.fases[f.id].completadaEnPrueba);
+
+  /* ---- Mis reflexiones como futura maestra (textos originales completos) ---- */
+  const bloqueRespuestas = lista => lista.map(x => `<div class="respuesta"><p class="pregunta"><span>${x.numero}</span>${esc(x.pregunta)}</p><blockquote>${esc(x.respuesta)}</blockquote></div>`).join('');
+  const reflex = [];
+  if (sopa && sopa.reflexion)
+    reflex.push(`<article class="hoja"><h3>🔤 Misión 1 · Palabras escondidas</h3><div class="respuesta"><p class="pregunta">${esc(sopa.pregunta || 'Reflexión')}${sopa.palabraReflexion ? ` (palabra elegida: «${esc(sopa.palabraReflexion)}»)` : ''}</p><blockquote>${esc(sopa.reflexion)}</blockquote></div></article>`);
+  if (pl && ((pl.defensa && pl.defensa.respuesta) || Array.isArray(pl.preguntasAbiertas)))
+    reflex.push(`<article class="hoja"><h3>🛡️ Misión 5 · Ahora defiendo mi propio trabajo</h3>
+      ${Array.isArray(pl.preguntasAbiertas) ? bloqueRespuestas(pl.preguntasAbiertas) : ''}
+      ${pl.defensa && pl.defensa.respuesta ? `<div class="respuesta"><p class="pregunta">${esc(pl.defensa.pregunta || 'Reflexión personal')}</p><blockquote>${esc(pl.defensa.respuesta)}</blockquote></div>` : ''}</article>`);
+  if (ruta && Array.isArray(ruta.preguntasAbiertas))
+    reflex.push(`<article class="hoja"><h3>🎒 Misión 6 · Los aprendizajes que llevaré a mi aula</h3>${bloqueRespuestas(ruta.preguntasAbiertas)}</article>`);
+
+  /* ---- Álbum fotográfico (todas las fotos reales, en el orden de los retos) ---- */
+  const album = fotos.length ? `<div class="album">${fotos.map((ev, i) => `
+      <figure class="polaroid${ev === especial ? ' destacada' : ''}" data-ampliar data-titulo="${esc(`${i + 1}. ${ev.reto || 'Fotografía'}`)}" tabindex="0" role="button" aria-label="Ampliar: ${esc(ev.reto || `Fotografía ${i + 1}`)}">
+        <img src="${ev.imagen}" alt="${esc(ev.reto || `Fotografía ${i + 1}`)}">
+        <figcaption><span class="n">${i + 1}</span>${ev === especial ? '💌 ' : ''}${esc(ev.reto || `Fotografía ${i + 1}`)}</figcaption>
+      </figure>`).join('')}</div>
+      <p class="nota">Toca cualquier fotografía para verla en grande.</p>`
+    : `<p class="vacio">${e.fases.evidencias && e.fases.evidencias.completadaEnPrueba ? '🧪 La cacería se completó en modo de prueba: no hay fotografías registradas.' : 'Todavía no hay fotografías registradas en tu cacería.'}</p>`;
+
+  /* ---- Recuerdo especial (fotografía n.º 10) ---- */
+  const seccionEspecial = especial ? `
+      <div class="especial-marco" data-ampliar-solo data-titulo="${esc(RETO_FINAL_ALBUM)}" tabindex="0" role="button" aria-label="Ampliar: ${esc(RETO_FINAL_ALBUM)}">
+        <img src="${especial.imagen}" alt="${esc(RETO_FINAL_ALBUM)}">
+      </div>
+      <div class="carta-aurora mini">${imgAuroraHTML('aurora-mini')}<p>Esta fotografía es nuestro recuerdo especial de esta aventura. Gracias por compartirla conmigo, ${esc(n)}: la guardaré siempre con mucho cariño.</p></div>`
+    : `<p class="vacio">${e.fases.evidencias && e.fases.evidencias.completadaEnPrueba ? '🧪 La cacería se completó en modo de prueba: no hay una fotografía registrada para este recuerdo.' : 'Todavía no hay una fotografía para «Un recuerdo para Aurora». Puedes añadirla en la misión «Cacería de evidencias» y volver a descargar tu álbum.'}</p>`;
+
   const registro = {
     formato: 'registro-docente-aurora',
     app: APP.id, appVersion: APP.version, curso: APP.curso, programa: APP.programa,
@@ -4919,65 +5262,161 @@ async function generarRecuerdoHTML(){
     estado: e                                              // Copia íntegra del estado persistido
   };
   const css = `
-    *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#33283f;line-height:1.5;
-    background:linear-gradient(180deg,#fde7f1 0%,#fff8f1 35%,#eef5ff 100%)}main{max-width:760px;margin:0 auto;padding:20px 16px 40px}
-    .portada{text-align:center;padding:10px 0 4px}.aurora{width:150px;height:150px;border-radius:50%;object-fit:cover;border:5px solid #fff;box-shadow:0 6px 18px rgba(106,61,158,.2);background:#e9def8}
-    .aurora-emoji{display:inline-flex;align-items:center;justify-content:center;font-size:80px}
-    h1{color:#522d7d;margin:12px 0 4px;font-size:1.8rem}h2{color:#522d7d;font-size:1.25rem;margin:0 0 10px}h3{color:#6a3d9e;font-size:1.05rem;margin:16px 0 6px}
-    .curso{color:#5f526d;margin:0}.tarjeta{background:#fff;border:2px solid #eadff0;border-radius:20px;padding:18px;margin:16px 0;box-shadow:0 4px 14px rgba(106,61,158,.12)}
-    .carta p{margin:0 0 10px}.carta .firma{font-weight:800;color:#6a3d9e;text-align:right}
-    .misiones{list-style:none;padding:0;margin:0}.misiones li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #eadff0}
-    .misiones .em{font-size:24px}.misiones small{display:block}.ok small{color:#1d6e46;font-weight:700}.prueba small{color:#8a6100;font-weight:700}.pend small{color:#5f526d}
-    .chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{background:#e9def8;color:#522d7d;border-radius:99px;padding:4px 10px;font-weight:700;font-size:.92rem}
-    blockquote{margin:10px 0;background:#f3ecfb;border-left:5px solid #a77fd6;border-radius:10px;padding:10px 12px;white-space:pre-wrap;font-style:italic}
-    blockquote small{display:block;font-style:normal;font-weight:700;color:#6a3d9e;margin-bottom:4px}
-    .galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-    figure{margin:0;background:#fff;border-radius:12px;padding:8px;box-shadow:0 4px 12px rgba(60,30,90,.15)}figure img{width:100%;border-radius:8px;display:block}
-    figure.especial{box-shadow:0 0 0 3px #f49ac1,0 4px 12px rgba(60,30,90,.15)}figcaption{font-size:.9rem;margin-top:6px}figcaption span{display:block;color:#5f526d}
-    .pie{text-align:center;color:#5f526d;font-size:.85rem;margin-top:24px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#33283f;line-height:1.55;
+      background:#fbf6ff radial-gradient(circle at 10% 0%,#fde3ef 0,transparent 40%) fixed}
+    main{max-width:820px;margin:0 auto;padding:0 14px 40px}
+    h2{font-family:Georgia,"Times New Roman",serif;color:#522d7d;font-size:1.55rem;margin:0 0 4px;text-align:center}
+    .sub{text-align:center;color:#7a6b88;margin:0 0 16px}
+    section.pagina{background:#fff;border-radius:22px;padding:24px 18px;margin:18px 0;box-shadow:0 6px 22px rgba(106,61,158,.12);scroll-margin-top:64px}
+    /* Índice */
+    nav.indice{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:10px 4px;margin:0 -14px;background:rgba(251,246,255,.94);backdrop-filter:blur(4px)}
+    nav.indice a{flex:none;text-decoration:none;color:#522d7d;background:#fff;border:2px solid #e2d6ef;border-radius:99px;padding:6px 12px;font-weight:700;font-size:.85rem}
+    /* Portada tipo libro */
+    .portada{position:relative;margin:18px 0;padding:34px 22px 30px 40px;border-radius:12px 26px 26px 12px;text-align:center;color:#fff;
+      background:linear-gradient(135deg,#c86a9f 0%,#8a5bc4 55%,#5d7fd0 100%);box-shadow:0 14px 30px rgba(80,40,120,.35),inset 16px 0 0 rgba(0,0,0,.12)}
+    .portada::before{content:"";position:absolute;inset:14px 14px 14px 30px;border:2px dashed rgba(255,255,255,.55);border-radius:8px 18px 18px 8px;pointer-events:none}
+    .portada .aurora{width:132px;height:132px;border-radius:50%;object-fit:cover;border:5px solid #fff;background:#efe4fb;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+    .aurora.emoji,.aurora-mini.emoji{display:inline-flex;align-items:center;justify-content:center;font-size:70px;background:#efe4fb}
+    .portada .etiqueta{display:inline-block;background:rgba(255,255,255,.22);border-radius:99px;padding:4px 14px;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;margin-top:14px}
+    .portada h1{font-family:Georgia,"Times New Roman",serif;font-size:2.2rem;margin:10px 0 6px;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .portada .nombre{font-size:1.35rem;font-weight:800;margin:0 0 10px}
+    .portada p{margin:2px 0;opacity:.95}
+    .portada .fecha{margin-top:12px;font-weight:700}
+    /* Carta de Aurora */
+    .carta{background:#fffdf7 repeating-linear-gradient(180deg,transparent 0 31px,#f1e6d6 31px 32px);border:1px solid #efe1cc;border-radius:14px;padding:40px 18px 18px;margin-top:30px;position:relative}
+    .carta .sello{position:absolute;top:-22px;right:18px;width:54px;height:54px;border-radius:50%;background:#d9467f;color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+    .carta p{margin:0 0 12px;font-size:1.04rem}
+    .carta .firma{text-align:right;font-family:Georgia,serif;font-style:italic;font-weight:700;color:#8a3d74;font-size:1.15rem;margin:0}
+    .carta .firma:last-child{font-size:1.4rem}
+    /* Misiones */
+    .misiones{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+    .mision{position:relative;display:flex;flex-direction:column;gap:2px;padding:14px 12px 12px;border-radius:16px;background:#fff;border:2px solid #eee;border-top:8px solid var(--c)}
+    .mision .num{position:absolute;top:8px;right:10px;font-weight:900;color:#c4b5d6}
+    .mision .em{font-size:30px}.mision small{display:block}
+    .mision.ok .estado{color:#1d6e46;font-weight:700}.mision.prueba{background:#fffbea}.mision.prueba .estado{color:#8a6100;font-weight:700}
+    .mision.pend{opacity:.6}.mision .dato{color:#6a3d9e;font-weight:600}
+    /* Aprendizajes */
+    .hoja{border:2px solid #f0e6f8;border-radius:16px;padding:14px;margin:12px 0;background:linear-gradient(180deg,#fff,#fdf9ff)}
+    .hoja h3{margin:0 0 8px;color:#6a3d9e;font-size:1.08rem}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0}.chips span{background:#efe4fb;color:#522d7d;border-radius:99px;padding:5px 11px;font-weight:700;font-size:.9rem}
+    .chips.oro span{background:#fff1c2;color:#6b4e00}
+    .respuesta{margin:12px 0 16px}.respuesta .pregunta{font-weight:700;color:#522d7d;margin:0 0 4px;display:flex;gap:8px}
+    .respuesta .pregunta span{flex:none;display:inline-flex;align-items:center;justify-content:center;width:1.7em;height:1.7em;border-radius:50%;background:#efe4fb;font-size:.85rem}
+    .respuesta blockquote{margin-top:4px}
+    .carta p.inicio{font-family:Georgia,serif;font-size:1.3rem;font-weight:700;color:#8a3d74}
+    .parejas{list-style:none;padding:0;margin:0;display:grid;gap:6px}.parejas li{display:flex;flex-direction:column;background:#f7f3fb;border-radius:10px;padding:8px 10px}
+    .parejas strong{color:#522d7d}
+    .ruta{list-style:none;padding:0;margin:0;counter-reset:r}.ruta li{counter-increment:r;display:flex;gap:10px;align-items:center;padding:7px 0;border-left:4px solid #c9a7f0;padding-left:12px;margin-left:8px}
+    .ruta li::before{content:counter(r);font-weight:900;color:#8a5bc4;min-width:1.2em}
+    blockquote{margin:12px 0 0;background:#f3ecfb;border-left:5px solid #a77fd6;border-radius:10px;padding:12px 14px;white-space:pre-wrap;font-family:Georgia,serif;font-size:1.05rem;font-style:italic}
+    blockquote small{display:block;font-family:system-ui,sans-serif;font-style:normal;font-weight:700;color:#6a3d9e;margin-bottom:6px;font-size:.85rem}
+    /* Álbum */
+    .album{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 14px;padding:8px 2px}
+    @media(min-width:640px){.album{grid-template-columns:repeat(3,1fr)}}
+    .polaroid{margin:0;background:#fff;padding:9px 9px 12px;border-radius:4px;box-shadow:0 6px 16px rgba(60,30,90,.22);cursor:zoom-in;transition:transform .2s}
+    .polaroid:nth-child(4n+1){transform:rotate(-2.2deg)}.polaroid:nth-child(4n+2){transform:rotate(1.6deg)}
+    .polaroid:nth-child(4n+3){transform:rotate(2.3deg)}.polaroid:nth-child(4n+4){transform:rotate(-1.4deg)}
+    .polaroid:hover,.polaroid:focus{transform:rotate(0) scale(1.03);outline:none}
+    .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:#f4eefa}
+    .polaroid figcaption{margin-top:8px;font-family:"Comic Sans MS","Segoe Print","Bradley Hand",cursive;font-size:.9rem;line-height:1.25;color:#4a3a58;text-align:center}
+    .polaroid .n{display:inline-block;min-width:1.5em;height:1.5em;border-radius:50%;background:#efe4fb;color:#522d7d;font-weight:800;font-size:.75rem;line-height:1.5em;margin-right:4px;font-family:system-ui,sans-serif}
+    .polaroid.destacada{box-shadow:0 0 0 4px #f49ac1,0 6px 16px rgba(60,30,90,.22)}
+    .nota{text-align:center;color:#7a6b88;font-size:.88rem;margin:12px 0 0}
+    .vacio{background:#f7f3fb;border-radius:12px;padding:12px;color:#5f526d;text-align:center}
+    /* Recuerdo especial */
+    #especial{background:linear-gradient(180deg,#fff 0%,#fff4f8 100%)}
+    .especial-marco{width:calc(100% - 34px);max-width:440px;margin:22px auto 26px;padding:14px;background:#fff;border-radius:10px;cursor:zoom-in;
+      box-shadow:0 0 0 6px #f9c5dc,0 0 0 12px #fff,0 0 0 15px #c9a7f0,0 12px 30px rgba(120,40,90,.3);transform:rotate(-1deg)}
+    .especial-marco img{display:block;width:100%;border-radius:6px}
+    .carta-aurora{display:flex;gap:12px;align-items:center;background:#fff;border:2px solid #f3d6e6;border-radius:16px;padding:12px}
+    .carta-aurora p{margin:0;font-style:italic}.aurora-mini{flex:none;width:58px;height:58px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+    .aurora-mini.emoji{font-size:32px}
+    .pie{text-align:center;color:#7a6b88;font-size:.85rem;margin-top:26px}
+    /* Visor */
+    .visor{position:fixed;inset:0;z-index:50;background:rgba(25,12,38,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 12px 18px}
+    .visor img{max-width:100%;max-height:72vh;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+    .visor .titulo{color:#fff;font-weight:700;margin:12px 0 6px;text-align:center}
+    .visor .nav{display:flex;align-items:center;gap:16px;color:#d8c9ea}
+    .visor button{width:52px;height:46px;border:0;border-radius:12px;background:rgba(255,255,255,.2);color:#fff;font-size:1.6rem;cursor:pointer}
+    .visor button:disabled{opacity:.3}.visor .cerrar{position:absolute;top:10px;right:12px;width:46px;border-radius:50%;font-size:1.2rem}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.polaroid{transition:none}}
+    @media print{nav.indice,#consulta-docente,.visor{display:none}section.pagina{break-inside:avoid;box-shadow:none}}
+    /* Consulta docente (#docente) */
     #consulta-docente{max-width:1000px;margin:0 auto;padding:20px 16px;font-size:.92rem}#consulta-docente table{border-collapse:collapse;width:100%;margin:8px 0 14px;background:#fff}
     #consulta-docente th,#consulta-docente td{border:1px solid #ddd;padding:6px 8px;text-align:left;vertical-align:top}#consulta-docente th{background:#f3ecfb}
     #consulta-docente pre{white-space:pre-wrap;word-break:break-word;background:#1f1a26;color:#f4eefa;padding:10px;border-radius:8px;max-height:480px;overflow:auto}
     #consulta-docente details{background:#fff;border:1px solid #e2d6ef;border-radius:10px;padding:8px 12px;margin:8px 0}#consulta-docente summary{font-weight:700;cursor:pointer}
     #consulta-docente .acciones button{font:inherit;font-weight:700;margin:4px 8px 4px 0;padding:10px 14px;border-radius:10px;border:2px solid #6a3d9e;background:#fff;color:#522d7d;cursor:pointer}
-    #consulta-docente .nota{background:#fff3c4;border-radius:8px;padding:8px 10px}.fotos-docente{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-    .pista{margin:4px 0;color:#5f526d}@media print{#consulta-docente{display:none}}`;
+    #consulta-docente .nota{background:#fff3c4;border-radius:8px;padding:8px 10px;text-align:left;color:#33283f}
+    .fotos-docente{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.fotos-docente figure{margin:0}.fotos-docente img{width:100%}
+    #consulta-docente .pista{margin:4px 0;color:#5f526d}`;
   const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Recuerdo de Aurora · ${esc(e.nombre)}</title>
+<title>Mi aventura con Aurora · ${esc(e.nombre)}</title>
 <style>${css}</style>
 </head>
 <body>
-<!-- Recuerdo generado por «La última misión de Aurora». Funciona sin conexión.
+<!-- Álbum generado por «La última misión de Aurora». Funciona sin conexión.
      Revisión docente: abre este archivo agregando #docente al final de la dirección.
      El registro completo está en el bloque de datos JSON con id «registro-docente»
      (oculto a la vista, NO cifrado). -->
 <main id="recuerdo">
-  <header class="portada">
-    ${aurora ? `<img class="aurora" src="${aurora}" alt="Aurora, la profesora">` : `<span class="aurora aurora-emoji" role="img" aria-label="Aurora, la profesora">👩‍🏫</span>`}
-    <h1>Un recuerdo de Aurora para ${esc(e.nombre)}</h1>
-    <p class="curso">${esc(APP.curso)}</p>
-    <p class="curso">${esc(APP.programa)}</p>
-    ${e.fechaFinalizacion ? `<p class="curso"><strong>Aventura completada el ${esc(fechaDia(e.fechaFinalizacion))}</strong></p>` : ''}
-    ${e.perfilPrueba ? `<p class="curso">🧪 Archivo generado desde el perfil de prueba docente.</p>` : ''}
+  <nav class="indice" aria-label="Secciones del álbum">
+    <a href="#portada">📖 Portada</a><a href="#mensaje">💌 Mensaje</a><a href="#misiones">🗺️ Misiones</a>
+    <a href="#aprendizajes">🌱 Aprendizajes</a><a href="#reflexiones">✍️ Reflexiones</a><a href="#album">📸 Álbum</a><a href="#especial">💖 Recuerdo especial</a>
+  </nav>
+  <header class="portada" id="portada">
+    ${imgAuroraHTML('aurora')}
+    <div class="etiqueta">Primer año de formación docente</div>
+    <h1>Mi aventura con Aurora</h1>
+    <p class="nombre">${esc(e.nombre)}</p>
+    <p>${esc(APP.curso)}</p>
+    <p>${esc(APP.programa)}</p>
+    ${e.fechaFinalizacion ? `<p class="fecha">Aventura completada el ${esc(fechaDia(e.fechaFinalizacion))}</p>` : ''}
+    ${e.perfilPrueba ? `<p class="fecha">🧪 Álbum generado desde el perfil de prueba docente</p>` : ''}
   </header>
-  <section class="tarjeta carta">
-    ${MENSAJE_DESPEDIDA.map((p, i) => `<p class="${i === MENSAJE_DESPEDIDA.length - 1 ? 'firma' : ''}">${esc(p.replace('{n}', primerNombre(e.nombre)))}</p>`).join('')}
+
+  <section class="pagina" id="mensaje">
+    <h2>Un mensaje de Aurora</h2><p class="sub">Para ti, ${esc(n)}</p>
+    <div class="carta"><span class="sello" aria-hidden="true">💌</span>
+      ${MENSAJE_DESPEDIDA.map((p, i) => `<p class="${esFirma(i) ? 'firma' : ''}${i === 0 ? ' inicio' : ''}">${esc(p.replace('{n}', n))}</p>`).join('')}
+    </div>
   </section>
-  <section class="tarjeta">
-    <h2>🗺️ Las ocho misiones de tu aventura · ${completadas} de ${FASES.length} completadas</h2>
-    <ul class="misiones">${FASES.map(f => { const s = estadoMision(f); return `<li class="${s.c}"><span class="em" aria-hidden="true">${f.emoji}</span><span><strong>Misión ${f.numero}: ${esc(f.titulo)}</strong><small>${esc(s.t)}</small></span></li>`; }).join('')}</ul>
+
+  <section class="pagina" id="misiones">
+    <h2>Mis ocho misiones</h2><p class="sub">${completadas} de ${FASES.length} misiones completadas</p>
+    <ul class="misiones">${tarjetasMision}</ul>
   </section>
-  ${logros.length ? `<section class="tarjeta"><h2>🏅 Tus logros</h2>${logros.join('')}</section>` : ''}
-  ${galeria}
-  <p class="pie">Recuerdo generado el ${esc(fechaLegible(registro.generado))} · ${n}, ¡nunca pierdas la alegría de enseñar!</p>
+
+  <section class="pagina" id="aprendizajes">
+    <h2>Mis aprendizajes</h2><p class="sub">Lo que descubriste y construiste en el camino</p>
+    ${aprend.length ? aprend.join('') : `<p class="vacio">${hayPrueba ? '🧪 Las misiones se completaron en modo de prueba: no hay aprendizajes registrados.' : 'Todavía no hay aprendizajes registrados.'}</p>`}
+  </section>
+
+  <section class="pagina" id="reflexiones">
+    <h2>Mis reflexiones como futura maestra</h2><p class="sub">Mis respuestas, con mis propias palabras</p>
+    ${reflex.length ? reflex.join('') : `<p class="vacio">${hayPrueba ? '🧪 Las misiones se completaron en modo de prueba: no hay reflexiones registradas.' : 'Todavía no hay reflexiones registradas.'}</p>`}
+  </section>
+
+  <section class="pagina" id="album">
+    <h2>Mi álbum fotográfico</h2><p class="sub">Los momentos que capturaste en la Cacería de evidencias</p>
+    ${album}
+  </section>
+
+  <section class="pagina" id="especial">
+    <h2>💖 Mi recuerdo especial para Aurora</h2><p class="sub">La fotografía que elegiste para recordar tu primer año</p>
+    ${seccionEspecial}
+  </section>
+
+  <p class="pie">Álbum generado el ${esc(fechaLegible(registro.generado))} · ${esc(n)}, ¡nunca pierdas la alegría de enseñar!</p>
 </main>
 <section id="consulta-docente" hidden></section>
 <script type="application/json" id="registro-docente">${jsonParaHTML(registro)}<\/script>
-<script>(${scriptConsultaDocente.toString()})();<\/script>
+<script>(${scriptAlbum.toString()})();(${scriptConsultaDocente.toString()})();<\/script>
 </body>
 </html>`;
   return html;
@@ -5005,12 +5444,19 @@ const Despedida = {
         ${imgAurora('grande')}
         <h2 class="desp-nombre">${esc(nombre)}</h2>
         <p class="desp-contador">🎓 ${k} de ${FASES.length} misiones completadas</p>
-        <div class="globo desp-carta">
-          <span class="quien">Aurora</span>
-          ${MENSAJE_DESPEDIDA.map((p, i) => `<p class="${i === MENSAJE_DESPEDIDA.length - 1 ? 'firma' : ''}">${i === 0 ? `¡<strong>${esc(n)}</strong>, llegamos al final de nuestra aventura!` : esc(p)}</p>`).join('')}
+        <div class="desp-carta">
+          <span class="desp-sello" aria-hidden="true">🎓</span>
+          ${MENSAJE_DESPEDIDA.map((p, i) => `<p class="${esFirma(i) ? 'firma' : ''}${i === 0 ? ' inicio' : ''}">${i === 0 ? `¡<strong>${esc(n)}</strong>, lo lograste!` : esc(p)}</p>`).join('')}
         </div>
-        <button type="button" id="btnRecuerdo" class="btn btn-primario btn-mision">💌 Guardar mi recuerdo de Aurora</button>
-        <p class="ayuda" id="despEstado" style="text-align:center">Se descargará un archivo que podrás abrir sin internet. Puedes volver a descargarlo cuando quieras.</p>
+      </div>
+      <div class="tarjeta tarea-final" id="tareaFinal">
+        <h2>📤 Tu última tarea: entregar tu recuerdo</h2>
+        <p>¡Ya terminaste tu aventura! Ahora descarga tu álbum digital de recuerdos. Este archivo contiene tus fotografías, tus experiencias, tus respuestas y los logros que construiste durante nuestras misiones.</p>
+        <p class="tarea-clave"><strong>El archivo HTML que descargues es el que debes subir como tarea a la plataforma de tu curso.</strong></p>
+        <p>No entregues solamente una captura de pantalla. Debes adjuntar el archivo completo para que tu docente pueda revisar tu trabajo y las evidencias registradas.</p>
+        <button type="button" id="btnRecuerdo" class="btn btn-primario btn-mision">📥 Descargar mi álbum para entregar</button>
+        <p class="tarea-celular">📱 Después de descargarlo, busca el archivo en la carpeta <strong>Descargas</strong> de tu dispositivo y adjúntalo en la tarea correspondiente.</p>
+        <p class="ayuda" id="despEstado" aria-live="polite"></p>
       </div>`;
     v.cont.querySelector('#btnRecuerdo').addEventListener('click', e => this.descargar(e.currentTarget));
   },
@@ -5018,7 +5464,7 @@ const Despedida = {
     const v = this.vista; if (!v) return;
     boton.disabled = true;
     const estadoTxt = v.cont.querySelector('#despEstado');
-    estadoTxt.textContent = 'Preparando tu recuerdo…';
+    estadoTxt.textContent = 'Preparando tu álbum…';
     try {
       const archivo = nombreArchivoRecuerdo(estado);
       // Registrar la descarga ANTES de copiar el estado, para que quede en el registro
@@ -5034,11 +5480,11 @@ const Despedida = {
                         botones: [{ texto: 'Descargar', valor: true, clase: 'btn-primario' }] });
       }
       descargarArchivo(archivo, html, 'text/html');
-      estadoTxt.textContent = `✅ Recuerdo guardado: ${archivo}. Puedes volver a descargarlo cuando quieras.`;
-      toast('💌 ¡Tu recuerdo de Aurora se descargó!');
+      estadoTxt.textContent = `✅ Se descargó «${archivo}». Ahora súbelo a la tarea de tu curso: la aplicación no lo entrega por ti. Puedes volver a descargarlo cuando quieras.`;
+      toast('📥 ¡Tu álbum se descargó! Recuerda subirlo a la tarea.');
     } catch (err) {
       console.error(err);
-      estadoTxt.textContent = 'No se pudo generar el recuerdo. Intenta de nuevo.';
+      estadoTxt.textContent = 'No se pudo generar el álbum. Intenta de nuevo.';
     } finally { boton.disabled = false; }
   }
 };
