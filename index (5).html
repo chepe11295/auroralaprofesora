@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6d3e4">
+<meta name="description" content="La última misión de Aurora: una aventura para futuras maestras.">
+<title>La última misión de Aurora</title>
+<style>
+/* =========================================================
+   ESTILOS · Mobile-first
+   ========================================================= */
+:root{
+  --fondo:#fff8f1;
+  --texto:#33283f;
+  --suave:#5f526d;
+  --primario:#6a3d9e;
+  --primario-osc:#522d7d;
+  --rosa:#fbd3e3;
+  --menta:#cdeedd;
+  --cielo:#d6e8fb;
+  --amarillo:#fff0b3;
+  --lila:#e9def8;
+  --durazno:#ffe0cc;
+  --blanco:#ffffff;
+  --borde:#eadff0;
+  --exito:#1d6e46;
+  --error:#a8221a;
+  --radio:20px;
+  --sombra:0 4px 14px rgba(106,61,158,.12);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;
+  font-size:17px;line-height:1.5;color:var(--texto);
+  background:linear-gradient(180deg,#fde7f1 0%,var(--fondo) 30%,#eef5ff 100%);
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+}
+[hidden]{display:none!important}
+button,input,textarea,select{font:inherit;color:inherit}
+#app{max-width:560px;margin:0 auto;padding:16px 16px calc(120px + env(safe-area-inset-bottom))}
+.pantalla{animation:aparecer .3s ease}
+@keyframes aparecer{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes flotar{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+h1,h2,h3{line-height:1.2;margin:0 0 .4em}
+p{margin:0 0 .7em}
+small{color:var(--suave)}
+
+/* ---------- Aurora ---------- */
+.aurora-img{display:block;object-fit:cover;background:var(--lila);border-radius:50%;border:4px solid #fff;box-shadow:var(--sombra)}
+.aurora-img.grande{width:170px;height:170px;margin:8px auto 12px;animation:flotar 4s ease-in-out infinite}
+.aurora-img.mini{width:64px;height:64px;flex:none;border-width:3px}
+.aurora-fallback{display:flex;align-items:center;justify-content:center}
+.aurora-fallback.grande{font-size:84px}
+.aurora-fallback.mini{font-size:34px}
+.aurora-fila{display:flex;gap:12px;align-items:flex-start;margin:6px 0 16px}
+.globo{position:relative;background:var(--blanco);border-radius:18px;padding:12px 14px;box-shadow:var(--sombra);border:2px solid var(--borde);flex:1}
+.globo p:last-child{margin-bottom:0}
+.globo .quien{display:block;font-weight:800;color:var(--primario);font-size:.85rem;margin-bottom:2px}
+
+/* ---------- Tarjetas y textos ---------- */
+.titulo-app{text-align:center;font-size:1.75rem;color:var(--primario-osc)}
+.subtitulo{text-align:center;color:var(--suave);margin-top:-4px}
+.tarjeta{background:var(--blanco);border-radius:var(--radio);padding:16px;box-shadow:var(--sombra);margin:0 0 16px;border:2px solid var(--borde)}
+.tarjeta.destacada{background:var(--amarillo);border-color:#f2dc86}
+.tarjeta h3{font-size:1.1rem;color:var(--primario-osc)}
+.pie{text-align:center;font-size:.85rem;color:var(--suave);margin-top:18px}
+.ayuda{font-size:.9rem;color:var(--suave);margin:10px 0 0}
+.error{color:var(--error);font-weight:600;font-size:.95rem;min-height:1.2em;margin:6px 0}
+.aviso{background:var(--durazno);border:2px solid #f5c3a3;border-radius:16px;padding:12px;font-size:.95rem;margin-bottom:16px}
+
+/* ---------- Formularios ---------- */
+label{display:block;font-weight:700;margin-bottom:6px}
+input[type=text]{width:100%;min-height:52px;padding:12px 14px;border:2px solid #cdbde0;border-radius:14px;background:#fff;font-size:1.05rem}
+input[type=text]:focus{outline:3px solid #c9a7f0;border-color:var(--primario)}
+
+/* ---------- Botones ---------- */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;padding:12px 16px;margin:10px 0 0;border:2px solid transparent;border-radius:16px;font-size:1.05rem;font-weight:700;cursor:pointer;touch-action:manipulation;transition:transform .1s ease,background .2s}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible{outline:3px solid #f49ac1;outline-offset:2px}
+.btn-primario{background:var(--primario);color:#fff}
+.btn-primario:hover{background:var(--primario-osc)}
+.btn-secundario{background:#fff;color:var(--primario-osc);border-color:var(--primario)}
+.btn-suave{background:var(--lila);color:var(--primario-osc)}
+.btn-texto{background:transparent;color:var(--primario-osc);text-decoration:underline;font-weight:600}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ---------- Progreso ---------- */
+.barra{height:14px;background:#efe7f6;border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.barra>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#f49ac1,#a77fd6);border-radius:99px;transition:width .5s ease}
+
+/* ---------- Mapa de fases ---------- */
+.lista-fases{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}
+.fase-card{display:flex;align-items:center;gap:12px;width:100%;min-height:76px;padding:12px 14px;text-align:left;background:#fff;border:2px solid var(--borde);border-left:10px solid var(--color-fase,#ddd);border-radius:18px;box-shadow:var(--sombra);cursor:pointer;touch-action:manipulation}
+.fase-card:active{transform:scale(.99)}
+.fase-card[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none}
+.fase-card.sugerida{border-color:var(--primario);border-left-color:var(--color-fase,#ddd);box-shadow:0 0 0 3px #e4d2fa}
+.fase-card.completada{background:#f1fbf5}
+.fase-emoji{font-size:30px;width:44px;text-align:center;flex:none}
+.fase-info{flex:1;display:flex;flex-direction:column;line-height:1.25}
+.fase-info strong{font-size:1.02rem}
+.fase-insignia{font-size:.78rem;font-weight:700;padding:4px 8px;border-radius:99px;background:var(--lila);color:var(--primario-osc);white-space:nowrap;flex:none}
+.completada .fase-insignia{background:var(--menta);color:var(--exito)}
+.proximamente .fase-insignia{background:var(--amarillo);color:#6b5200}
+
+/* ---------- Pantalla de fase ---------- */
+.fase-cabecera{display:flex;gap:14px;align-items:center;background:var(--color-fase,#eee);border-radius:var(--radio);padding:16px;margin-bottom:12px}
+.fase-cabecera .emoji-grande{font-size:44px;flex:none}
+.fase-cabecera h2{font-size:1.35rem;margin:0}
+.fase-cabecera p{margin:0;color:var(--suave)}
+.zona-juego{margin:0 0 16px}
+.construccion{text-align:center;background:repeating-linear-gradient(45deg,#fffaf0,#fffaf0 14px,#fff3d6 14px,#fff3d6 28px);border:2px dashed #e7c66b}
+.construccion .icono{font-size:46px;display:block}
+.acciones-fase{display:flex;flex-direction:column}
+
+/* ---------- Historial ---------- */
+details.tarjeta summary{font-weight:700;cursor:pointer;color:var(--primario-osc);min-height:32px}
+.historial{list-style:none;padding:0;margin:10px 0 0;font-size:.9rem;max-height:320px;overflow:auto}
+.historial li{padding:8px 0;border-bottom:1px solid var(--borde)}
+.historial time{display:block;font-size:.78rem;color:var(--suave)}
+
+/* ---------- Barra de guardado permanente ---------- */
+#barraGuardar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.97);border-top:2px solid var(--borde);box-shadow:0 -4px 14px rgba(0,0,0,.06);padding:8px 16px calc(8px + env(safe-area-inset-bottom))}
+#barraGuardar .interior{max-width:560px;margin:0 auto}
+#barraGuardar .btn{margin:0}
+#estadoGuardado{display:block;text-align:center;font-size:.8rem;color:var(--suave);margin-top:4px}
+
+/* ---------- Modal y aviso breve ---------- */
+#modal{position:fixed;inset:0;z-index:50;background:rgba(40,20,60,.5);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-caja{background:#fff;border-radius:24px;padding:20px;width:100%;max-width:480px;max-height:88vh;overflow:auto;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:aparecer .2s ease}
+.modal-caja h2{font-size:1.25rem;color:var(--primario-osc)}
+#toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);z-index:60;background:#33283f;color:#fff;padding:10px 18px;border-radius:99px;font-size:.95rem;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:calc(100% - 32px);text-align:center}
+#toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+@media (min-width:700px){
+  body{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <main id="pantalla" aria-live="polite"></main>
+</div>
+
+<!-- Botón permanente de respaldo (visible una vez registrada la estudiante) -->
+<div id="barraGuardar" hidden>
+  <div class="interior">
+    <button type="button" id="btnGuardar" class="btn btn-primario">💾 Guardar mi progreso</button>
+    <span id="estadoGuardado">Guardado automático activado</span>
+  </div>
+</div>
+
+<!-- Ventana de diálogo reutilizable -->
+<div id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+  <div class="modal-caja">
+    <h2 id="modalTitulo"></h2>
+    <div id="modalCuerpo"></div>
+    <div id="modalBotones"></div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<!-- Selector de archivo para recuperar la aventura.
+     Sin atributo "accept": algunos teléfonos Android ocultan los .json si se filtra por tipo. -->
+<input type="file" id="inputImportar" hidden>
+
+<script>
+'use strict';
+
+/* =========================================================
+   1. CONFIGURACIÓN DEL DOCENTE
+   Edite estos valores antes de publicar en GitHub Pages.
+   ========================================================= */
+const CONFIG_DOCENTE = {
+  ACTIVIDAD_CALIFICABLE: false,
+  PUNTAJE_MAXIMO: 15,                  // Reservado para el informe del docente (no se muestra a las estudiantes)
+  MOSTRAR_PUNTAJES_ESTUDIANTES: false, // Reservado: durante los juegos no se muestran notas ni puntajes
+  PERMITIR_PISTAS: true,
+  PERMITIR_REINTENTOS: true,
+  GUARDADO_AUTOMATICO: true
+};
+
+/* =========================================================
+   2. DATOS GENERALES DE LA APLICACIÓN
+   ========================================================= */
+const APP = {
+  id: 'aurora-ultima-mision',          // Identifica los respaldos JSON de esta aplicación
+  version: 1,                          // Versión del formato del respaldo
+  titulo: 'La última misión de Aurora',
+  curso: 'Desarrollo de la Competencia Comunicativa II',
+  programa: 'Profesorado Especializado en Educación Preprimaria',
+  imagenAurora: 'aurora.png',          // Colocar junto a index.html
+  limiteAvisoMB: 15,                   // Avisar si el respaldo supera este tamaño
+  limiteImportarMB: 80                 // Rechazar archivos más grandes que esto
+};
+
+/* =========================================================
+   3. DEFINICIÓN DE FASES (orden fijo para todas)
+   "instrucciones" describe solo la mecánica; el contenido
+   pedagógico vendrá de los bancos (sección 4 y 5).
+   ========================================================= */
+const FASES = [
+  { id:'sopa',         numero:1,  emoji:'🔤', color:'#fbd3e3', titulo:'Palabras escondidas',               subtitulo:'Sopa de letras',
+    instrucciones:'Encuentra las palabras escondidas en la cuadrícula de letras.' },
+  { id:'memoria',      numero:2,  emoji:'🧠', color:'#d6e8fb', titulo:'Memoria de una futura maestra',     subtitulo:'Parejas de conceptos',
+    instrucciones:'Voltea las tarjetas de dos en dos y encuentra las parejas que se relacionan.' },
+  { id:'crucigrama',   numero:3,  emoji:'🧩', color:'#cdeedd', titulo:'Crucigrama misterioso',             subtitulo:'Pistas y palabras',
+    instrucciones:'Lee cada pista y escribe la palabra que corresponde en el crucigrama.' },
+  { id:'secuencias',   numero:4,  emoji:'🔀', color:'#fff0b3', titulo:'Ordena el desastre',                subtitulo:'Secuencias pedagógicas',
+    instrucciones:'Ordena los pasos para que cada secuencia tenga sentido.' },
+  { id:'desafio',      numero:5,  emoji:'💬', color:'#e9def8', titulo:'El desafío de Aurora',              subtitulo:'Preguntas y situaciones',
+    instrucciones:'Responde las preguntas y analiza las situaciones que Aurora te presenta.' },
+  { id:'evidencias',   numero:6,  emoji:'📸', color:'#ffe0cc', titulo:'Cacería de evidencias',             subtitulo:'Retos fotográficos',
+    instrucciones:'Cumple los retos fotográficos y agrega tus fotografías como evidencia.' },
+  { id:'planificacion',numero:7,  emoji:'🛡️', color:'#d6e8fb', titulo:'Defiende tu planificación general',subtitulo:'Argumenta tus decisiones',
+    instrucciones:'Responde las preguntas para explicar y defender tu planificación general.' },
+  { id:'ruta',         numero:8,  emoji:'🗓️', color:'#cdeedd', titulo:'Mi ruta de aprendizaje semanal',   subtitulo:'Reflexión de la semana',
+    instrucciones:'Describe tu ruta de aprendizaje de la semana.' },
+  { id:'recorrido',    numero:9,  emoji:'🎞️', color:'#fbd3e3', titulo:'El recorrido de nuestra aventura',  subtitulo:'Siguiente recuerdo',
+    instrucciones:'Revive los momentos de tu aventura, recuerdo por recuerdo.' },
+  { id:'despedida',    numero:10, emoji:'🎓', color:'#fff0b3', titulo:'Felicitación y despedida',          subtitulo:'Palabras de Aurora',
+    instrucciones:'Recibe las palabras finales de Aurora y descarga tu aventura completa.' }
+];
+
+/* =========================================================
+   4. BANCOS DE PREGUNTAS
+   Vacíos a propósito: el docente proporcionará el contenido.
+   ========================================================= */
+const BANCO_PREGUNTAS = {
+  sopa: [],        // Palabras y pistas para la sopa de letras
+  memoria: [],     // Parejas de conceptos
+  crucigrama: [],  // Palabras y definiciones
+  secuencias: [],  // Secuencias pedagógicas a ordenar
+  desafio: []      // Preguntas y situaciones
+};
+
+/* =========================================================
+   5. BANCOS DE RETOS
+   ========================================================= */
+const BANCO_RETOS = {
+  evidencias: [],     // Retos fotográficos
+  planificacion: [],  // Preguntas para defender la planificación
+  ruta: []            // Preguntas de la ruta semanal
+};
+
+/* =========================================================
+   6. MOTORES DE JUEGOS
+   Cada fase se activa registrando un motor. Mientras una fase
+   no tenga motor, se muestra como "Próximamente" y NUNCA se
+   marca como completada.
+
+   Interfaz de un motor:
+   registrarMotor('sopa', {
+     asignar(azar, bancos) { ... return asignacion },   // Se llama UNA vez; se guarda en el progreso
+     iniciar(contenedor, api) { ... },                  // Dibuja el juego dentro de "contenedor"
+     pista(api) { ... return 'texto de la pista' },     // Opcional
+     reiniciar(contenedor, api) { ... }                 // Opcional (si no existe, se llama a iniciar)
+   });
+
+   La "api" ofrece:
+     api.nombre, api.config, api.fase, api.estadoFase, api.asignacion,
+     api.respuestas            -> respuestas del intento actual
+     api.responder(clave, valor) -> guarda una respuesta
+     api.registrarEvento(texto, datos) -> anota algo en el intento
+     api.agregarEvidencia(evidencia) -> guarda foto comprimida
+     api.completar(resultado)  -> marca la fase como completada
+     api.aurora(texto)         -> mensaje de Aurora en una ventana
+     api.guardar()             -> fuerza el guardado
+   ========================================================= */
+const MOTORES = {};
+function registrarMotor(faseId, motor){
+  if (!FASES.some(f => f.id === faseId)) { console.warn('Fase desconocida:', faseId); return; }
+  MOTORES[faseId] = motor;
+}
+function estaImplementada(faseId){ return !!MOTORES[faseId]; }
+
+/* =========================================================
+   7. UTILIDADES
+   ========================================================= */
+const $ = (sel, raiz = document) => raiz.querySelector(sel);
+function esc(t){
+  return String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function ahoraISO(){ return new Date().toISOString(); }
+function fechaLegible(iso){
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleString('es-GT', { dateStyle:'medium', timeStyle:'short' }); }
+  catch (e) { return String(iso); }
+}
+function horaCorta(iso){
+  try { return new Date(iso).toLocaleTimeString('es-GT', { hour:'2-digit', minute:'2-digit' }); }
+  catch (e) { return ''; }
+}
+function limpiarNombre(n){ return String(n || '').replace(/\s+/g, ' ').trim(); }
+function primerNombre(n){ return limpiarNombre(n).split(' ')[0] || ''; }
+function slug(t){
+  return String(t || 'estudiante').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase().slice(0, 40) || 'estudiante';
+}
+function generarId(){ return 'av-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8); }
+function copiaProfunda(o){ return JSON.parse(JSON.stringify(o)); }
+function sello(){
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;
+}
+
+/* Aleatoriedad: se usa SOLO al asignar contenido por primera vez. */
+const Azar = {
+  entero(max){
+    if (window.crypto && crypto.getRandomValues) {
+      const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % max;
+    }
+    return Math.floor(Math.random() * max);
+  },
+  barajar(lista){
+    const a = Array.isArray(lista) ? lista.slice() : [];
+    for (let i = a.length - 1; i > 0; i--) { const j = this.entero(i + 1); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  },
+  elegir(lista, n){ return this.barajar(lista).slice(0, n); }
+};
+
+/* =========================================================
+   8. ESTADO DE LA ESTUDIANTE
+   ========================================================= */
+let estado = null;          // Aventura activa
+let estadoGuardado = null;  // Aventura encontrada al abrir la página
+let pantallaActual = 'bienvenida';
+
+function crearEstadoFase(){
+  return {
+    estado: 'pendiente',   // pendiente | en_curso | completada
+    asignacion: null,      // Contenido aleatorio asignado (se conserva siempre)
+    respuestas: {},        // Respuestas del intento actual
+    intentos: [],          // Historial completo de intentos (nunca se borra)
+    pistas: [],            // Pistas utilizadas
+    resultado: null,
+    fechaInicio: null,
+    fechaFin: null
+  };
+}
+
+function crearEstadoNuevo(nombre){
+  const e = {
+    app: APP.id,
+    version: APP.version,
+    id: generarId(),
+    nombre: nombre,
+    fechaInicio: ahoraISO(),
+    fechaFinalizacion: null,
+    actualizado: ahoraISO(),
+    faseActual: null,
+    fases: {},
+    evidencias: [],
+    historial: []
+  };
+  FASES.forEach(f => { e.fases[f.id] = crearEstadoFase(); });
+  return e;
+}
+
+/* Completa campos faltantes (p. ej. respaldos de versiones anteriores) */
+function normalizarEstado(e){
+  e.nombre = limpiarNombre(e.nombre);
+  if (!e.id) e.id = generarId();
+  if (!e.fechaInicio) e.fechaInicio = ahoraISO();
+  if (!e.fases || typeof e.fases !== 'object' || Array.isArray(e.fases)) e.fases = {};
+  FASES.forEach(f => {
+    const actual = e.fases[f.id];
+    const fe = Object.assign(crearEstadoFase(), (actual && typeof actual === 'object') ? actual : {});
+    if (!Array.isArray(fe.intentos)) fe.intentos = [];
+    if (!Array.isArray(fe.pistas)) fe.pistas = [];
+    if (!fe.respuestas || typeof fe.respuestas !== 'object') fe.respuestas = {};
+    if (!['pendiente','en_curso','completada'].includes(fe.estado)) fe.estado = 'pendiente';
+    e.fases[f.id] = fe;
+  });
+  if (!Array.isArray(e.evidencias)) e.evidencias = [];
+  if (!Array.isArray(e.historial)) e.historial = [];
+  e.app = APP.id;
+  e.version = APP.version;
+  return e;
+}
+
+function agregarHistorial(tipo, texto, faseId){
+  if (!estado) return;
+  estado.historial.push({ fecha: ahoraISO(), tipo, fase: faseId || null, texto });
+}
+
+function tieneProgreso(e){
+  if (!e) return false;
+  return e.historial.length > 1 || e.evidencias.length > 0 ||
+    FASES.some(f => e.fases[f.id] && e.fases[f.id].estado !== 'pendiente');
+}
+
+/* Una fase se desbloquea cuando todas las fases anteriores CON juego
+   ya están completadas. Las fases sin juego todavía no bloquean. */
+function faseDesbloqueada(indice){
+  for (let i = 0; i < indice; i++) {
+    const f = FASES[i];
+    if (estaImplementada(f.id) && estado.fases[f.id].estado !== 'completada') return false;
+  }
+  return true;
+}
+
+function intentoAbierto(fe){
+  return fe.intentos.find(i => i.estado === 'en_curso') || null;
+}
+function iniciarIntento(fe){
+  const intento = { numero: fe.intentos.length + 1, estado: 'en_curso', inicio: ahoraISO(), fin: null,
+                    respuestas: {}, pistas: 0, eventos: [], resultado: null };
+  fe.intentos.push(intento);
+  fe.respuestas = {};
+  return intento;
+}
+function cerrarIntento(fe, nuevoEstado, resultado){
+  const intento = intentoAbierto(fe);
+  if (!intento) return null;
+  intento.estado = nuevoEstado;           // reiniciado | completado
+  intento.fin = ahoraISO();
+  intento.respuestas = copiaProfunda(fe.respuestas || {});
+  if (resultado !== undefined) intento.resultado = resultado;
+  return intento;
+}
+
+/* =========================================================
+   9. PERSISTENCIA (IndexedDB principal + localStorage auxiliar)
+   ========================================================= */
+const Persistencia = {
+  db: null,
+  disponible: false,
+  NOMBRE_BD: 'aurora_aventura',
+  CLAVE: 'actual',
+
+  abrir(){
+    return new Promise(resolve => {
+      if (!('indexedDB' in window)) return resolve(false);
+      let req;
+      try { req = indexedDB.open(this.NOMBRE_BD, 1); } catch (e) { return resolve(false); }
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('estado')) db.createObjectStore('estado');
+      };
+      req.onsuccess = () => { this.db = req.result; this.disponible = true; resolve(true); };
+      req.onerror = () => resolve(false);
+      req.onblocked = () => resolve(false);
+    });
+  },
+
+  _operacion(modo, fn){
+    return new Promise((resolve, reject) => {
+      let tx;
+      try { tx = this.db.transaction('estado', modo); } catch (e) { return reject(e); }
+      const req = fn(tx.objectStore('estado'));
+      tx.oncomplete = () => resolve(req ? req.result : undefined);
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error);
+    });
+  },
+
+  async guardar(e){
+    let ok = false;
+    if (this.disponible) {
+      try { await this._operacion('readwrite', st => st.put(e, this.CLAVE)); ok = true; }
+      catch (err) { console.error('IndexedDB:', err); }
+    }
+    // localStorage: solo un resumen pequeño, o copia completa si IndexedDB falló
+    try {
+      localStorage.setItem('aurora_resumen', JSON.stringify({ id: e.id, nombre: e.nombre, actualizado: e.actualizado }));
+      if (!ok) { localStorage.setItem('aurora_estado_respaldo', JSON.stringify(e)); ok = true; }
+      else localStorage.removeItem('aurora_estado_respaldo');
+    } catch (err) { console.warn('localStorage:', err); }
+    return ok;
+  },
+
+  async cargar(){
+    if (this.disponible) {
+      try { const r = await this._operacion('readonly', st => st.get(this.CLAVE)); if (r) return r; }
+      catch (err) { console.error('IndexedDB:', err); }
+    }
+    try {
+      const s = localStorage.getItem('aurora_estado_respaldo');
+      if (s) return JSON.parse(s);
+    } catch (err) { /* sin datos */ }
+    return null;
+  }
+};
+
+let temporizadorGuardado = null;
+function guardarAuto(){
+  if (!CONFIG_DOCENTE.GUARDADO_AUTOMATICO || !estado) return;
+  clearTimeout(temporizadorGuardado);
+  temporizadorGuardado = setTimeout(guardarAhora, 400);
+}
+async function guardarAhora(){
+  clearTimeout(temporizadorGuardado);
+  if (!estado) return false;
+  estado.actualizado = ahoraISO();
+  if (!CONFIG_DOCENTE.GUARDADO_AUTOMATICO) {
+    actualizarIndicador('Guardado automático desactivado: descarga tu progreso');
+    return false;
+  }
+  const ok = await Persistencia.guardar(estado);
+  actualizarIndicador(ok ? `✓ Guardado en este teléfono · ${horaCorta(estado.actualizado)}`
+                         : '⚠️ No se pudo guardar aquí: descarga tu progreso');
+  return ok;
+}
+
+/* =========================================================
+   10. EXPORTACIÓN E IMPORTACIÓN (respaldo JSON)
+   ========================================================= */
+function descargarArchivo(nombreArchivo, contenido, tipo){
+  const blob = new Blob([contenido], { type: tipo });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = nombreArchivo; a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 4000);
+}
+
+async function exportarJSON(){
+  if (!estado) return;
+  agregarHistorial('respaldo', 'Descargó un respaldo de su aventura.');
+  estado.actualizado = ahoraISO();
+  const paquete = Object.assign({}, estado, {
+    exportado: { fecha: ahoraISO(), appVersion: APP.version, tipo: 'respaldo-recuperable' }
+  });
+  const texto = JSON.stringify(paquete);
+  const mb = new Blob([texto]).size / 1048576;
+  if (mb > APP.limiteAvisoMB) {
+    await dialogo({
+      titulo: 'Archivo grande',
+      mensaje: `Tu respaldo pesa aproximadamente ${mb.toFixed(1)} MB. Se descargará igual, pero puede tardar y ocupar espacio. Si vas a enviarlo, usa una conexión estable.`,
+      botones: [{ texto: 'Descargar de todos modos', valor: true, clase: 'btn-primario' }]
+    });
+  }
+  const nombreArchivo = `aventura-aurora_${slug(estado.nombre)}_${sello()}.json`;
+  descargarArchivo(nombreArchivo, texto, 'application/json');
+  await guardarAhora();
+  toast('📥 Respaldo descargado. ¡Guárdalo bien!');
+}
+
+function validarRespaldo(obj){
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj))
+    return { ok: false, error: 'El archivo no contiene una aventura válida.' };
+  if (obj.app !== APP.id)
+    return { ok: false, error: 'Este archivo no pertenece a «La última misión de Aurora».' };
+  if (typeof obj.nombre !== 'string' || !limpiarNombre(obj.nombre))
+    return { ok: false, error: 'El archivo no tiene el nombre de la estudiante.' };
+  if (!obj.fases || typeof obj.fases !== 'object' || Array.isArray(obj.fases))
+    return { ok: false, error: 'El archivo está incompleto: faltan las fases de la aventura.' };
+  if (typeof obj.version === 'number' && obj.version > APP.version)
+    return { ok: false, error: 'Este respaldo fue creado con una versión más nueva de la aplicación.' };
+  return { ok: true };
+}
+
+function leerArchivoTexto(archivo){
+  return new Promise((resolve, reject) => {
+    const lector = new FileReader();
+    lector.onload = () => resolve(String(lector.result || ''));
+    lector.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    lector.readAsText(archivo);
+  });
+}
+
+async function importarJSON(archivo){
+  if (!archivo) return;
+  try {
+    if (archivo.size > APP.limiteImportarMB * 1048576)
+      throw new Error('El archivo es demasiado grande para ser un respaldo de la aventura.');
+    const texto = await leerArchivoTexto(archivo);
+    let obj;
+    try { obj = JSON.parse(texto); }
+    catch (e) { throw new Error('El archivo está dañado o no es un respaldo .json de la aventura.'); }
+    const v = validarRespaldo(obj);
+    if (!v.ok) throw new Error(v.error);
+
+    delete obj.exportado;
+    const recuperado = normalizarEstado(obj);
+
+    // Si en el teléfono hay OTRA aventura con avance, pedir confirmación
+    const actual = estado || estadoGuardado;
+    if (actual && actual.id !== recuperado.id && tieneProgreso(actual)) {
+      const r = await dialogo({
+        titulo: 'Reemplazar aventura',
+        html: `<p>En este teléfono hay una aventura de <strong>${esc(actual.nombre)}</strong>.</p>
+               <p>Si recuperas la de <strong>${esc(recuperado.nombre)}</strong>, la anterior se reemplazará aquí. Te recomendamos descargar primero su respaldo.</p>`,
+        botones: [
+          { texto: `Descargar respaldo de ${primerNombre(actual.nombre)}`, valor: 'respaldo', clase: 'btn-secundario' },
+          { texto: 'Recuperar de todos modos', valor: 'si', clase: 'btn-primario' },
+          { texto: 'Cancelar', valor: 'no', clase: 'btn-texto' }
+        ]
+      });
+      if (r === 'respaldo') { estado = actual; await exportarJSON(); return; }
+      if (r !== 'si') return;
+    }
+
+    estado = recuperado;
+    agregarHistorial('recuperacion', `Recuperó su aventura desde el archivo «${archivo.name}».`);
+    await guardarAhora();
+    mostrarMenu();
+    toast(`📂 ¡Aventura recuperada, ${primerNombre(estado.nombre)}!`);
+  } catch (err) {
+    await dialogo({ titulo: 'No se pudo recuperar', mensaje: err.message || 'Ocurrió un problema al leer el archivo.' });
+  }
+}
+
+/* =========================================================
+   11. FOTOGRAFÍAS (utilidad lista para la fase 6)
+   Comprime a JPEG y devuelve Base64 (dataURL).
+   ========================================================= */
+async function comprimirImagen(archivo, { maxLado = 1280, calidad = 0.72 } = {}){
+  if (!archivo || !/^image\//.test(archivo.type || ''))
+    throw new Error('El archivo seleccionado no es una imagen.');
+  const url = URL.createObjectURL(archivo);
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = () => reject(new Error('No se pudo abrir la imagen. Prueba con otra fotografía.'));
+      i.src = url;
+    });
+    const escala = Math.min(1, maxLado / Math.max(img.naturalWidth, img.naturalHeight));
+    const w = Math.max(1, Math.round(img.naturalWidth * escala));
+    const h = Math.max(1, Math.round(img.naturalHeight * escala));
+    const lienzo = document.createElement('canvas');
+    lienzo.width = w; lienzo.height = h;
+    const ctx = lienzo.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(img, 0, 0, w, h);
+    const dataURL = lienzo.toDataURL('image/jpeg', calidad);
+    return { dataURL, ancho: w, alto: h, bytes: Math.round(dataURL.length * 0.75) };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+/* =========================================================
+   12. INTERFAZ
+   ========================================================= */
+const MENSAJES_TRANSICION = [
+  '¡Aquí vamos, {n}! Respira, sonríe y da lo mejor de ti.',
+  '{n}, cada misión te acerca a ser la maestra que sueñas ser.',
+  '¡Qué alegría verte avanzar, {n}! Confío en ti.',
+  'Una buena maestra también aprende jugando. ¡Adelante, {n}!',
+  '{n}, recuerda: equivocarse también es parte de aprender.'
+];
+
+function imgAurora(tamano){
+  return `<img src="${APP.imagenAurora}" alt="Aurora, la profesora" class="aurora-img ${tamano}" onerror="auroraRespaldo(this)">`;
+}
+function auroraRespaldo(img){
+  const d = document.createElement('div');
+  d.className = img.className + ' aurora-fallback';
+  d.setAttribute('role', 'img');
+  d.setAttribute('aria-label', 'Aurora, la profesora');
+  d.textContent = '👩‍🏫';
+  img.replaceWith(d);
+}
+function globoAurora(html){
+  return `<div class="aurora-fila">${imgAurora('mini')}<div class="globo"><span class="quien">Aurora</span>${html}</div></div>`;
+}
+
+function render(html){
+  $('#pantalla').innerHTML = `<section class="pantalla">${html}</section>`;
+  window.scrollTo(0, 0);
+}
+
+function mostrarBarraGuardar(visible){ $('#barraGuardar').hidden = !visible; }
+function actualizarIndicador(texto){ const s = $('#estadoGuardado'); if (s) s.textContent = texto; }
+
+let temporizadorToast = null;
+function toast(texto){
+  const t = $('#toast');
+  t.textContent = texto;
+  t.classList.add('visible');
+  clearTimeout(temporizadorToast);
+  temporizadorToast = setTimeout(() => t.classList.remove('visible'), 2800);
+}
+
+/* Diálogo propio (más legible en celulares que confirm/alert) */
+function dialogo({ titulo = '', mensaje = '', html = null, botones = [{ texto: 'Entendido', valor: true, clase: 'btn-primario' }] }){
+  return new Promise(resolve => {
+    const modal = $('#modal');
+    $('#modalTitulo').textContent = titulo;
+    const cuerpo = $('#modalCuerpo');
+    if (html !== null) cuerpo.innerHTML = html; else { cuerpo.innerHTML = ''; const p = document.createElement('p'); p.textContent = mensaje; cuerpo.appendChild(p); }
+    const cont = $('#modalBotones');
+    cont.innerHTML = '';
+    botones.forEach(b => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn ' + (b.clase || 'btn-secundario');
+      btn.textContent = b.texto;
+      btn.addEventListener('click', () => { modal.hidden = true; resolve(b.valor); });
+      cont.appendChild(btn);
+    });
+    modal.hidden = false;
+    if (cont.firstChild) cont.firstChild.focus();
+  });
+}
+
+/* ---------- 12.1 Bienvenida y registro ---------- */
+function mensajeBienvenida(){
+  const base = `<p>¡Hola! Soy <strong>Aurora</strong> y seré tu guía en esta aventura para futuras maestras.</p>`;
+  if (CONFIG_DOCENTE.ACTIVIDAD_CALIFICABLE) {
+    return base + `<p>Esta misión es muy especial: un excelente desempeño podría permitir que esta actividad sea considerada como tu <strong>microclase del próximo sábado</strong>. ¡Da lo mejor de ti, sé que puedes lograrlo!</p>`;
+  }
+  return base + `<p>Esta es nuestra <strong>actividad de cierre y celebración</strong> del curso. Juega, reflexiona y disfruta cada misión: ¡te lo has ganado!</p>`;
+}
+
+function navegadorInterno(){
+  return /FBAN|FBAV|FB_IAB|Instagram|Line\/|TikTok/i.test(navigator.userAgent || '');
+}
+
+function mostrarBienvenida(){
+  pantallaActual = 'bienvenida';
+  mostrarBarraGuardar(false);
+  const g = estadoGuardado;
+  render(`
+    ${imgAurora('grande')}
+    <h1 class="titulo-app">${APP.titulo}</h1>
+    <p class="subtitulo">Una aventura para futuras maestras</p>
+    ${navegadorInterno() ? `<div class="aviso">⚠️ Parece que abriste el enlace dentro de otra aplicación. Para que el guardado y las descargas funcionen bien, ábrelo en <strong>Chrome</strong> (menú ⋮ → «Abrir en Chrome»).</div>` : ''}
+    ${!Persistencia.disponible ? `<div class="aviso">⚠️ Este navegador limita el guardado automático. Usa con frecuencia el botón <strong>«Guardar mi progreso»</strong>.</div>` : ''}
+    <div class="globo" style="margin-bottom:16px"><span class="quien">Aurora</span>${mensajeBienvenida()}</div>
+    ${g ? `
+      <div class="tarjeta destacada">
+        <p>Hay una aventura guardada en este teléfono:</p>
+        <p><strong>${esc(g.nombre)}</strong><br><small>Último guardado: ${fechaLegible(g.actualizado)}</small></p>
+        <button type="button" id="btnContinuar" class="btn btn-primario">▶️ Continuar como ${esc(primerNombre(g.nombre))}</button>
+      </div>` : ''}
+    <div class="tarjeta">
+      <label for="inputNombre">${g ? '¿Eres otra estudiante? Escribe tu nombre completo' : 'Escribe tu nombre completo'}</label>
+      <input type="text" id="inputNombre" autocomplete="name" autocapitalize="words" maxlength="80" placeholder="Nombre y apellidos" enterkeyhint="go">
+      <p id="errorNombre" class="error" role="alert"></p>
+      <button type="button" id="btnComenzar" class="btn btn-primario">🚀 Comenzar mi aventura</button>
+      <button type="button" id="btnRecuperar" class="btn btn-secundario">📂 Recuperar mi aventura</button>
+      <p class="ayuda">Usa «Recuperar mi aventura» si tienes el archivo de respaldo (.json) que descargaste antes.</p>
+    </div>
+    <p class="pie">${APP.curso}<br>${APP.programa}</p>
+  `);
+
+  if (g) $('#btnContinuar').addEventListener('click', () => {
+    estado = g;
+    agregarHistorial('regreso', 'Regresó a su aventura.');
+    guardarAuto();
+    mostrarMenu();
+  });
+  $('#btnComenzar').addEventListener('click', comenzarAventura);
+  $('#inputNombre').addEventListener('keydown', e => { if (e.key === 'Enter') comenzarAventura(); });
+  $('#inputNombre').addEventListener('input', () => { $('#errorNombre').textContent = ''; });
+  $('#btnRecuperar').addEventListener('click', () => { const i = $('#inputImportar'); i.value = ''; i.click(); });
+}
+
+function validarNombre(nombre){
+  if (!nombre) return 'Escribe tu nombre completo para comenzar.';
+  if (!/^[\p{L}\s'.-]+$/u.test(nombre)) return 'Usa solo letras en tu nombre (sin números ni símbolos).';
+  const partes = nombre.split(' ').filter(p => p.replace(/[.'-]/g, '').length >= 2);
+  if (partes.length < 2) return 'Escribe tu nombre y al menos un apellido.';
+  return '';
+}
+
+async function comenzarAventura(){
+  const nombre = limpiarNombre($('#inputNombre').value);
+  const error = validarNombre(nombre);
+  if (error) { $('#errorNombre').textContent = error; $('#inputNombre').focus(); return; }
+
+  const previo = estadoGuardado;
+  if (previo && tieneProgreso(previo)) {
+    const mismo = slug(previo.nombre) === slug(nombre);
+    const r = await dialogo({
+      titulo: mismo ? '¡Ya tienes una aventura!' : 'Hay otra aventura guardada',
+      html: mismo
+        ? `<p>Encontré una aventura de <strong>${esc(previo.nombre)}</strong> en este teléfono. ¿Quieres continuarla?</p><p><small>Si comienzas de nuevo, la anterior se reemplazará aquí.</small></p>`
+        : `<p>En este teléfono está guardada la aventura de <strong>${esc(previo.nombre)}</strong>.</p><p>Si comienzas una nueva, esa aventura se reemplazará en este teléfono. Te recomendamos descargar primero su respaldo.</p>`,
+      botones: mismo
+        ? [ { texto: '▶️ Continuar mi aventura', valor: 'continuar', clase: 'btn-primario' },
+            { texto: 'Comenzar desde cero', valor: 'nueva', clase: 'btn-secundario' },
+            { texto: 'Cancelar', valor: 'no', clase: 'btn-texto' } ]
+        : [ { texto: `Descargar respaldo de ${primerNombre(previo.nombre)}`, valor: 'respaldo', clase: 'btn-secundario' },
+            { texto: 'Comenzar nueva aventura', valor: 'nueva', clase: 'btn-primario' },
+            { texto: 'Cancelar', valor: 'no', clase: 'btn-texto' } ]
+    });
+    if (r === 'continuar') { estado = previo; agregarHistorial('regreso', 'Regresó a su aventura.'); guardarAuto(); mostrarMenu(); return; }
+    if (r === 'respaldo') { estado = previo; await exportarJSON(); estado = null; return; }
+    if (r !== 'nueva') return;
+  }
+
+  estado = crearEstadoNuevo(nombre);
+  estadoGuardado = null;
+  agregarHistorial('inicio', `${nombre} comenzó su aventura.`);
+  await guardarAhora();
+  mostrarMenu();
+  toast(`✨ ¡Bienvenida, ${primerNombre(nombre)}!`);
+}
+
+/* ---------- 12.2 Mapa de fases ---------- */
+function mostrarMenu(){
+  pantallaActual = 'menu';
+  mostrarBarraGuardar(true);
+  const n = esc(primerNombre(estado.nombre));
+  const completadas = FASES.filter(f => estado.fases[f.id].estado === 'completada').length;
+  const pct = Math.round(completadas / FASES.length * 100);
+  const sugerida = FASES.find((f, i) => faseDesbloqueada(i) && estado.fases[f.id].estado !== 'completada');
+
+  const items = FASES.map((f, i) => {
+    const fe = estado.fases[f.id];
+    const libre = faseDesbloqueada(i);
+    let etiqueta, clase;
+    if (fe.estado === 'completada')      { etiqueta = '✅ Completada';  clase = 'completada'; }
+    else if (!libre)                     { etiqueta = '🔒 Bloqueada';   clase = 'bloqueada'; }
+    else if (!estaImplementada(f.id))    { etiqueta = '🚧 Próximamente'; clase = 'proximamente'; }
+    else if (fe.estado === 'en_curso')   { etiqueta = '✏️ En curso';    clase = 'en-curso'; }
+    else                                 { etiqueta = '⭐ Disponible';  clase = 'disponible'; }
+    if (sugerida && sugerida.id === f.id) clase += ' sugerida';
+    return `<li><button type="button" class="fase-card ${clase}" data-fase="${f.id}" style="--color-fase:${f.color}" ${libre ? '' : 'disabled aria-disabled="true"'}>
+      <span class="fase-emoji" aria-hidden="true">${f.emoji}</span>
+      <span class="fase-info"><small>Fase ${f.numero}</small><strong>${esc(f.titulo)}</strong><small>${esc(f.subtitulo)}</small></span>
+      <span class="fase-insignia">${etiqueta}</span></button></li>`;
+  }).join('');
+
+  const historial = estado.historial.slice(-40).reverse().map(h =>
+    `<li><time>${fechaLegible(h.fecha)}</time>${esc(h.texto)}</li>`).join('');
+
+  const faseAnterior = FASES.find(f => f.id === estado.faseActual);
+  const indiceAnterior = faseAnterior ? FASES.indexOf(faseAnterior) : -1;
+
+  render(`
+    ${globoAurora(completadas === 0
+      ? `<p>¡Hola, <strong>${n}</strong>! Este es el mapa de tu aventura. Avanza fase por fase y no olvides guardar tu progreso.</p>`
+      : `<p>¡Vas muy bien, <strong>${n}</strong>! Sigue así, cada fase cuenta.</p>`)}
+    <div class="tarjeta">
+      <strong>Tu recorrido</strong>
+      <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="${FASES.length}" aria-valuenow="${completadas}"><span style="width:${pct}%"></span></div>
+      <small>${completadas} de ${FASES.length} fases completadas</small>
+    </div>
+    ${faseAnterior && indiceAnterior >= 0 && faseDesbloqueada(indiceAnterior) && estado.fases[faseAnterior.id].estado !== 'completada'
+      ? `<button type="button" class="btn btn-suave" data-fase="${faseAnterior.id}" style="margin:0 0 16px">↩️ Continuar donde te quedaste: Fase ${faseAnterior.numero}</button>` : ''}
+    <ol class="lista-fases">${items}</ol>
+    <details class="tarjeta">
+      <summary>📜 Mi historial de aventura</summary>
+      <ul class="historial">${historial || '<li>Aún no hay registros.</li>'}</ul>
+    </details>
+    <button type="button" id="btnInicio" class="btn btn-texto">🏠 Volver a la bienvenida</button>
+  `);
+
+  document.querySelectorAll('[data-fase]').forEach(b =>
+    b.addEventListener('click', () => { if (!b.disabled) abrirFase(b.dataset.fase); }));
+  $('#btnInicio').addEventListener('click', async () => {
+    await guardarAhora();
+    estadoGuardado = CONFIG_DOCENTE.GUARDADO_AUTOMATICO ? estado : null;
+    estado = null;
+    mostrarBienvenida();
+  });
+}
+
+/* ---------- 12.3 Pantalla de fase ---------- */
+function crearAPIFase(fase){
+  const fe = estado.fases[fase.id];
+  return {
+    nombre: estado.nombre,
+    config: CONFIG_DOCENTE,
+    fase,
+    estadoFase: fe,
+    get asignacion(){ return fe.asignacion; },
+    get respuestas(){ return fe.respuestas; },
+    responder(clave, valor){ fe.respuestas[clave] = valor; guardarAuto(); },
+    registrarEvento(texto, datos){
+      const it = intentoAbierto(fe);
+      if (it) it.eventos.push({ fecha: ahoraISO(), texto, datos: datos ?? null });
+      guardarAuto();
+    },
+    agregarEvidencia(ev){
+      estado.evidencias.push(Object.assign({ id: generarId(), fase: fase.id, fecha: ahoraISO() }, ev));
+      agregarHistorial('evidencia', `Agregó una evidencia en «${fase.titulo}».`, fase.id);
+      guardarAuto();
+    },
+    completar(resultado){ completarFase(fase, resultado); },
+    aurora(texto){ return dialogo({ titulo: 'Aurora dice…', html: globoAurora(`<p>${esc(texto)}</p>`) }); },
+    guardar(){ return guardarAhora(); }
+  };
+}
+
+function abrirFase(faseId, desdeHistorial){
+  const fase = FASES.find(f => f.id === faseId);
+  if (!fase) return;
+  const indice = FASES.indexOf(fase);
+  if (!faseDesbloqueada(indice)) { toast('🔒 Completa primero las fases anteriores.'); return; }
+
+  const fe = estado.fases[fase.id];
+  const motor = MOTORES[fase.id];
+  estado.faseActual = fase.id;
+
+  if (motor) {
+    // La asignación aleatoria ocurre UNA sola vez y queda guardada
+    if (fe.asignacion == null && typeof motor.asignar === 'function') {
+      fe.asignacion = motor.asignar(Azar, { preguntas: BANCO_PREGUNTAS, retos: BANCO_RETOS });
+      agregarHistorial('asignacion', `Recibió sus desafíos de «${fase.titulo}».`, fase.id);
+    }
+    if (fe.estado === 'pendiente') { fe.estado = 'en_curso'; fe.fechaInicio = ahoraISO(); }
+    if (fe.estado === 'en_curso' && !intentoAbierto(fe)) iniciarIntento(fe);
+  }
+  agregarHistorial('fase', `Entró a la fase ${fase.numero}: ${fase.titulo}.`, fase.id);
+  guardarAuto();
+
+  if (!desdeHistorial) { try { history.pushState({ fase: fase.id }, ''); } catch (e) {} }
+  pantallaActual = 'fase';
+  mostrarBarraGuardar(true);
+
+  const mensaje = MENSAJES_TRANSICION[(fase.numero - 1) % MENSAJES_TRANSICION.length]
+    .replace('{n}', `<strong>${esc(primerNombre(estado.nombre))}</strong>`);
+  const puedePista = CONFIG_DOCENTE.PERMITIR_PISTAS && motor && typeof motor.pista === 'function';
+  const puedeReiniciar = CONFIG_DOCENTE.PERMITIR_REINTENTOS && motor;
+
+  render(`
+    <div class="fase-cabecera" style="--color-fase:${fase.color}">
+      <span class="emoji-grande" aria-hidden="true">${fase.emoji}</span>
+      <div><small>Fase ${fase.numero} de ${FASES.length}</small><h2>${esc(fase.titulo)}</h2><p>${esc(fase.subtitulo)}</p></div>
+    </div>
+    ${globoAurora(`<p>${mensaje}</p>`)}
+    <div class="tarjeta"><h3>📋 Instrucciones</h3><p>${esc(fase.instrucciones)}</p></div>
+    <div id="zonaJuego" class="zona-juego"></div>
+    <div class="acciones-fase">
+      ${puedePista ? `<button type="button" id="btnPista" class="btn btn-suave">💡 Pedir una pista</button>` : ''}
+      ${puedeReiniciar ? `<button type="button" id="btnReiniciar" class="btn btn-secundario">🔄 Reiniciar este juego</button>` : ''}
+      <button type="button" id="btnMapa" class="btn btn-secundario">🗺️ Volver al mapa de fases</button>
+    </div>
+  `);
+
+  const zona = $('#zonaJuego');
+  const api = crearAPIFase(fase);
+  if (motor) {
+    try { motor.iniciar(zona, api); }
+    catch (err) {
+      console.error(err);
+      zona.innerHTML = `<div class="tarjeta aviso"><p>⚠️ Ocurrió un problema al cargar este juego. Tu progreso está a salvo. Vuelve al mapa e inténtalo de nuevo.</p></div>`;
+    }
+  } else {
+    zona.innerHTML = `
+      <div class="tarjeta construccion">
+        <span class="icono" aria-hidden="true">🚧</span>
+        <h3>Juego en preparación</h3>
+        <p>Aurora está preparando esta misión. Estará disponible en una próxima versión de la aventura.</p>
+        <p><small>Esta fase todavía no puede completarse.</small></p>
+      </div>`;
+  }
+
+  if (puedePista) $('#btnPista').addEventListener('click', () => pedirPista(fase, motor, api));
+  if (puedeReiniciar) $('#btnReiniciar').addEventListener('click', () => reiniciarFase(fase, motor, api));
+  $('#btnMapa').addEventListener('click', volverAlMapa);
+}
+
+function volverAlMapa(){
+  if (history.state && history.state.fase) history.back(); // dispara popstate → mapa
+  else mostrarMenu();
+}
+
+async function pedirPista(fase, motor, api){
+  let texto = null;
+  try { texto = motor.pista(api); } catch (e) { console.error(e); }
+  if (!texto) { await dialogo({ titulo: 'Sin pistas', mensaje: 'Por ahora no hay más pistas para este momento. ¡Tú puedes!' }); return; }
+  const fe = estado.fases[fase.id];
+  fe.pistas.push({ fecha: ahoraISO(), texto });
+  const it = intentoAbierto(fe); if (it) it.pistas++;
+  agregarHistorial('pista', `Usó una pista en «${fase.titulo}».`, fase.id);
+  guardarAuto();
+  await dialogo({ titulo: '💡 Pista de Aurora', html: globoAurora(`<p>${esc(texto)}</p>`) });
+}
+
+async function reiniciarFase(fase, motor, api){
+  const r = await dialogo({
+    titulo: '¿Reiniciar este juego?',
+    mensaje: 'El juego volverá a empezar. No te preocupes: tus intentos anteriores quedan guardados en tu historial y las demás fases no cambian.',
+    botones: [{ texto: '🔄 Sí, reiniciar', valor: true, clase: 'btn-primario' }, { texto: 'Cancelar', valor: false, clase: 'btn-texto' }]
+  });
+  if (!r) return;
+  const fe = estado.fases[fase.id];
+  cerrarIntento(fe, 'reiniciado');
+  if (fe.estado !== 'completada') fe.estado = 'en_curso';
+  iniciarIntento(fe);
+  agregarHistorial('reinicio', `Reinició el juego «${fase.titulo}».`, fase.id);
+  await guardarAhora();
+  const zona = $('#zonaJuego');
+  zona.innerHTML = '';
+  try {
+    if (typeof motor.reiniciar === 'function') motor.reiniciar(zona, api); else motor.iniciar(zona, api);
+  } catch (err) { console.error(err); }
+  toast('🔄 Juego reiniciado');
+}
+
+async function completarFase(fase, resultado){
+  if (!estaImplementada(fase.id)) return; // Nunca completar fases sin juego
+  const fe = estado.fases[fase.id];
+  cerrarIntento(fe, 'completado', resultado ?? null);
+  fe.estado = 'completada';
+  fe.resultado = resultado ?? null;
+  fe.fechaFin = ahoraISO();
+  agregarHistorial('completada', `¡Completó la fase ${fase.numero}: ${fase.titulo}!`, fase.id);
+  if (FASES.every(f => estado.fases[f.id].estado === 'completada') && !estado.fechaFinalizacion) {
+    estado.fechaFinalizacion = ahoraISO();
+    agregarHistorial('final', '¡Terminó toda la aventura!');
+  }
+  await guardarAhora();
+  await dialogo({
+    titulo: '🎉 ¡Fase completada!',
+    html: globoAurora(`<p>¡Excelente, <strong>${esc(primerNombre(estado.nombre))}</strong>! Superaste «${esc(fase.titulo)}». Sigamos con la aventura.</p>`),
+    botones: [{ texto: '🗺️ Ir al mapa de fases', valor: true, clase: 'btn-primario' }]
+  });
+  volverAlMapa();
+}
+
+/* =========================================================
+   13. RECORRIDO FINAL E INFORME (próximas entregas)
+   - Fase 9: secuencia «Siguiente recuerdo» (motor 'recorrido').
+   - Fase 10: felicitación y «Descargar mi aventura completa»
+     (informe HTML independiente con fotografías en Base64).
+   ========================================================= */
+
+/* =========================================================
+   14. ARRANQUE
+   ========================================================= */
+$('#btnGuardar').addEventListener('click', () => exportarJSON());
+$('#inputImportar').addEventListener('change', e => importarJSON(e.target.files && e.target.files[0]));
+
+// Botón "atrás" de Android: desde una fase, vuelve al mapa
+window.addEventListener('popstate', () => { if (pantallaActual === 'fase' && estado) mostrarMenu(); });
+
+// Guardar al salir o al cambiar de aplicación
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') guardarAhora(); });
+window.addEventListener('pagehide', () => { guardarAhora(); });
+
+async function iniciarApp(){
+  await Persistencia.abrir();
+  try {
+    const guardado = await Persistencia.cargar();
+    if (guardado && validarRespaldo(guardado).ok) estadoGuardado = normalizarEstado(guardado);
+  } catch (err) { console.error(err); }
+  try { history.replaceState(null, ''); } catch (e) {}
+  mostrarBienvenida();
+}
+iniciarApp();
+</script>
+</body>
+</html>
