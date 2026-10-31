@@ -116,11 +116,165 @@ input[type=text]:focus{outline:3px solid #c9a7f0;border-color:var(--primario)}
 .construccion .icono{font-size:46px;display:block}
 .acciones-fase{display:flex;flex-direction:column}
 
-/* ---------- Historial ---------- */
-details.tarjeta summary{font-weight:700;cursor:pointer;color:var(--primario-osc);min-height:32px}
-.historial{list-style:none;padding:0;margin:10px 0 0;font-size:.9rem;max-height:320px;overflow:auto}
-.historial li{padding:8px 0;border-bottom:1px solid var(--borde)}
-.historial time{display:block;font-size:.78rem;color:var(--suave)}
+/* ---------- Mapa: misión actual (sorpresa) y logros ---------- */
+.mision-actual{position:relative;overflow:hidden;background:#fff;border:3px solid var(--primario);border-radius:24px;padding:22px 18px 18px;box-shadow:0 6px 20px rgba(106,61,158,.18);margin:0 0 18px;text-align:center}
+.mision-actual::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:var(--color-fase,#e9def8)}
+.mision-actual .emoji-mision{font-size:54px;display:block;margin:10px 0 2px}
+.mision-actual h2{font-size:1.35rem;color:var(--primario-osc);margin:2px 0 0}
+.etiqueta-nueva{display:inline-block;background:linear-gradient(90deg,#d94f8f,#7d4fc0);color:#fff;font-weight:800;padding:6px 14px;border-radius:99px;font-size:.95rem}
+.mision-actual.nueva{animation:revelar .7s ease-out}
+.mision-actual.nueva .etiqueta-nueva{animation:latido 1.2s ease-in-out 2 .7s}
+@keyframes revelar{0%{opacity:0;transform:scale(.85) rotate(-2deg)}60%{opacity:1;transform:scale(1.03)}100%{opacity:1;transform:none}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.btn-mision{font-size:1.15rem;min-height:60px;margin-top:16px}
+.seccion-titulo{font-size:1.05rem;color:var(--primario-osc);margin:4px 0 10px}
+.lista-logros{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:10px}
+.logro{display:flex;align-items:center;gap:12px;width:100%;min-height:68px;padding:12px 14px;text-align:left;background:#f1fbf5;border:2px solid #bfe6cf;border-radius:18px;cursor:pointer;touch-action:manipulation}
+.logro:active{transform:scale(.99)}
+.logro .check{font-size:28px;flex:none}
+.logro .msg{color:var(--exito);font-weight:600;font-size:.92rem}
+.sorpresas{text-align:center;color:var(--suave);font-style:italic;margin:8px 0 16px}
+.consulta{background:var(--menta);border:2px solid #9fd8b7;border-radius:16px;padding:10px 14px;margin-bottom:12px;font-weight:600;color:var(--exito)}
+
+/* ---------- Fase 1 · Sopa de letras ---------- */
+.sopa-tarjeta{padding:10px}
+.sopa-contador{text-align:center;font-weight:800;color:var(--primario-osc);margin:2px 0 0}
+.sopa-grid{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:2px;width:100%;margin:10px 0 6px;padding:4px;background:#e9def8;border-radius:12px;
+  touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer}
+.sopa-celda{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:5px;font-weight:800;line-height:1;
+  font-size:calc((min(100vw,560px) - 76px) / var(--n) * .6);color:var(--texto);transition:background .12s}
+.sopa-celda.encontrada{background:var(--color-palabra,#cdf2dc)}
+.sopa-celda.sel{background:#8c5cc7;color:#fff}
+.sopa-celda.ancla{background:#8c5cc7;color:#fff;box-shadow:inset 0 0 0 3px #fff}
+.sopa-grid.error .sopa-celda.sel{background:#d9534f}
+.sopa-celda.pista{animation:pistaBrillo .9s ease-in-out infinite;background:#ffd84d;color:var(--texto)}
+.sopa-celda.pop{animation:pop .5s ease}
+@keyframes pistaBrillo{0%,100%{box-shadow:inset 0 0 0 0 #e0a800}50%{box-shadow:inset 0 0 0 4px #e0a800}}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.25)}100%{transform:scale(1)}}
+.sopa-lista{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:340px){.sopa-lista{grid-template-columns:1fr}}
+.sopa-lista li{padding:10px 12px;border-radius:12px;background:#f7f3fb;border:2px solid var(--borde);font-weight:700;font-size:.95rem;letter-spacing:.02em;word-break:break-word}
+.sopa-lista li.ok{background:var(--color-palabra,#cdf2dc);border-color:transparent}
+.sopa-lista li.ok .txt{text-decoration:line-through;text-decoration-thickness:2px}
+.tarjeta-palabra{border-left:6px solid var(--color-palabra,#cdf2dc);background:#fcfaff;border-radius:12px;padding:10px 12px;margin:0 0 10px}
+.tarjeta-palabra p{margin:4px 0 0;font-size:.95rem}
+select,textarea{width:100%;border:2px solid #cdbde0;border-radius:14px;background:#fff;padding:12px 14px;font-size:1.02rem}
+select{min-height:52px}
+textarea{resize:vertical;min-height:140px;line-height:1.45}
+select:focus,textarea:focus{outline:3px solid #c9a7f0;border-color:var(--primario)}
+
+/* ---------- Fase 2 · Memoria ---------- */
+.mem-panel{padding:12px}
+.mem-marcadores{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;font-weight:800;color:var(--primario-osc)}
+.mem-marcadores .neutro{font-weight:600;font-size:.9rem;color:var(--suave)}
+.mem-mensaje{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;margin:4px 0;font-weight:800;color:var(--exito);text-align:center;opacity:0;transition:opacity .3s}
+.mem-mensaje.visible{opacity:1}
+.aurora-img.diminuta{width:36px;height:36px;border-width:2px;flex:none}
+.aurora-fallback.diminuta{font-size:20px}
+.mem-tablero{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (min-width:600px){.mem-tablero{grid-template-columns:repeat(4,1fr)}}
+.mem-carta{position:relative;display:block;width:100%;aspect-ratio:3/4;min-height:112px;padding:0;margin:0;border:0;background:transparent;perspective:900px;cursor:pointer;touch-action:manipulation;font:inherit;color:inherit}
+.mem-interior{position:absolute;inset:0;display:block;transition:transform .45s ease;transform-style:preserve-3d}
+.mem-carta.volteada .mem-interior{transform:rotateY(180deg)}
+.mem-cara{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;border-radius:14px;overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:var(--sombra)}
+.mem-dorso{background:var(--fondo-carta,#e9def8);border:3px solid #fff;
+  background-image:radial-gradient(circle at 18% 18%,rgba(255,255,255,.75) 0 7px,transparent 8px),radial-gradient(circle at 82% 82%,rgba(255,255,255,.6) 0 10px,transparent 11px)}
+.mem-signo{display:flex;align-items:center;justify-content:center;width:52%;aspect-ratio:1/1;border-radius:50%;background:rgba(255,255,255,.85);color:var(--primario);font-weight:900;font-size:clamp(24px,8vw,38px)}
+.mem-frente{transform:rotateY(180deg);background:#fff;border:3px solid var(--fondo-carta,#e9def8);text-align:center}
+.mem-frente small{font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;font-weight:800;color:var(--suave);margin-bottom:4px}
+.mem-texto{font-size:clamp(.7rem,3.15vw,.9rem);line-height:1.22;overflow-wrap:anywhere;hyphens:auto;-webkit-hyphens:auto}
+.mem-frente.concepto .mem-texto{font-weight:800;color:var(--primario-osc);font-size:clamp(.78rem,3.6vw,1rem)}
+.mem-carta.encontrada .mem-frente{background:#effaf3;border-color:#7cc99d}
+.mem-carta.encontrada .mem-frente::after{content:"✓";position:absolute;top:3px;right:7px;color:var(--exito);font-weight:900}
+.mem-carta.pop{animation:popCarta .5s ease}
+.mem-carta.pista .mem-frente{box-shadow:0 0 0 4px #ffd84d inset}
+.mem-carta.brillo{animation:brilloCarta .8s ease-in-out infinite}
+.mem-tablero.celebrar .mem-carta{animation:saltito .6s ease 2}
+.mem-carta:focus-visible{outline:3px solid #f49ac1;outline-offset:2px;border-radius:14px}
+@keyframes popCarta{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes brilloCarta{0%,100%{transform:scale(1);filter:none}50%{transform:scale(1.06);filter:drop-shadow(0 0 8px #ffc61a)}}
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.mem-celebracion{text-align:center;background:var(--amarillo);border-color:#f2dc86}
+.mem-celebracion .confeti{font-size:34px;letter-spacing:6px;display:block;margin-bottom:6px}
+.mem-relaciones{display:flex;flex-direction:column;gap:8px}
+.mem-relacion{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:#fcfaff;border-left:6px solid var(--fondo-carta,#e9def8)}
+.mem-relacion strong{color:var(--primario-osc)}
+
+/* ---------- Fase 3 · Crucigrama ---------- */
+.cru-pista{position:sticky;top:6px;z-index:6;background:#fff;border:2px solid var(--primario);border-radius:16px;padding:10px 12px;margin:0 0 12px;box-shadow:0 4px 14px rgba(106,61,158,.18)}
+.cru-ref{display:inline-block;font-weight:800;font-size:.78rem;color:#fff;background:var(--primario);border-radius:99px;padding:2px 10px;margin-bottom:4px}
+.cru-pista p{margin:0;font-weight:600;line-height:1.35}
+.cru-panel{padding:12px}
+.cru-marco{position:relative;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch}
+.cru-grid{display:grid;grid-template-columns:repeat(var(--cols),var(--tam,32px));grid-auto-rows:var(--tam,32px);gap:2px;width:max-content;margin:0 auto;padding:4px;background:#e9def8;border-radius:12px;user-select:none;-webkit-user-select:none}
+.cru-vacia{background:transparent}
+.cru-celda{position:relative;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:5px;cursor:pointer;touch-action:manipulation;box-shadow:inset 0 0 0 1px #d6c6ea;transition:background .12s}
+.cru-n{position:absolute;top:1px;left:3px;font-size:max(8.5px, calc(var(--tam,32px) * .3));font-weight:700;color:var(--suave);line-height:1}
+.cru-l{font-weight:800;font-size:calc(var(--tam,32px) * .56);line-height:1;color:var(--texto)}
+.cru-celda.correcta{background:#cdf2dc}
+.cru-celda.revisar{background:#ffe3c2}
+.cru-celda.en-palabra:not(.correcta):not(.revisar){background:#efe4fb}
+.cru-celda.en-palabra{box-shadow:inset 0 0 0 2px #b18ee0}
+.cru-celda.activa{background:#c9a7f0 !important;box-shadow:inset 0 0 0 3px var(--primario)}
+.cru-celda.revelada .cru-l{color:#1d6e46}
+.cru-celda.revelada::after{content:"";position:absolute;bottom:3px;left:30%;right:30%;height:2px;border-radius:2px;background:#e0a800}
+.cru-celda.pop{animation:pop .5s ease}
+.cru-grid.celebrar .cru-celda{animation:saltito .6s ease 2}
+input.cru-entrada[type=text]{position:absolute;left:0;top:0;width:1px;height:1px;min-height:0;padding:0;border:0;opacity:0;font-size:16px;caret-color:transparent;pointer-events:none;outline:none}
+.cru-mensaje{min-height:24px;margin:8px 0 0;text-align:center;font-weight:700;color:var(--exito)}
+.cru-acciones{display:flex;gap:8px;margin-top:6px}
+.cru-acciones .btn{margin:0;flex:1;min-height:46px;font-size:.98rem}
+.cru-teclado{display:flex;flex-direction:column;gap:6px;margin-top:10px;user-select:none;-webkit-user-select:none}
+.cru-fila{display:flex;gap:4px;justify-content:center}
+.cru-tecla{flex:1;max-width:44px;min-height:46px;padding:0;border:0;border-radius:10px;background:#f3ecfb;color:var(--primario-osc);font-weight:800;font-size:1.05rem;box-shadow:0 2px 0 #d6c6ea;cursor:pointer;touch-action:manipulation}
+.cru-tecla:active{transform:translateY(1px);background:#e2d3f6}
+.cru-tecla.ancha{flex:1.6;max-width:72px}
+.cru-lista{list-style:none;padding:0;margin:0 0 14px}
+.cru-lista li{padding:8px 10px;margin-bottom:6px;border-radius:10px;background:#faf7fd;border:2px solid transparent;cursor:pointer;font-size:.95rem;line-height:1.35}
+.cru-lista li.activa{border-color:var(--primario);background:#f3ecfb}
+.cru-lista li.resuelta{background:#effaf3}
+.cru-lista li.resuelta::before{content:"✅ "}
+
+/* ---------- Fase 4 · Cacería de evidencias ---------- */
+.ev-reto{padding:14px}
+.ev-reto.ok{border-color:#9fd8b7;background:#fbfffc}
+.ev-cab{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.ev-num{flex:none;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:var(--durazno);color:var(--primario-osc);font-weight:900;font-size:1.1rem}
+.ev-reto.ok .ev-num{background:var(--menta);color:var(--exito)}
+.ev-cab h3{margin:0;font-size:1.08rem;color:var(--primario-osc)}
+.ev-estado{font-size:.85rem;font-weight:700;color:var(--suave)}
+.ev-reto.ok .ev-estado{color:var(--exito)}
+.ev-alt{font-size:.9rem;background:#f7f3fb;border-radius:12px;padding:8px 10px;margin:6px 0}
+.ev-foto{margin:10px 0 2px}
+.ev-foto img,.ev-item img{display:block;width:100%;max-height:340px;object-fit:contain;border-radius:14px;background:#f4eefa;border:3px solid #fff;box-shadow:var(--sombra)}
+.ev-foto img.ev-previa{outline:3px dashed #e0a800;outline-offset:3px}
+.ev-vacia{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:120px;border:2px dashed #e6cdb5;border-radius:14px;background:#fffaf4;color:var(--suave);font-size:.92rem;text-align:center;padding:10px}
+.ev-vacia span{font-size:34px}
+.ev-tira{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.ev-tira img{width:56px;height:56px;object-fit:cover;border-radius:10px;border:2px solid #fff;box-shadow:var(--sombra)}
+.ev-galeria{display:flex;flex-direction:column;gap:14px}
+.ev-item strong{display:block;color:var(--primario-osc);margin-bottom:6px}
+
+/* ---------- Modo prueba docente ---------- */
+.btn-prueba{background:#fff8e1;color:#5c4300;border:2px dashed #c79a00;font-size:.92rem;min-height:44px}
+.banda-prueba{background:#fff3c4;border:2px dashed #c79a00;color:#5c4300;border-radius:14px;padding:8px 12px;margin:0 0 12px;font-weight:800;font-size:.85rem;text-align:center}
+.tarjeta-prueba{background:#fffbea;border:2px dashed #c79a00}
+.tarjeta-prueba h3{color:#5c4300}
+.consulta-prueba{background:#fff3c4;border-color:#e2c25a;color:#5c4300}
+
+/* ---------- Recorrido de recuerdos ---------- */
+.recuerdo{text-align:center;animation:aparecer .4s ease}
+.recuerdo .emoji-recuerdo{font-size:50px;display:block}
+.recuerdo h3{margin:6px 0 10px}
+.recuerdo ul{text-align:left;padding-left:22px;margin:0 0 8px}
+.recuerdo li{margin-bottom:6px}
+.recuerdo .foto{display:block;max-width:100%;max-height:60vh;margin:8px auto;border-radius:16px;border:3px solid #fff;box-shadow:var(--sombra)}
+.cita{background:var(--lila);border-radius:14px;padding:10px 12px;text-align:left;margin:8px 0}
+.cita small{display:block;font-weight:700;color:var(--primario-osc)}
+.contador-recuerdo{display:block;font-size:.85rem;color:var(--suave);margin-bottom:6px}
+.fila-botones{display:flex;gap:10px}
+.fila-botones .btn{flex:1}
 
 /* ---------- Barra de guardado permanente ---------- */
 #barraGuardar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.97);border-top:2px solid var(--borde);box-shadow:0 -4px 14px rgba(0,0,0,.06);padding:8px 16px calc(8px + env(safe-area-inset-bottom))}
@@ -185,7 +339,11 @@ const CONFIG_DOCENTE = {
   MOSTRAR_PUNTAJES_ESTUDIANTES: false, // Reservado: durante los juegos no se muestran notas ni puntajes
   PERMITIR_PISTAS: true,
   PERMITIR_REINTENTOS: true,
-  GUARDADO_AUTOMATICO: true
+  GUARDADO_AUTOMATICO: true,
+  // ⚠️ SOLO PARA VERIFICACIONES DEL DOCENTE. Cambiar a false ANTES DE PUBLICAR.
+  // Activa un «perfil de prueba» separado (nunca toca la aventura real de una
+  // estudiante) con los botones «Completar fase (prueba)» y «Reiniciar pruebas».
+  MODO_PRUEBA_DOCENTE: true
 };
 
 /* =========================================================
@@ -193,7 +351,7 @@ const CONFIG_DOCENTE = {
    ========================================================= */
 const APP = {
   id: 'aurora-ultima-mision',          // Identifica los respaldos JSON de esta aplicación
-  version: 1,                          // Versión del formato del respaldo
+  version: 2,                          // Versión del formato del respaldo (2 = estructura de 8 misiones)
   titulo: 'La última misión de Aurora',
   curso: 'Desarrollo de la Competencia Comunicativa II',
   programa: 'Profesorado Especializado en Educación Preprimaria',
@@ -206,28 +364,40 @@ const APP = {
    3. DEFINICIÓN DE FASES (orden fijo para todas)
    "instrucciones" describe solo la mecánica; el contenido
    pedagógico vendrá de los bancos (sección 4 y 5).
+   "logro" es el mensaje motivador que aparece en el mapa
+   cuando la fase ya fue completada.
+   Los títulos de las fases futuras NUNCA se muestran a la
+   estudiante: se revelan una por una.
    ========================================================= */
+/* Versión 2 de la estructura: 8 misiones. Las misiones «Ordena el desastre»
+   (secuencias) y «El desafío de Aurora» (desafio) se eliminaron; los respaldos
+   antiguos se migran automáticamente en normalizarEstado(). */
+const FASES_ELIMINADAS = ['secuencias', 'desafio'];
 const FASES = [
   { id:'sopa',         numero:1,  emoji:'🔤', color:'#fbd3e3', titulo:'Palabras escondidas',               subtitulo:'Sopa de letras',
-    instrucciones:'Encuentra las palabras escondidas en la cuadrícula de letras.' },
+    instrucciones:'Desliza el dedo (o el mouse) sobre las letras para marcar cada palabra. También puedes tocar la primera letra y luego la última. Las palabras pueden estar en horizontal, vertical o diagonal, y en cualquier sentido.',
+    logro:'¡Descubriste las palabras escondidas!' },
   { id:'memoria',      numero:2,  emoji:'🧠', color:'#d6e8fb', titulo:'Memoria de una futura maestra',     subtitulo:'Parejas de conceptos',
-    instrucciones:'Voltea las tarjetas de dos en dos y encuentra las parejas que se relacionan.' },
+    instrucciones:'Toca dos tarjetas para descubrirlas. Cada pareja está formada por un concepto y su significado. Si se relacionan, quedarán descubiertas; si no, volverán a ocultarse. ¡Recuerda dónde está cada una!',
+    logro:'¡Tu memoria estuvo a prueba!' },
   { id:'crucigrama',   numero:3,  emoji:'🧩', color:'#cdeedd', titulo:'Crucigrama misterioso',             subtitulo:'Pistas y palabras',
-    instrucciones:'Lee cada pista y escribe la palabra que corresponde en el crucigrama.' },
-  { id:'secuencias',   numero:4,  emoji:'🔀', color:'#fff0b3', titulo:'Ordena el desastre',                subtitulo:'Secuencias pedagógicas',
-    instrucciones:'Ordena los pasos para que cada secuencia tenga sentido.' },
-  { id:'desafio',      numero:5,  emoji:'💬', color:'#e9def8', titulo:'El desafío de Aurora',              subtitulo:'Preguntas y situaciones',
-    instrucciones:'Responde las preguntas y analiza las situaciones que Aurora te presenta.' },
-  { id:'evidencias',   numero:6,  emoji:'📸', color:'#ffe0cc', titulo:'Cacería de evidencias',             subtitulo:'Retos fotográficos',
-    instrucciones:'Cumple los retos fotográficos y agrega tus fotografías como evidencia.' },
-  { id:'planificacion',numero:7,  emoji:'🛡️', color:'#d6e8fb', titulo:'Defiende tu planificación general',subtitulo:'Argumenta tus decisiones',
-    instrucciones:'Responde las preguntas para explicar y defender tu planificación general.' },
-  { id:'ruta',         numero:8,  emoji:'🗓️', color:'#cdeedd', titulo:'Mi ruta de aprendizaje semanal',   subtitulo:'Reflexión de la semana',
-    instrucciones:'Describe tu ruta de aprendizaje de la semana.' },
-  { id:'recorrido',    numero:9,  emoji:'🎞️', color:'#fbd3e3', titulo:'El recorrido de nuestra aventura',  subtitulo:'Siguiente recuerdo',
-    instrucciones:'Revive los momentos de tu aventura, recuerdo por recuerdo.' },
-  { id:'despedida',    numero:10, emoji:'🎓', color:'#fff0b3', titulo:'Felicitación y despedida',          subtitulo:'Palabras de Aurora',
-    instrucciones:'Recibe las palabras finales de Aurora y descarga tu aventura completa.' }
+    instrucciones:'Toca una casilla para elegir una palabra y lee su pista arriba. Escribe con el teclado de letras de Aurora o con el de tu celular. Si una casilla está en un cruce, tócala otra vez para cambiar de dirección.',
+    logro:'¡Resolviste el misterio!' },
+  { id:'evidencias',   numero:4,  emoji:'📸', color:'#ffe0cc', titulo:'Cacería de evidencias',             subtitulo:'Retos fotográficos',
+    instrucciones:'Cumple tus retos fotográficos en el orden que prefieras. Toca «Tomar o subir fotografía» para usar la cámara o elegir una imagen de tu galería.',
+    logro:'¡Reuniste tus evidencias!' },
+  { id:'planificacion',numero:5,  emoji:'🛡️', color:'#d6e8fb', titulo:'Defiende tu planificación general',subtitulo:'Argumenta tus decisiones',
+    instrucciones:'Responde las preguntas para explicar y defender tu planificación general.',
+    logro:'¡Defendiste tu planificación!' },
+  { id:'ruta',         numero:6,  emoji:'🗓️', color:'#cdeedd', titulo:'Mi ruta de aprendizaje semanal',   subtitulo:'Reflexión de la semana',
+    instrucciones:'Describe tu ruta de aprendizaje de la semana.',
+    logro:'¡Trazaste tu ruta de aprendizaje!' },
+  { id:'recorrido',    numero:7,  emoji:'🎞️', color:'#fbd3e3', titulo:'El recorrido de nuestra aventura',  subtitulo:'Siguiente recuerdo',
+    instrucciones:'Revive los momentos de tu aventura, recuerdo por recuerdo.',
+    logro:'¡Reviviste tu aventura!' },
+  { id:'despedida',    numero:8,  emoji:'🎓', color:'#fff0b3', titulo:'Felicitación y despedida',          subtitulo:'Palabras de Aurora',
+    instrucciones:'Recibe las palabras finales de Aurora y descarga tu aventura completa.',
+    logro:'¡Culminaste la última misión!' }
 ];
 
 /* =========================================================
@@ -235,18 +405,186 @@ const FASES = [
    Vacíos a propósito: el docente proporcionará el contenido.
    ========================================================= */
 const BANCO_PREGUNTAS = {
-  sopa: [],        // Palabras y pistas para la sopa de letras
-  memoria: [],     // Parejas de conceptos
-  crucigrama: [],  // Palabras y definiciones
-  secuencias: [],  // Secuencias pedagógicas a ordenar
-  desafio: []      // Preguntas y situaciones
+  // Fase 1 · «Palabras escondidas»: banco de 20; cada estudiante recibe 8 al azar.
+  // palabra: sin tildes (para la cuadrícula) · mostrar: con ortografía correcta.
+  sopa: [
+    { palabra:'LENGUAJE', mostrar:'Lenguaje',
+      definicion:'Capacidad humana que permite construir y comunicar significados.',
+      ejemplo:'La maestra puede pedir a los niños que describan con sus propias palabras un objeto sacado de una caja sorpresa.' },
+    { palabra:'COMUNICACION', mostrar:'Comunicación',
+      definicion:'Proceso de intercambio de mensajes y significados.',
+      ejemplo:'En el saludo de la mañana, cada niño puede contar cómo se siente y escuchar cómo se sienten sus compañeros.' },
+    { palabra:'ORALIDAD', mostrar:'Oralidad',
+      definicion:'Uso de la palabra hablada para expresar ideas y experiencias.',
+      ejemplo:'Al compartir qué hicieron el fin de semana, los niños practican su expresión oral frente al grupo.' },
+    { palabra:'ESCUCHA', mostrar:'Escucha',
+      definicion:'Atención e interpretación de los mensajes de otras personas.',
+      ejemplo:'Durante un cuento, los niños pueden levantar la mano cada vez que escuchen el nombre de un personaje.' },
+    { palabra:'VOCABULARIO', mostrar:'Vocabulario',
+      definicion:'Conjunto de palabras que una persona conoce y utiliza.',
+      ejemplo:'Al explorar frutas reales, los niños aprenden y usan palabras nuevas como «jugosa», «áspera» o «madura».' },
+    { palabra:'NARRACION', mostrar:'Narración',
+      definicion:'Relato organizado de acontecimientos reales o imaginarios.',
+      ejemplo:'Una maestra puede invitar a los niños a contar qué sucedió primero, después y al final de un cuento.' },
+    { palabra:'CUENTO', mostrar:'Cuento',
+      definicion:'Relato que puede favorecer la imaginación y la expresión infantil.',
+      ejemplo:'Después de leer un cuento, los niños pueden inventar un final diferente para su personaje favorito.' },
+    { palabra:'DRAMATIZACION', mostrar:'Dramatización',
+      definicion:'Representación de situaciones mediante personajes y acciones.',
+      ejemplo:'Los niños pueden representar una visita al mercado, asumiendo los papeles de vendedores y compradores.' },
+    { palabra:'TITERES', mostrar:'Títeres',
+      definicion:'Recursos expresivos que permiten representar personajes y situaciones.',
+      ejemplo:'Un títere puede «preguntar» a los niños por sus juegos favoritos y animar a los más tímidos a responder.' },
+    { palabra:'RIMAS', mostrar:'Rimas',
+      definicion:'Coincidencias sonoras que pueden utilizarse en juegos con palabras.',
+      ejemplo:'La maestra dice «Tengo un gato que se llama…» y los niños buscan palabras que rimen para completar la frase.' },
+    { palabra:'RETAHILAS', mostrar:'Retahílas',
+      definicion:'Composiciones orales breves con ritmo y repetición.',
+      ejemplo:'Una retahíla acompañada de palmadas ayuda a los niños a seguir el ritmo y a memorizar palabras mientras juegan.' },
+    { palabra:'JUEGO', mostrar:'Juego',
+      definicion:'Actividad que favorece la exploración, la interacción y el aprendizaje.',
+      ejemplo:'Con el juego del «teléfono descompuesto», los niños descubren la importancia de hablar y escuchar con claridad.' },
+    { palabra:'EXPRESION', mostrar:'Expresión',
+      definicion:'Manifestación de pensamientos, sentimientos o experiencias.',
+      ejemplo:'Al dibujar y luego explicar su dibujo, cada niño expresa ideas y emociones con sus propias palabras.' },
+    { palabra:'GESTOS', mostrar:'Gestos',
+      definicion:'Movimientos corporales que transmiten mensajes.',
+      ejemplo:'Una canción con movimientos permite que los niños acompañen las palabras con gestos de las manos y del cuerpo.' },
+    { palabra:'DIALOGO', mostrar:'Diálogo',
+      definicion:'Intercambio comunicativo entre dos o más personas.',
+      ejemplo:'En el rincón de la tiendita, dos niños conversan como cliente y vendedor, respetando sus turnos para hablar.' },
+    { palabra:'LITERATURA', mostrar:'Literatura',
+      definicion:'Manifestación artística del lenguaje mediante textos orales o escritos.',
+      ejemplo:'Leer en voz alta poemas y cuentos infantiles acerca a los niños al disfrute de las palabras.' },
+    { palabra:'CREATIVIDAD', mostrar:'Creatividad',
+      definicion:'Capacidad para producir ideas y expresiones originales.',
+      ejemplo:'Con tres imágenes elegidas al azar, el grupo puede inventar entre todos una historia nueva.' },
+    { palabra:'FONOLOGIA', mostrar:'Fonología',
+      definicion:'Estudio de la organización de los sonidos de una lengua.',
+      ejemplo:'Al aplaudir las sílabas de su nombre, los niños toman conciencia de los sonidos que forman las palabras.' },
+    { palabra:'ARTICULACION', mostrar:'Articulación',
+      definicion:'Producción de sonidos del habla mediante los órganos articulatorios.',
+      ejemplo:'Soplar plumas o imitar los sonidos de los animales son ejercicios divertidos que favorecen la articulación.' },
+    { palabra:'INTERACCION', mostrar:'Interacción',
+      definicion:'Relación recíproca entre personas durante una actividad comunicativa.',
+      ejemplo:'Al trabajar en pequeños grupos, los niños comparten materiales, proponen ideas y se ayudan entre sí.' }
+  ],
+  // Fase 2 · «Memoria de una futura maestra»: banco de 20 parejas; cada estudiante recibe 6 al azar.
+  memoria: [
+    { id:'m01', concepto:'Lenguaje oral', pareja:'Expresar ideas mediante palabras habladas' },
+    { id:'m02', concepto:'Escucha activa', pareja:'Prestar atención para comprender a otra persona' },
+    { id:'m03', concepto:'Narración', pareja:'Contar acontecimientos siguiendo una secuencia' },
+    { id:'m04', concepto:'Cuento infantil', pareja:'Relato que despierta la imaginación' },
+    { id:'m05', concepto:'Títeres', pareja:'Personajes manipulados para representar historias' },
+    { id:'m06', concepto:'Dramatización', pareja:'Representar situaciones mediante personajes' },
+    { id:'m07', concepto:'Rimas', pareja:'Palabras que comparten sonidos finales' },
+    { id:'m08', concepto:'Retahílas', pareja:'Expresiones orales con ritmo y repetición' },
+    { id:'m09', concepto:'Juego simbólico', pareja:'Representar situaciones mediante la imaginación' },
+    { id:'m10', concepto:'Expresión corporal', pareja:'Comunicar ideas mediante movimientos' },
+    { id:'m11', concepto:'Gestos', pareja:'Movimientos que transmiten mensajes' },
+    { id:'m12', concepto:'Diálogo', pareja:'Intercambio de ideas entre personas' },
+    { id:'m13', concepto:'Vocabulario', pareja:'Conjunto de palabras conocidas y utilizadas' },
+    { id:'m14', concepto:'Creatividad', pareja:'Producir ideas y expresiones originales' },
+    { id:'m15', concepto:'Literatura infantil', pareja:'Obras literarias dirigidas a la infancia' },
+    { id:'m16', concepto:'Articulación', pareja:'Producción de los sonidos del habla' },
+    { id:'m17', concepto:'Conciencia fonológica', pareja:'Reconocer y manipular sonidos del lenguaje oral' },
+    { id:'m18', concepto:'Trabalenguas', pareja:'Expresiones que desafían la pronunciación' },
+    { id:'m19', concepto:'Juego de roles', pareja:'Interpretar personajes o situaciones' },
+    { id:'m20', concepto:'Comunicación no verbal', pareja:'Transmitir mensajes sin utilizar palabras' }
+  ],
+  // Fase 3 · «Crucigrama misterioso»: banco de 20; cada crucigrama usa de 6 a 8 palabras.
+  crucigrama: [
+    { respuesta:'CUENTO', pista:'Relato breve que puede estimular la imaginación infantil' },
+    { respuesta:'RIMA', pista:'Coincidencia de sonidos al final de las palabras' },
+    { respuesta:'TITERE', pista:'Personaje que puede manipularse para representar historias' },
+    { respuesta:'DIALOGO', pista:'Conversación entre dos o más personas' },
+    { respuesta:'GESTO', pista:'Movimiento que comunica algo sin utilizar palabras' },
+    { respuesta:'JUEGO', pista:'Actividad lúdica que favorece el aprendizaje' },
+    { respuesta:'VOZ', pista:'Medio sonoro que utilizamos al hablar' },
+    { respuesta:'ESCUCHA', pista:'Acción de atender y comprender lo que otra persona expresa' },
+    { respuesta:'TEATRO', pista:'Arte de representar historias ante otras personas' },
+    { respuesta:'CANCION', pista:'Composición que combina palabras y música' },
+    { respuesta:'NARRACION', pista:'Acción de contar una historia o acontecimientos' },
+    { respuesta:'LENGUAJE', pista:'Capacidad para comunicar y construir significados' },
+    { respuesta:'EXPRESION', pista:'Manifestación de ideas, emociones o sentimientos' },
+    { respuesta:'PALABRA', pista:'Unidad del lenguaje que expresa significado' },
+    { respuesta:'SONIDO', pista:'Fenómeno que percibimos mediante el oído' },
+    { respuesta:'PERSONAJE', pista:'Ser que participa en una historia o representación' },
+    { respuesta:'SECUENCIA', pista:'Orden en que se presentan acontecimientos o acciones' },
+    { respuesta:'IMITACION', pista:'Reproducción de acciones, sonidos o comportamientos' },
+    { respuesta:'RETAHILA', pista:'Composición oral que utiliza ritmo y repetición' },
+    { respuesta:'DRAMA', pista:'Representación de situaciones mediante la actuación' }
+  ]
 };
 
 /* =========================================================
    5. BANCOS DE RETOS
    ========================================================= */
 const BANCO_RETOS = {
-  evidencias: [],     // Retos fotográficos
+  // Fase 4 · «Cacería de evidencias»: banco de 15 retos; cada estudiante recibe 5 al azar.
+  // conOtras: el reto involucra a otras personas (se ofrece una alternativa sin terceros).
+  evidencias: [
+    { id:'r01', titulo:'Una sonrisa contagiosa', conOtras:true,
+      instruccion:'Toma una fotografía con una compañera en la que ambas muestren una sonrisa espontánea.',
+      ideas:['Cuéntense algo gracioso justo antes de tomar la foto: la sonrisa saldrá sola.', 'Pide apoyo a una compañera si lo necesitas; también pueden tomarse una selfie.', 'Busca un lugar con buena luz, como una ventana o el patio.'],
+      mensajeAurora:'¡Qué sonrisa tan contagiosa! Así se ve la alegría de aprender juntas.' },
+    { id:'r02', titulo:'Maestras creativas', conOtras:false,
+      instruccion:'Utiliza un objeto cotidiano para representar algo que podría aparecer en un cuento infantil.',
+      ideas:['Puedes utilizar cualquier objeto que tengas cerca: un lápiz, una taza o una mochila.', 'Piensa en elementos de cuentos: una varita mágica, un castillo, un dragón…', 'Acompaña el objeto con un gesto para que la historia se entienda mejor.'],
+      mensajeAurora:'¡Con tu creatividad, un objeto sencillo se convirtió en cuento!' },
+    { id:'r03', titulo:'Una emoción sin palabras', conOtras:false,
+      instruccion:'Representa mediante gestos una emoción y captura el momento.',
+      ideas:['Exagera un poco tu expresión: ¡así se nota mejor!', 'Prueba con alegría, sorpresa, miedo o enojo.', 'Puedes tomarte una selfie o pedir a alguien que te fotografíe.'],
+      mensajeAurora:'Tus gestos hablaron por ti. ¡Qué gran expresión!' },
+    { id:'r04', titulo:'El rincón de los recuerdos', conOtras:false,
+      instruccion:'Fotografía un lugar del establecimiento que te recuerde una experiencia agradable de este año.',
+      ideas:['Piensa en un lugar donde hayas reído, aprendido o compartido con tus compañeras.', 'No necesitas personas en la foto: el lugar cuenta la historia.', 'Recuerda respetar los espacios donde no se permite fotografiar.'],
+      mensajeAurora:'Este rincón guarda un pedacito de tu primer año.' },
+    { id:'r05', titulo:'Amistad en una imagen', conOtras:true,
+      instruccion:'Toma una fotografía con una compañera con quien hayas compartido aprendizajes importantes.',
+      ideas:['Pide permiso antes de tomar la fotografía.', 'Pueden sostener juntas un cuaderno o un material que hayan usado en clase.', 'También puedes representar la amistad con dos objetos juntos.'],
+      mensajeAurora:'Aprender acompañada siempre es más bonito.' },
+    { id:'r06', titulo:'Una historia congelada', conOtras:false,
+      instruccion:'Representa una escena de un cuento imaginario utilizando una pose divertida.',
+      ideas:['No necesitas un escenario, basta con una pose creativa.', 'Imagina que eres un personaje en el momento más emocionante del cuento.', 'Quédate quieta como una estatua mientras te toman la foto.'],
+      mensajeAurora:'¡Qué escena! Parece salida de un libro de cuentos.' },
+    { id:'r07', titulo:'Comunicación sin hablar', conOtras:true,
+      instruccion:'Representa con una compañera una situación en la que ambas se comuniquen únicamente mediante gestos.',
+      ideas:['Elijan una situación sencilla: pedir agua, saludar o invitar a jugar.', 'Usen las manos, la mirada y todo el cuerpo.', 'También puedes representar tú sola un mensaje con gestos.'],
+      mensajeAurora:'Comprobaste que también nos comunicamos sin palabras.' },
+    { id:'r08', titulo:'La futura maestra', conOtras:false,
+      instruccion:'Toma una fotografía representando cómo imaginas que serás frente a tu grupo de niños y niñas.',
+      ideas:['Puedes sostener un libro como si leyeras un cuento a tu grupo.', 'Imagina tu salón: ¿cómo saludarías a tus niños y niñas cada mañana?', 'Una pose sencilla y una gran sonrisa bastan.'],
+      mensajeAurora:'¡Ya puedo imaginarte frente a tu grupo! Serás una gran maestra.' },
+    { id:'r09', titulo:'Un objeto, mil posibilidades', conOtras:false,
+      instruccion:'Encuentra un objeto que pueda convertirse en un recurso didáctico creativo y fotografíalo.',
+      ideas:['Busca objetos cotidianos: tapitas, cajas, telas o vasos.', 'Piensa cómo lo usarías para contar, cantar o jugar con los niños.', 'Fotografíalo de cerca para que se vea bien.'],
+      mensajeAurora:'Una maestra creativa encuentra recursos en todas partes.' },
+    { id:'r10', titulo:'La alegría de aprender', conOtras:false,
+      instruccion:'Captura un momento que represente lo divertido que puede ser aprender jugando.',
+      ideas:['Puede ser un juego, un material o un momento divertido con tus compañeras.', 'Busca una acción en movimiento: saltar, aplaudir o cantar.', 'Pide apoyo a una compañera si lo necesitas.'],
+      mensajeAurora:'¡Aprender jugando se ve así de feliz!' },
+    { id:'r11', titulo:'Un equipo especial', conOtras:true,
+      instruccion:'Toma una fotografía grupal con algunas compañeras haciendo una pose creativa.',
+      ideas:['Propongan una pose: formar una letra, un corazón o una estrella con los brazos.', 'Pidan permiso a todas antes de tomar la foto.', 'También puedes representar el trabajo en equipo con objetos.'],
+      mensajeAurora:'Juntas son un equipo maravilloso.' },
+    { id:'r12', titulo:'Una palabra en imagen', conOtras:false,
+      instruccion:'Representa visualmente una palabra relacionada con la comunicación, sin escribirla.',
+      ideas:['Elige una palabra como «escuchar», «diálogo» o «cuento».', 'Puedes usar gestos, objetos o ambos.', 'No escribas la palabra: deja que la imagen hable.'],
+      mensajeAurora:'¡Convertiste una palabra en imagen!' },
+    { id:'r13', titulo:'Una escena teatral', conOtras:false,
+      instruccion:'Representa un personaje imaginario con una expresión exagerada y divertida.',
+      ideas:['Imagina un personaje: un rey, una bruja, un pirata o un animal.', 'Exagera la expresión de tu cara: ¡mientras más divertida, mejor!', 'Puedes usar un suéter, una bufanda o cualquier objeto como vestuario.'],
+      mensajeAurora:'¡Qué actuación! El teatro también vive en ti.' },
+    { id:'r14', titulo:'El gesto de la amistad', conOtras:true,
+      instruccion:'Crea con una compañera un gesto o pose que simbolice el compañerismo.',
+      ideas:['Pueden juntar las manos formando un corazón o chocar los puños.', 'Inventen un saludo especial solo de ustedes.', 'También puedes crear el gesto con tus manos u objetos.'],
+      mensajeAurora:'El compañerismo también se aprende y se cuida.' },
+    { id:'r15', titulo:'Un recuerdo para Aurora', conOtras:false,
+      instruccion:'Toma una fotografía que te gustaría conservar como recuerdo de tu primer año de formación docente.',
+      ideas:['Puede ser un lugar, un objeto, un cuaderno o un momento con tus compañeras.', 'Piensa: ¿qué te gustaría recordar dentro de muchos años?', 'Elige lo que te haga sonreír.'],
+      mensajeAurora:'Guardaré este recuerdo con mucho cariño. ¡Gracias por compartirlo!' }
+  ],
   planificacion: [],  // Preguntas para defender la planificación
   ruta: []            // Preguntas de la ruta semanal
 };
@@ -262,7 +600,10 @@ const BANCO_RETOS = {
      asignar(azar, bancos) { ... return asignacion },   // Se llama UNA vez; se guarda en el progreso
      iniciar(contenedor, api) { ... },                  // Dibuja el juego dentro de "contenedor"
      pista(api) { ... return 'texto de la pista' },     // Opcional
-     reiniciar(contenedor, api) { ... }                 // Opcional (si no existe, se llama a iniciar)
+     reiniciar(contenedor, api) { ... },                // Opcional (si no existe, se llama a iniciar)
+     pistaDisponible(api) { return true | 'texto' },    // Opcional: evita pistas en mal momento
+     alCerrarPista(api) { ... },                        // Opcional: ayuda visual tras cerrar la pista
+     mensajeReinicio(api) { return 'texto' }            // Opcional: aviso propio al reiniciar
    });
 
    La "api" ofrece:
@@ -270,10 +611,19 @@ const BANCO_RETOS = {
      api.respuestas            -> respuestas del intento actual
      api.responder(clave, valor) -> guarda una respuesta
      api.registrarEvento(texto, datos) -> anota algo en el intento
-     api.agregarEvidencia(evidencia) -> guarda foto comprimida
-     api.completar(resultado)  -> marca la fase como completada
+     api.agregarEvidencia(evidencia) -> guarda foto comprimida y devuelve su id
+     api.quitarEvidencia(id)   -> elimina una foto de ESTA misión (reemplazo/reinicio)
+     api.completar(resultado, {mensaje, boton}) -> marca la fase como completada
+                               (mensaje y texto del botón opcionales en la felicitación)
      api.aurora(texto)         -> mensaje de Aurora en una ventana
+     api.registrarPista(texto) -> registra una ayuda dada desde el propio juego
      api.guardar()             -> fuerza el guardado
+
+   Convenciones para que el recorrido final (fase 9) y el
+   informe muestren datos reales:
+     - Respuestas escritas: api.responder('p1', { pregunta:'…', respuesta:'…' })
+       (también se aceptan textos simples).
+     - Fotografías: api.agregarEvidencia({ imagen: dataURL, reto:'…', descripcion:'…' })
    ========================================================= */
 const MOTORES = {};
 function registrarMotor(faseId, motor){
@@ -369,6 +719,23 @@ function crearEstadoNuevo(nombre){
 /* Completa campos faltantes (p. ej. respaldos de versiones anteriores) */
 function normalizarEstado(e){
   e.nombre = limpiarNombre(e.nombre);
+  if (!Array.isArray(e.historial)) e.historial = [];
+  // Migración de respaldos con la estructura anterior (10 misiones)
+  const versionAnterior = Number(e.version) || 1;
+  if (e.fases && typeof e.fases === 'object' && !Array.isArray(e.fases)) {
+    FASES_ELIMINADAS.forEach(id => {
+      if (e.fases[id]) {
+        e.fasesEliminadas = e.fasesEliminadas || {};
+        e.fasesEliminadas[id] = e.fases[id];          // Se conserva, pero ya no forma parte de la aventura
+        delete e.fases[id];
+      }
+    });
+  }
+  if (FASES_ELIMINADAS.includes(e.faseActual)) e.faseActual = null;
+  if (versionAnterior < 2) {
+    e.historial.push({ fecha: ahoraISO(), tipo: 'migracion', fase: null,
+      texto: 'La aventura se actualizó a 8 misiones. Se conservó todo el progreso anterior.' });
+  }
   if (!e.id) e.id = generarId();
   if (!e.fechaInicio) e.fechaInicio = ahoraISO();
   if (!e.fases || typeof e.fases !== 'object' || Array.isArray(e.fases)) e.fases = {};
@@ -399,14 +766,29 @@ function tieneProgreso(e){
     FASES.some(f => e.fases[f.id] && e.fases[f.id].estado !== 'pendiente');
 }
 
-/* Una fase se desbloquea cuando todas las fases anteriores CON juego
-   ya están completadas. Las fases sin juego todavía no bloquean. */
-function faseDesbloqueada(indice){
-  for (let i = 0; i < indice; i++) {
-    const f = FASES[i];
-    if (estaImplementada(f.id) && estado.fases[f.id].estado !== 'completada') return false;
+/* ---------- Reglas estrictas de desbloqueo ----------
+   - Una fase cuenta como completada solo si tiene motor implementado
+     Y su estado es "completada" (protege contra JSON alterados).
+   - La misión actual es la PRIMERA fase no completada.
+   - Solo se puede abrir la misión actual o una fase ya completada.
+   - Una fase sin motor no puede completarse, así que bloquea a las
+     siguientes: no es posible saltarla. */
+function faseCompletada(faseId){
+  if (!estado) return false;
+  const fe = estado.fases[faseId];
+  if (fe.estado !== 'completada') return false;
+  if (fe.completadaEnPrueba) return modoPruebaActivo();   // Completada con el botón de prueba
+  return estaImplementada(faseId);
+}
+function indiceMisionActual(){
+  for (let i = 0; i < FASES.length; i++) {
+    if (!faseCompletada(FASES[i].id)) return i;
   }
-  return true;
+  return FASES.length; // Toda la aventura completada
+}
+function faseDesbloqueada(indice){
+  if (!estado || !Number.isInteger(indice) || indice < 0 || indice >= FASES.length) return false;
+  return indice <= indiceMisionActual();
 }
 
 function intentoAbierto(fe){
@@ -429,6 +811,66 @@ function cerrarIntento(fe, nuevoEstado, resultado){
   return intento;
 }
 
+/* ---------- Modo prueba docente ----------
+   Solo funciona si CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE === true Y la aventura
+   abierta es el perfil de prueba (estado.perfilPrueba === true). La aventura
+   real de una estudiante nunca puede completarse con estos botones. */
+const NOMBRE_PERFIL_PRUEBA = 'Docente (perfil de prueba)';
+function modoPruebaActivo(){
+  return CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE === true && !!estado && estado.perfilPrueba === true;
+}
+function crearPerfilPrueba(){
+  const e = crearEstadoNuevo(NOMBRE_PERFIL_PRUEBA);
+  e.perfilPrueba = true;
+  return e;
+}
+async function entrarPerfilPrueba(){
+  if (CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE !== true) return;
+  let previo = null;
+  try { previo = await Persistencia.cargarPrueba(); } catch (e) {}
+  estado = previo && previo.perfilPrueba === true && validarRespaldo(previo).ok ? normalizarEstado(previo) : crearPerfilPrueba();
+  agregarHistorial('prueba', 'El docente entró al perfil de prueba.');
+  await guardarAhora();
+  mostrarMenu();
+}
+async function completarFasePrueba(faseId){
+  if (!modoPruebaActivo()) return;                       // Nunca en la aventura real
+  const fase = FASES.find(f => f.id === faseId);
+  if (!fase) return;
+  const indice = FASES.indexOf(fase);
+  if (indice !== indiceMisionActual()) return;            // Solo la misión actual, en orden
+  const fe = estado.fases[fase.id];
+  if (intentoAbierto(fe)) cerrarIntento(fe, 'cerrado en modo prueba');
+  fe.estado = 'completada';
+  fe.completadaEnPrueba = true;
+  fe.fechaInicio = fe.fechaInicio || ahoraISO();
+  fe.fechaFin = ahoraISO();
+  fe.resultado = { modo: 'Completada en modo prueba', fecha: fe.fechaFin };   // Sin respuestas ni fotos ficticias
+  agregarHistorial('prueba', `Fase ${fase.numero} «${fase.titulo}»: Completada en modo prueba.`, fase.id);
+  if (indiceMisionActual() >= FASES.length && !estado.fechaFinalizacion) estado.fechaFinalizacion = ahoraISO();
+  await guardarAhora();
+  toast(`🧪 Fase ${fase.numero} completada en modo prueba`);
+  volverAlMapa();
+}
+async function reiniciarPruebas(){
+  if (!modoPruebaActivo()) return;
+  const r = await dialogo({
+    titulo: '🧪 Reiniciar pruebas',
+    mensaje: 'El perfil de prueba volverá a la misión 1. La aventura real de las estudiantes guardada en este dispositivo no se modifica.',
+    botones: [{ texto: 'Sí, reiniciar pruebas', valor: true, clase: 'btn-primario' }, { texto: 'Cancelar', valor: false, clase: 'btn-texto' }]
+  });
+  if (!r || !modoPruebaActivo()) return;
+  estado = crearPerfilPrueba();
+  agregarHistorial('prueba', 'El docente reinició el perfil de prueba.');
+  await guardarAhora();
+  mostrarMenu();
+  toast('🧪 Pruebas reiniciadas desde la misión 1');
+}
+function htmlBotonPrueba(faseId){
+  return modoPruebaActivo()
+    ? `<button type="button" class="btn btn-prueba" data-prueba-completar="${faseId}">🧪 Completar fase (prueba)</button>` : '';
+}
+
 /* =========================================================
    9. PERSISTENCIA (IndexedDB principal + localStorage auxiliar)
    ========================================================= */
@@ -437,6 +879,7 @@ const Persistencia = {
   disponible: false,
   NOMBRE_BD: 'aurora_aventura',
   CLAVE: 'actual',
+  CLAVE_PRUEBA: 'prueba_docente',   // Perfil de prueba del docente (separado de la aventura real)
 
   abrir(){
     return new Promise(resolve => {
@@ -466,9 +909,15 @@ const Persistencia = {
 
   async guardar(e){
     let ok = false;
+    const prueba = e.perfilPrueba === true;
     if (this.disponible) {
-      try { await this._operacion('readwrite', st => st.put(e, this.CLAVE)); ok = true; }
+      try { await this._operacion('readwrite', st => st.put(e, prueba ? this.CLAVE_PRUEBA : this.CLAVE)); ok = true; }
       catch (err) { console.error('IndexedDB:', err); }
+    }
+    if (prueba) {
+      // El perfil de prueba nunca escribe en las claves de la aventura real
+      if (!ok) { try { localStorage.setItem('aurora_prueba_respaldo', JSON.stringify(e)); ok = true; } catch (err) {} }
+      return ok;
     }
     // localStorage: solo un resumen pequeño, o copia completa si IndexedDB falló
     try {
@@ -488,6 +937,15 @@ const Persistencia = {
       const s = localStorage.getItem('aurora_estado_respaldo');
       if (s) return JSON.parse(s);
     } catch (err) { /* sin datos */ }
+    return null;
+  },
+
+  async cargarPrueba(){
+    if (this.disponible) {
+      try { const r = await this._operacion('readonly', st => st.get(this.CLAVE_PRUEBA)); if (r) return r; }
+      catch (err) { console.error('IndexedDB:', err); }
+    }
+    try { const s = localStorage.getItem('aurora_prueba_respaldo'); if (s) return JSON.parse(s); } catch (err) {}
     return null;
   }
 };
@@ -541,7 +999,7 @@ async function exportarJSON(){
       botones: [{ texto: 'Descargar de todos modos', valor: true, clase: 'btn-primario' }]
     });
   }
-  const nombreArchivo = `aventura-aurora_${slug(estado.nombre)}_${sello()}.json`;
+  const nombreArchivo = `${estado.perfilPrueba ? 'PRUEBA-DOCENTE' : 'aventura-aurora'}_${slug(estado.nombre)}_${sello()}.json`;
   descargarArchivo(nombreArchivo, texto, 'application/json');
   await guardarAhora();
   toast('📥 Respaldo descargado. ¡Guárdalo bien!');
@@ -581,13 +1039,15 @@ async function importarJSON(archivo){
     catch (e) { throw new Error('El archivo está dañado o no es un respaldo .json de la aventura.'); }
     const v = validarRespaldo(obj);
     if (!v.ok) throw new Error(v.error);
+    if (obj.perfilPrueba === true && !CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE)
+      throw new Error('Este archivo pertenece al perfil de prueba del docente y no puede usarse en la aventura.');
 
     delete obj.exportado;
     const recuperado = normalizarEstado(obj);
 
     // Si en el teléfono hay OTRA aventura con avance, pedir confirmación
-    const actual = estado || estadoGuardado;
-    if (actual && actual.id !== recuperado.id && tieneProgreso(actual)) {
+    const actual = (estado && !estado.perfilPrueba) ? estado : estadoGuardado;   // El perfil de prueba no cuenta
+    if (!recuperado.perfilPrueba && actual && actual.id !== recuperado.id && tieneProgreso(actual)) {
       const r = await dialogo({
         titulo: 'Reemplazar aventura',
         html: `<p>En este teléfono hay una aventura de <strong>${esc(actual.nombre)}</strong>.</p>
@@ -669,7 +1129,11 @@ function globoAurora(html){
 }
 
 function render(html){
-  $('#pantalla').innerHTML = `<section class="pantalla">${html}</section>`;
+  const banda = modoPruebaActivo()
+    ? `<div class="banda-prueba">🧪 PERFIL DE PRUEBA DOCENTE · no es la aventura de una estudiante</div>` : '';
+  $('#pantalla').innerHTML = `<section class="pantalla">${banda}${html}</section>`;
+  $('#pantalla').querySelectorAll('[data-prueba-completar]').forEach(b =>
+    b.addEventListener('click', () => completarFasePrueba(b.dataset.pruebaCompletar)));
   window.scrollTo(0, 0);
 }
 
@@ -745,6 +1209,13 @@ function mostrarBienvenida(){
       <button type="button" id="btnRecuperar" class="btn btn-secundario">📂 Recuperar mi aventura</button>
       <p class="ayuda">Usa «Recuperar mi aventura» si tienes el archivo de respaldo (.json) que descargaste antes.</p>
     </div>
+    ${CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE === true ? `
+      <div class="tarjeta tarjeta-prueba">
+        <h3>🧪 Modo prueba docente activo</h3>
+        <p>Permite recorrer las misiones en un perfil separado, sin afectar la aventura de ninguna estudiante.</p>
+        <p><strong>Recuerda cambiar <code>MODO_PRUEBA_DOCENTE</code> a <code>false</code> antes de publicar.</strong></p>
+        <button type="button" id="btnPerfilPrueba" class="btn btn-prueba">🧪 Entrar al perfil de prueba</button>
+      </div>` : ''}
     <p class="pie">${APP.curso}<br>${APP.programa}</p>
   `);
 
@@ -755,6 +1226,8 @@ function mostrarBienvenida(){
     mostrarMenu();
   });
   $('#btnComenzar').addEventListener('click', comenzarAventura);
+  const btnPrueba = $('#btnPerfilPrueba');
+  if (btnPrueba) btnPrueba.addEventListener('click', entrarPerfilPrueba);
   $('#inputNombre').addEventListener('keydown', e => { if (e.key === 'Enter') comenzarAventura(); });
   $('#inputNombre').addEventListener('input', () => { $('#errorNombre').textContent = ''; });
   $('#btnRecuperar').addEventListener('click', () => { const i = $('#inputImportar'); i.value = ''; i.click(); });
@@ -802,61 +1275,78 @@ async function comenzarAventura(){
   toast(`✨ ¡Bienvenida, ${primerNombre(nombre)}!`);
 }
 
-/* ---------- 12.2 Mapa de fases ---------- */
+/* ---------- 12.2 Mapa de fases (revelación progresiva) ----------
+   Muestra solo: las fases completadas (como logros) y la misión
+   actual. Las fases futuras permanecen ocultas como sorpresa.
+   El historial técnico NO se muestra aquí: sigue guardándose en el
+   estado, en el JSON y en el informe del docente. */
 function mostrarMenu(){
   pantallaActual = 'menu';
   mostrarBarraGuardar(true);
   const n = esc(primerNombre(estado.nombre));
-  const completadas = FASES.filter(f => estado.fases[f.id].estado === 'completada').length;
-  const pct = Math.round(completadas / FASES.length * 100);
-  const sugerida = FASES.find((f, i) => faseDesbloqueada(i) && estado.fases[f.id].estado !== 'completada');
+  const actual = indiceMisionActual();         // = número de fases completadas
+  const pct = Math.round(actual / FASES.length * 100);
+  const terminado = actual >= FASES.length;
 
-  const items = FASES.map((f, i) => {
+  let saludo;
+  if (terminado) saludo = `<p>¡<strong>${n}</strong>, completaste toda la aventura! Puedes volver a visitar cada uno de tus logros.</p>`;
+  else if (actual === 0) saludo = `<p>¡Hola, <strong>${n}</strong>! Tu primera misión ya está lista. Las demás… ¡son sorpresa!</p>`;
+  else saludo = `<p>¡Vas muy bien, <strong>${n}</strong>! Cada misión superada te acerca al final de esta aventura.</p>`;
+
+  let mision = '';
+  if (!terminado) {
+    const f = FASES[actual];
     const fe = estado.fases[f.id];
-    const libre = faseDesbloqueada(i);
-    let etiqueta, clase;
-    if (fe.estado === 'completada')      { etiqueta = '✅ Completada';  clase = 'completada'; }
-    else if (!libre)                     { etiqueta = '🔒 Bloqueada';   clase = 'bloqueada'; }
-    else if (!estaImplementada(f.id))    { etiqueta = '🚧 Próximamente'; clase = 'proximamente'; }
-    else if (fe.estado === 'en_curso')   { etiqueta = '✏️ En curso';    clase = 'en-curso'; }
-    else                                 { etiqueta = '⭐ Disponible';  clase = 'disponible'; }
-    if (sugerida && sugerida.id === f.id) clase += ' sugerida';
-    return `<li><button type="button" class="fase-card ${clase}" data-fase="${f.id}" style="--color-fase:${f.color}" ${libre ? '' : 'disabled aria-disabled="true"'}>
-      <span class="fase-emoji" aria-hidden="true">${f.emoji}</span>
-      <span class="fase-info"><small>Fase ${f.numero}</small><strong>${esc(f.titulo)}</strong><small>${esc(f.subtitulo)}</small></span>
-      <span class="fase-insignia">${etiqueta}</span></button></li>`;
-  }).join('');
+    const sinAbrir = fe.estado === 'pendiente';
+    const etiqueta = actual === 0 && sinAbrir ? '✨ ¡Tu primera misión te espera!'
+                   : sinAbrir ? '🎉 ¡Nueva misión desbloqueada!'
+                   : '⭐ Tu misión actual';
+    const textoBoton = fe.estado === 'en_curso' ? '▶️ Continuar misión' : '🚀 Comenzar misión';
+    mision = `
+      <div class="mision-actual ${sinAbrir ? 'nueva' : ''}" style="--color-fase:${f.color}">
+        <span class="etiqueta-nueva">${etiqueta}</span>
+        <span class="emoji-mision" aria-hidden="true">${f.emoji}</span>
+        <small>Misión ${f.numero}</small>
+        <h2>${esc(f.titulo)}</h2>
+        <button type="button" class="btn btn-primario btn-mision" data-fase="${f.id}">${textoBoton}</button>
+        ${htmlBotonPrueba(f.id)}
+      </div>`;
+  }
 
-  const historial = estado.historial.slice(-40).reverse().map(h =>
-    `<li><time>${fechaLegible(h.fecha)}</time>${esc(h.texto)}</li>`).join('');
-
-  const faseAnterior = FASES.find(f => f.id === estado.faseActual);
-  const indiceAnterior = faseAnterior ? FASES.indexOf(faseAnterior) : -1;
+  const logros = FASES.slice(0, actual).map(f => `
+    <li><button type="button" class="logro" data-fase="${f.id}">
+      <span class="check" aria-hidden="true">✅</span>
+      <span class="fase-info"><small>Misión ${f.numero}</small><strong>${esc(f.titulo)}</strong><span class="msg">${estado.fases[f.id].completadaEnPrueba ? '🧪 Completada en modo prueba' : esc(f.logro)}</span></span>
+    </button></li>`).join('');
 
   render(`
-    ${globoAurora(completadas === 0
-      ? `<p>¡Hola, <strong>${n}</strong>! Este es el mapa de tu aventura. Avanza fase por fase y no olvides guardar tu progreso.</p>`
-      : `<p>¡Vas muy bien, <strong>${n}</strong>! Sigue así, cada fase cuenta.</p>`)}
+    ${globoAurora(saludo)}
     <div class="tarjeta">
       <strong>Tu recorrido</strong>
-      <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="${FASES.length}" aria-valuenow="${completadas}"><span style="width:${pct}%"></span></div>
-      <small>${completadas} de ${FASES.length} fases completadas</small>
+      <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="${FASES.length}" aria-valuenow="${actual}"><span style="width:${pct}%"></span></div>
+      <small>${actual} de ${FASES.length} misiones completadas</small>
     </div>
-    ${faseAnterior && indiceAnterior >= 0 && faseDesbloqueada(indiceAnterior) && estado.fases[faseAnterior.id].estado !== 'completada'
-      ? `<button type="button" class="btn btn-suave" data-fase="${faseAnterior.id}" style="margin:0 0 16px">↩️ Continuar donde te quedaste: Fase ${faseAnterior.numero}</button>` : ''}
-    <ol class="lista-fases">${items}</ol>
-    <details class="tarjeta">
-      <summary>📜 Mi historial de aventura</summary>
-      <ul class="historial">${historial || '<li>Aún no hay registros.</li>'}</ul>
-    </details>
+    ${mision}
+    ${actual > 0 ? `<h3 class="seccion-titulo">🏅 Tus logros</h3><ol class="lista-logros">${logros}</ol>` : ''}
+    ${actual < FASES.length - 1 ? `<p class="sorpresas">Aurora todavía tiene sorpresas preparadas para ti...</p>` : ''}
+    ${modoPruebaActivo() ? `<button type="button" id="btnReiniciarPruebas" class="btn btn-prueba">🧪 Reiniciar pruebas</button>` : ''}
     <button type="button" id="btnInicio" class="btn btn-texto">🏠 Volver a la bienvenida</button>
   `);
+  const btnRP = $('#btnReiniciarPruebas');
+  if (btnRP) btnRP.addEventListener('click', reiniciarPruebas);
 
-  document.querySelectorAll('[data-fase]').forEach(b =>
-    b.addEventListener('click', () => { if (!b.disabled) abrirFase(b.dataset.fase); }));
+  document.querySelectorAll('#pantalla [data-fase]').forEach(b =>
+    b.addEventListener('click', () => abrirFase(b.dataset.fase)));
   $('#btnInicio').addEventListener('click', async () => {
     await guardarAhora();
-    estadoGuardado = CONFIG_DOCENTE.GUARDADO_AUTOMATICO ? estado : null;
+    if (estado.perfilPrueba) {
+      // Al salir del perfil de prueba se vuelve a mostrar la aventura real guardada (si existe)
+      let real = null;
+      try { real = await Persistencia.cargar(); } catch (e) {}
+      estadoGuardado = real && !real.perfilPrueba && validarRespaldo(real).ok ? normalizarEstado(real) : null;
+    } else {
+      estadoGuardado = CONFIG_DOCENTE.GUARDADO_AUTOMATICO ? estado : null;
+    }
     estado = null;
     mostrarBienvenida();
   });
@@ -879,11 +1369,20 @@ function crearAPIFase(fase){
       guardarAuto();
     },
     agregarEvidencia(ev){
-      estado.evidencias.push(Object.assign({ id: generarId(), fase: fase.id, fecha: ahoraISO() }, ev));
+      const nueva = Object.assign({ id: generarId(), fase: fase.id, fecha: ahoraISO() }, ev);
+      estado.evidencias.push(nueva);
       agregarHistorial('evidencia', `Agregó una evidencia en «${fase.titulo}».`, fase.id);
       guardarAuto();
+      return nueva.id;
     },
-    completar(resultado){ completarFase(fase, resultado); },
+    quitarEvidencia(id){
+      const antes = estado.evidencias.length;
+      estado.evidencias = estado.evidencias.filter(ev => !(ev.id === id && ev.fase === fase.id)); // Solo de esta misión
+      if (estado.evidencias.length < antes) { agregarHistorial('evidencia_eliminada', `Reemplazó o quitó una evidencia en «${fase.titulo}».`, fase.id); guardarAuto(); }
+      return estado.evidencias.length < antes;
+    },
+    completar(resultado, opciones){ completarFase(fase, resultado, opciones); },
+    registrarPista(texto){ if (CONFIG_DOCENTE.PERMITIR_PISTAS) registrarPistaFase(fase, texto); },
     aurora(texto){ return dialogo({ titulo: 'Aurora dice…', html: globoAurora(`<p>${esc(texto)}</p>`) }); },
     guardar(){ return guardarAhora(); }
   };
@@ -893,10 +1392,16 @@ function abrirFase(faseId, desdeHistorial){
   const fase = FASES.find(f => f.id === faseId);
   if (!fase) return;
   const indice = FASES.indexOf(fase);
-  if (!faseDesbloqueada(indice)) { toast('🔒 Completa primero las fases anteriores.'); return; }
+  // Acceso estricto: solo la misión actual o una fase ya completada
+  if (!estado || !faseDesbloqueada(indice)) {
+    toast('🔒 Esa misión todavía es una sorpresa. Completa tu misión actual.');
+    if (estado && pantallaActual !== 'menu') mostrarMenu();
+    return;
+  }
 
   const fe = estado.fases[fase.id];
   const motor = MOTORES[fase.id];
+  const enConsulta = faseCompletada(fase.id);
   estado.faseActual = fase.id;
 
   if (motor) {
@@ -908,7 +1413,9 @@ function abrirFase(faseId, desdeHistorial){
     if (fe.estado === 'pendiente') { fe.estado = 'en_curso'; fe.fechaInicio = ahoraISO(); }
     if (fe.estado === 'en_curso' && !intentoAbierto(fe)) iniciarIntento(fe);
   }
-  agregarHistorial('fase', `Entró a la fase ${fase.numero}: ${fase.titulo}.`, fase.id);
+  agregarHistorial(enConsulta ? 'consulta' : 'fase',
+    enConsulta ? `Consultó nuevamente la fase ${fase.numero}: ${fase.titulo}.`
+               : `Entró a la fase ${fase.numero}: ${fase.titulo}.`, fase.id);
   guardarAuto();
 
   if (!desdeHistorial) { try { history.pushState({ fase: fase.id }, ''); } catch (e) {} }
@@ -925,13 +1432,17 @@ function abrirFase(faseId, desdeHistorial){
       <span class="emoji-grande" aria-hidden="true">${fase.emoji}</span>
       <div><small>Fase ${fase.numero} de ${FASES.length}</small><h2>${esc(fase.titulo)}</h2><p>${esc(fase.subtitulo)}</p></div>
     </div>
+    ${enConsulta ? (fe.completadaEnPrueba
+        ? `<div class="consulta consulta-prueba">🧪 Completada en modo prueba: esta fase no tiene respuestas ni fotografías reales.</div>`
+        : `<div class="consulta">✅ Misión completada. ${esc(fase.logro)} Puedes revisarla cuando quieras; tus resultados están a salvo.</div>`) : ''}
     ${globoAurora(`<p>${mensaje}</p>`)}
     <div class="tarjeta"><h3>📋 Instrucciones</h3><p>${esc(fase.instrucciones)}</p></div>
     <div id="zonaJuego" class="zona-juego"></div>
     <div class="acciones-fase">
       ${puedePista ? `<button type="button" id="btnPista" class="btn btn-suave">💡 Pedir una pista</button>` : ''}
-      ${puedeReiniciar ? `<button type="button" id="btnReiniciar" class="btn btn-secundario">🔄 Reiniciar este juego</button>` : ''}
-      <button type="button" id="btnMapa" class="btn btn-secundario">🗺️ Volver al mapa de fases</button>
+      ${puedeReiniciar ? `<button type="button" id="btnReiniciar" class="btn btn-secundario">${enConsulta ? '🔁 Jugar de nuevo' : '🔄 Reiniciar este juego'}</button>` : ''}
+      <button type="button" id="btnMapa" class="btn btn-secundario">🗺️ Volver al mapa</button>
+      ${!enConsulta ? htmlBotonPrueba(fase.id) : ''}
     </div>
   `);
 
@@ -949,7 +1460,7 @@ function abrirFase(faseId, desdeHistorial){
         <span class="icono" aria-hidden="true">🚧</span>
         <h3>Juego en preparación</h3>
         <p>Aurora está preparando esta misión. Estará disponible en una próxima versión de la aventura.</p>
-        <p><small>Esta fase todavía no puede completarse.</small></p>
+        <p><small>Esta misión todavía no puede completarse, por eso la siguiente sigue siendo una sorpresa.</small></p>
       </div>`;
   }
 
@@ -963,22 +1474,37 @@ function volverAlMapa(){
   else mostrarMenu();
 }
 
-async function pedirPista(fase, motor, api){
-  let texto = null;
-  try { texto = motor.pista(api); } catch (e) { console.error(e); }
-  if (!texto) { await dialogo({ titulo: 'Sin pistas', mensaje: 'Por ahora no hay más pistas para este momento. ¡Tú puedes!' }); return; }
+/* Registro común de pistas (lo usan el botón general y los motores con ayudas propias) */
+function registrarPistaFase(fase, texto){
   const fe = estado.fases[fase.id];
   fe.pistas.push({ fecha: ahoraISO(), texto });
   const it = intentoAbierto(fe); if (it) it.pistas++;
   agregarHistorial('pista', `Usó una pista en «${fase.titulo}».`, fase.id);
   guardarAuto();
+}
+
+async function pedirPista(fase, motor, api){
+  // Opcional: el motor puede indicar que ahora no es momento de pedir pista
+  // (devuelve true o un texto breve que se muestra sin registrar pista).
+  if (typeof motor.pistaDisponible === 'function') {
+    let disponible = true;
+    try { disponible = motor.pistaDisponible(api); } catch (e) { console.error(e); }
+    if (disponible !== true) { toast(typeof disponible === 'string' ? disponible : 'Espera un momento…'); return; }
+  }
+  let texto = null;
+  try { texto = motor.pista(api); } catch (e) { console.error(e); }
+  if (!texto) { await dialogo({ titulo: 'Sin pistas', mensaje: 'Por ahora no hay más pistas para este momento. ¡Tú puedes!' }); return; }
+  registrarPistaFase(fase, texto);
   await dialogo({ titulo: '💡 Pista de Aurora', html: globoAurora(`<p>${esc(texto)}</p>`) });
+  // Opcional: ayuda visual que el motor ejecuta cuando ya se cerró el mensaje
+  if (typeof motor.alCerrarPista === 'function') { try { motor.alCerrarPista(api); } catch (e) { console.error(e); } }
 }
 
 async function reiniciarFase(fase, motor, api){
   const r = await dialogo({
     titulo: '¿Reiniciar este juego?',
-    mensaje: 'El juego volverá a empezar. No te preocupes: tus intentos anteriores quedan guardados en tu historial y las demás fases no cambian.',
+    mensaje: (typeof motor.mensajeReinicio === 'function' && motor.mensajeReinicio(api)) ||
+      'El juego volverá a empezar. No te preocupes: tus intentos anteriores quedan guardados en tu historial y las demás fases no cambian.',
     botones: [{ texto: '🔄 Sí, reiniciar', valor: true, clase: 'btn-primario' }, { texto: 'Cancelar', valor: false, clase: 'btn-texto' }]
   });
   if (!r) return;
@@ -996,36 +1522,2129 @@ async function reiniciarFase(fase, motor, api){
   toast('🔄 Juego reiniciado');
 }
 
-async function completarFase(fase, resultado){
-  if (!estaImplementada(fase.id)) return; // Nunca completar fases sin juego
+async function completarFase(fase, resultado, opciones){
+  if (!estado || !estaImplementada(fase.id)) return;          // Nunca completar fases sin juego
+  const indice = FASES.indexOf(fase);
+  if (!faseDesbloqueada(indice)) return;                      // Nunca completar fases futuras
   const fe = estado.fases[fase.id];
+  const yaCompletada = faseCompletada(fase.id);
+  if (!intentoAbierto(fe)) iniciarIntento(fe);
   cerrarIntento(fe, 'completado', resultado ?? null);
-  fe.estado = 'completada';
-  fe.resultado = resultado ?? null;
-  fe.fechaFin = ahoraISO();
-  agregarHistorial('completada', `¡Completó la fase ${fase.numero}: ${fase.titulo}!`, fase.id);
-  if (FASES.every(f => estado.fases[f.id].estado === 'completada') && !estado.fechaFinalizacion) {
+  if (yaCompletada) {
+    // Repetición de una fase ya superada: se registra el intento,
+    // pero se conservan el resultado y la fecha originales.
+    agregarHistorial('repeticion', `Volvió a completar la fase ${fase.numero}: ${fase.titulo}.`, fase.id);
+  } else {
+    fe.estado = 'completada';
+    fe.resultado = resultado ?? null;
+    fe.fechaFin = ahoraISO();
+    agregarHistorial('completada', `¡Completó la fase ${fase.numero}: ${fase.titulo}!`, fase.id);
+  }
+  if (indiceMisionActual() >= FASES.length && !estado.fechaFinalizacion) {
     estado.fechaFinalizacion = ahoraISO();
     agregarHistorial('final', '¡Terminó toda la aventura!');
   }
   await guardarAhora();
   await dialogo({
-    titulo: '🎉 ¡Fase completada!',
-    html: globoAurora(`<p>¡Excelente, <strong>${esc(primerNombre(estado.nombre))}</strong>! Superaste «${esc(fase.titulo)}». Sigamos con la aventura.</p>`),
-    botones: [{ texto: '🗺️ Ir al mapa de fases', valor: true, clase: 'btn-primario' }]
+    titulo: yaCompletada ? '🌟 ¡Lo lograste otra vez!' : '🎉 ¡Misión cumplida!',
+    html: globoAurora((opciones && opciones.mensaje
+        ? `<p>${esc(opciones.mensaje)}</p>`
+        : `<p>¡Excelente, <strong>${esc(primerNombre(estado.nombre))}</strong>! ${esc(fase.logro)}</p>`) +
+      (!yaCompletada && indice + 1 < FASES.length ? `<p>Vuelve al mapa: una nueva misión te está esperando…</p>` : '')),
+    botones: [{ texto: (opciones && opciones.boton) || '🗺️ Volver al mapa', valor: true, clase: 'btn-primario' }]
   });
   volverAlMapa();
 }
 
 /* =========================================================
-   13. RECORRIDO FINAL E INFORME (próximas entregas)
-   - Fase 9: secuencia «Siguiente recuerdo» (motor 'recorrido').
-   - Fase 10: felicitación y «Descargar mi aventura completa»
-     (informe HTML independiente con fotografías en Base64).
+   13.1 MOTOR · FASE 1: «Palabras escondidas» (sopa de letras)
+   - asignar(): elige 8 de las 20 palabras UNA sola vez
+     (queda en estado.fases.sopa.asignacion).
+   - La cuadrícula se guarda en las respuestas del intento:
+     recargar la página NO la cambia; reiniciar crea una nueva
+     distribución con las mismas 8 palabras.
+   - Datos del intento (api.respuestas):
+       cuadricula {tam, filas[], ubicaciones{PALABRA:{f,c,df,dc}}}
+       encontradas [{palabra, celdas[[f,c]], fecha}]
+       seleccionesIncorrectas, estadoPistas {objetivo, nivel}
+       borradorReflexion {palabra, texto}
+       reflexion {pregunta, palabra, palabraMostrada, respuesta, fecha}
    ========================================================= */
+const Sopa = {
+  CANTIDAD: 8,
+  MIN_CARACTERES: 40,
+  COLORES: ['#ffd1e3','#cfe6ff','#cdf2dc','#fff0a8','#e6d6ff','#ffdcc4','#c9f1f1','#f6d8f5'],
+  DIRECCIONES: [[0,1],[1,0],[1,1],[-1,1],[0,-1],[-1,0],[-1,-1],[1,-1]],
+  RELLENO: 'AAAAABBCCCDDEEEEEFGGHIIIIJLLLMMNNNOOOOPPQRRRSSSSTTTUUUVYZ',
+  PREGUNTA: 'De las palabras que descubriste, elige una y explica cómo la utilizarías para favorecer la comunicación de los niños y las niñas de preprimaria.',
+  vista: null,
+  temporizadorPista: null,
+
+  /* ---------- Datos ---------- */
+  datos(p){ return BANCO_PREGUNTAS.sopa.find(x => x.palabra === p) || null; },
+  nombre(p){ const d = this.datos(p); return d ? d.mostrar : p; },
+  mayus(p){ return this.nombre(p).toLocaleUpperCase('es'); },
+  palabrasAsignadas(api){
+    const a = api.asignacion;
+    const lista = a && Array.isArray(a.palabras) ? a.palabras : [];
+    return lista.filter(p => this.datos(p));
+  },
+  encontradas(api, palabras){
+    const r = api.respuestas;
+    const lista = Array.isArray(r.encontradas) ? r.encontradas : [];
+    const vistas = new Set();
+    return lista.filter(e => e && palabras.includes(e.palabra) && !vistas.has(e.palabra) && vistas.add(e.palabra));
+  },
+  completo(api, palabras){ return this.encontradas(api, palabras).length >= palabras.length; },
+
+  /* ---------- Generación verificable de la cuadrícula ---------- */
+  generar(palabras){
+    const total = palabras.reduce((s, p) => s + p.length, 0);
+    const largo = Math.max(...palabras.map(p => p.length));
+    let n = Math.max(largo, 10, Math.ceil(Math.sqrt(total * 1.8)));
+    for (let vuelta = 0; vuelta < 240; vuelta++) {
+      if (vuelta > 0 && vuelta % 60 === 0) n++;           // Si cuesta, agrandar un poco
+      const m = Array.from({ length: n }, () => Array(n).fill(''));
+      const ubicaciones = {};
+      const orden = Azar.barajar(palabras).sort((a, b) => b.length - a.length);
+      let ok = true;
+      for (const p of orden) { if (!this.colocar(m, n, p, ubicaciones)) { ok = false; break; } }
+      if (!ok) continue;
+      const dirs = new Set(Object.values(ubicaciones).map(u => u.df + ',' + u.dc));
+      if (dirs.size < Math.min(4, palabras.length) && vuelta < 180) continue; // Variedad de direcciones
+      this.rellenar(m, n);
+      const sopa = { tam: n, filas: m.map(f => f.join('')), ubicaciones, generada: ahoraISO() };
+      if (this.verificar(sopa, palabras)) return sopa;
+    }
+    return this.respaldo(palabras);
+  },
+  colocar(m, n, p, ub){
+    const L = p.length;
+    for (let t = 0; t < 400; t++) {
+      const [df, dc] = this.DIRECCIONES[Azar.entero(8)];
+      const fMin = df < 0 ? L - 1 : 0, fMax = df > 0 ? n - L : n - 1;
+      const cMin = dc < 0 ? L - 1 : 0, cMax = dc > 0 ? n - L : n - 1;
+      if (fMax < fMin || cMax < cMin) continue;
+      const f0 = fMin + Azar.entero(fMax - fMin + 1), c0 = cMin + Azar.entero(cMax - cMin + 1);
+      let cabe = true, compartidas = 0;
+      for (let k = 0; k < L; k++) {
+        const v = m[f0 + df * k][c0 + dc * k];
+        if (v && v !== p[k]) { cabe = false; break; }
+        if (v) compartidas++;
+      }
+      if (!cabe || compartidas === L) continue;
+      for (let k = 0; k < L; k++) m[f0 + df * k][c0 + dc * k] = p[k];
+      ub[p] = { f: f0, c: c0, df, dc };
+      return true;
+    }
+    return false;
+  },
+  rellenar(m, n){
+    for (let f = 0; f < n; f++) for (let c = 0; c < n; c++)
+      if (!m[f][c]) m[f][c] = this.RELLENO[Azar.entero(this.RELLENO.length)];
+  },
+  respaldo(palabras){
+    // Distribución simple garantizada (solo si la aleatoria fallara)
+    const n = Math.max(Math.max(...palabras.map(p => p.length)), palabras.length, 10);
+    const m = Array.from({ length: n }, () => Array(n).fill(''));
+    const ubicaciones = {};
+    palabras.forEach((p, i) => {
+      const inverso = i % 2 === 1;
+      const c0 = inverso ? n - 1 : 0, dc = inverso ? -1 : 1;
+      for (let k = 0; k < p.length; k++) m[i][c0 + dc * k] = p[k];
+      ubicaciones[p] = { f: i, c: c0, df: 0, dc };
+    });
+    this.rellenar(m, n);
+    return { tam: n, filas: m.map(f => f.join('')), ubicaciones, generada: ahoraISO(), respaldo: true };
+  },
+  verificar(sopa, palabras){
+    if (!sopa || !Number.isInteger(sopa.tam) || !Array.isArray(sopa.filas) || sopa.filas.length !== sopa.tam) return false;
+    if (sopa.filas.some(f => typeof f !== 'string' || f.length !== sopa.tam)) return false;
+    return palabras.every(p => {
+      const u = sopa.ubicaciones && sopa.ubicaciones[p];
+      if (!u) return false;
+      for (let k = 0; k < p.length; k++) {
+        const f = u.f + u.df * k, c = u.c + u.dc * k;
+        if (f < 0 || c < 0 || f >= sopa.tam || c >= sopa.tam || sopa.filas[f][c] !== p[k]) return false;
+      }
+      return true;
+    });
+  },
+  nuevaCuadricula(api, palabras){
+    const sopa = this.generar(palabras);
+    api.responder('cuadricula', sopa);
+    api.responder('encontradas', []);
+    api.responder('seleccionesIncorrectas', 0);
+    api.responder('estadoPistas', { objetivo: null, nivel: 0 });
+    api.registrarEvento('Se generó una cuadrícula', { tam: sopa.tam });
+    api.guardar();
+  },
+
+  /* ---------- Entrada del motor ---------- */
+  montar(cont, api, esReinicio){
+    const palabras = this.palabrasAsignadas(api);
+    if (!palabras.length) throw new Error('La asignación de palabras no es válida.');
+    this.vista = null;
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return this.mostrarConsulta(cont, api, palabras);
+
+    const r = api.respuestas;
+    if (!this.verificar(r.cuadricula, palabras)) {
+      const yaJugo = fe.intentos.some(i => i.respuestas && i.respuestas.cuadricula);
+      if (r.cuadricula) api.registrarEvento('La cuadrícula guardada no era válida; se generó una nueva.');
+      if (!esReinicio && !yaJugo && !r.cuadricula) return this.mostrarIntro(cont, api, palabras);
+      this.nuevaCuadricula(api, palabras);
+    }
+    this.mostrarJuego(cont, api, palabras);
+  },
+
+  mostrarIntro(cont, api, palabras){
+    const n = esc(primerNombre(api.nombre));
+    cont.innerHTML = `
+      <div class="tarjeta">
+        ${globoAurora(`<p>¡Hola, <strong>${n}</strong>! Comenzaremos con un desafío de palabras escondidas. Durante nuestro curso descubrimos que el lenguaje está presente en los cuentos, los juegos, las canciones, las conversaciones y muchas experiencias más. ¿Cuántas de esas palabras podrás encontrar? ¡Vamos a descubrirlo!</p>`)}
+        <button type="button" id="btnSopaLista" class="btn btn-primario btn-mision">¡Estoy lista para jugar!</button>
+      </div>`;
+    cont.querySelector('#btnSopaLista').addEventListener('click', () => {
+      api.registrarEvento('Escuchó la presentación de Aurora y comenzó a jugar');
+      this.nuevaCuadricula(api, palabras);
+      this.mostrarJuego(cont, api, palabras);
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+
+  /* ---------- Cuadrícula ---------- */
+  htmlCuadricula(sopa, encontradas, interactiva){
+    const color = {};
+    encontradas.forEach((e, i) => (e.celdas || []).forEach(([f, c]) => {
+      const k = f + ',' + c; if (!color[k]) color[k] = this.COLORES[i % this.COLORES.length];
+    }));
+    let celdas = '';
+    for (let f = 0; f < sopa.tam; f++) for (let c = 0; c < sopa.tam; c++) {
+      const col = color[f + ',' + c];
+      celdas += `<div class="sopa-celda${col ? ' encontrada' : ''}" data-f="${f}" data-c="${c}"${col ? ` style="--color-palabra:${col}"` : ''}>${esc(sopa.filas[f][c])}</div>`;
+    }
+    return `<div class="sopa-grid" ${interactiva ? 'id="sopaGrid"' : ''} style="--n:${sopa.tam}" aria-label="Sopa de letras de ${sopa.tam} por ${sopa.tam}">${celdas}</div>`;
+  },
+
+  mostrarJuego(cont, api, palabras){
+    const sopa = api.respuestas.cuadricula;
+    const encontradas = this.encontradas(api, palabras);
+    const fe = api.estadoFase;
+    const repaso = fe.estado === 'completada'
+      ? `<details class="tarjeta"><summary>📖 Ver lo que descubriste la primera vez</summary>${this.htmlRepaso(api, palabras)}</details>` : '';
+    cont.innerHTML = `
+      <div class="tarjeta sopa-tarjeta">
+        <p class="sopa-contador" id="sopaContador" aria-live="polite"></p>
+        <div class="barra"><span id="sopaBarra"></span></div>
+        ${this.htmlCuadricula(sopa, encontradas, true)}
+        <p class="ayuda" style="text-align:center">Desliza el dedo sobre una palabra, o toca su primera y su última letra.</p>
+      </div>
+      <div class="tarjeta"><h3>🔎 Palabras por encontrar</h3><ul class="sopa-lista" id="sopaLista"></ul></div>
+      <div id="sopaReflexion"></div>
+      ${repaso}`;
+
+    const grid = cont.querySelector('#sopaGrid');
+    const celdas = Array.from({ length: sopa.tam }, () => []);
+    const todas = Array.from(grid.children);
+    todas.forEach(el => { celdas[+el.dataset.f][+el.dataset.c] = el; });
+    this.vista = { cont, grid, celdas, todas, n: sopa.tam };
+
+    this.actualizarLista(api, palabras);
+    this.enlazarSeleccion(api, palabras);
+    if (this.completo(api, palabras)) this.mostrarReflexion(api, palabras);
+  },
+
+  actualizarLista(api, palabras){
+    const v = this.vista; if (!v) return;
+    const encontradas = this.encontradas(api, palabras);
+    const idx = {}; encontradas.forEach((e, i) => { idx[e.palabra] = i; });
+    v.cont.querySelector('#sopaLista').innerHTML = palabras.map(p => {
+      const i = idx[p];
+      return i === undefined
+        ? `<li><span class="txt">${esc(this.mayus(p))}</span></li>`
+        : `<li class="ok" style="--color-palabra:${this.COLORES[i % this.COLORES.length]}">✅ <span class="txt">${esc(this.mayus(p))}</span></li>`;
+    }).join('');
+    v.cont.querySelector('#sopaContador').textContent = `${encontradas.length} de ${palabras.length} palabras encontradas`;
+    v.cont.querySelector('#sopaBarra').style.width = Math.round(encontradas.length / palabras.length * 100) + '%';
+  },
+
+  /* ---------- Selección táctil / mouse ---------- */
+  enlazarSeleccion(api, palabras){
+    const v = this.vista, grid = v.grid;
+    let inicio = null, fin = null, ancla = null, puntero = null;
+
+    const celdaDe = (e) => {
+      const r = grid.getBoundingClientRect(), pad = 4;
+      const w = (r.width - pad * 2) / v.n, h = (r.height - pad * 2) / v.n;
+      const c = Math.min(v.n - 1, Math.max(0, Math.floor((e.clientX - r.left - pad) / w)));
+      const f = Math.min(v.n - 1, Math.max(0, Math.floor((e.clientY - r.top - pad) / h)));
+      return { f, c };
+    };
+    // Ajusta el arrastre a una de las 8 direcciones válidas
+    const ajustar = (a, b) => {
+      const df = b.f - a.f, dc = b.c - a.c;
+      if (!df && !dc) return { f: a.f, c: a.c };
+      const k = Math.round(Math.atan2(df, dc) / (Math.PI / 4));
+      const sf = Math.round(Math.sin(k * Math.PI / 4)), sc = Math.round(Math.cos(k * Math.PI / 4));
+      let largo = Math.max(Math.abs(df), Math.abs(dc));
+      while (largo > 0) {
+        const f = a.f + sf * largo, c = a.c + sc * largo;
+        if (f >= 0 && c >= 0 && f < v.n && c < v.n) break;
+        largo--;
+      }
+      return { f: a.f + sf * largo, c: a.c + sc * largo };
+    };
+    const linea = (a, b) => {
+      const sf = Math.sign(b.f - a.f), sc = Math.sign(b.c - a.c);
+      const largo = Math.max(Math.abs(b.f - a.f), Math.abs(b.c - a.c));
+      const out = [];
+      for (let k = 0; k <= largo; k++) out.push({ f: a.f + sf * k, c: a.c + sc * k });
+      return out;
+    };
+    const marcar = (lista) => {
+      v.todas.forEach(el => el.classList.remove('sel'));
+      lista.forEach(x => v.celdas[x.f][x.c].classList.add('sel'));
+    };
+    const ponerAncla = (a) => {
+      v.todas.forEach(el => el.classList.remove('ancla'));
+      ancla = a;
+      if (a) v.celdas[a.f][a.c].classList.add('ancla');
+    };
+    const terminar = (e, cancelar) => {
+      if (puntero !== e.pointerId) return;
+      puntero = null;
+      if (!inicio) return;
+      const a = inicio, sel = linea(inicio, fin);
+      inicio = fin = null;
+      if (cancelar) { marcar([]); return; }
+      if (sel.length === 1) {                       // Modo "toca la primera y la última letra"
+        if (ancla && (ancla.f !== a.f || ancla.c !== a.c)) {
+          const tramo = linea(ancla, ajustar(ancla, a));
+          ponerAncla(null); marcar(tramo); this.evaluar(tramo, api, palabras);
+        } else if (ancla) { ponerAncla(null); marcar([]); }
+        else { marcar([]); ponerAncla(a); }
+      } else {
+        ponerAncla(null); this.evaluar(sel, api, palabras);
+      }
+    };
+
+    grid.addEventListener('pointerdown', e => {
+      if (e.button > 0 || this.completo(api, palabras)) return;
+      e.preventDefault();
+      try { grid.setPointerCapture(e.pointerId); } catch (err) {}
+      puntero = e.pointerId;
+      inicio = fin = celdaDe(e);
+      marcar([inicio]);
+    });
+    grid.addEventListener('pointermove', e => {
+      if (puntero !== e.pointerId || !inicio) return;
+      e.preventDefault();
+      const nf = ajustar(inicio, celdaDe(e));
+      if (nf.f !== fin.f || nf.c !== fin.c) { fin = nf; marcar(linea(inicio, fin)); }
+    });
+    grid.addEventListener('pointerup', e => terminar(e, false));
+    grid.addEventListener('pointercancel', e => terminar(e, true));
+    grid.addEventListener('contextmenu', e => e.preventDefault());
+    grid.addEventListener('touchmove', e => e.preventDefault(), { passive: false }); // Evita desplazar la página
+  },
+
+  evaluar(sel, api, palabras){
+    const v = this.vista, sopa = api.respuestas.cuadricula;
+    const texto = sel.map(x => sopa.filas[x.f][x.c]).join('');
+    const inverso = texto.split('').reverse().join('');
+    const ya = new Set(this.encontradas(api, palabras).map(e => e.palabra));
+    const p = palabras.find(w => !ya.has(w) && (w === texto || w === inverso));
+    const limpiar = () => v.todas.forEach(el => el.classList.remove('sel'));
+    if (p) { limpiar(); this.encontrar(p, sel, api, palabras); return; }
+    if (sel.length < 2) { limpiar(); return; }
+    if (palabras.some(w => ya.has(w) && (w === texto || w === inverso))) { limpiar(); toast('😉 Ya encontraste esa palabra'); return; }
+    // Selección incorrecta: no cuenta como acierto
+    api.responder('seleccionesIncorrectas', (Number(api.respuestas.seleccionesIncorrectas) || 0) + 1);
+    v.grid.classList.add('error');
+    setTimeout(() => { v.grid.classList.remove('error'); limpiar(); }, 450);
+  },
+
+  async encontrar(p, sel, api, palabras){
+    const v = this.vista;
+    const lista = this.encontradas(api, palabras).slice();
+    lista.push({ palabra: p, celdas: sel.map(x => [x.f, x.c]), fecha: ahoraISO() });
+    api.responder('encontradas', lista);
+    api.registrarEvento(`Encontró la palabra ${p}`, { celdas: sel.length });
+    api.guardar();                                          // Guardado inmediato
+
+    const color = this.COLORES[(lista.length - 1) % this.COLORES.length];
+    v.todas.forEach(el => el.classList.remove('pista'));
+    sel.forEach(x => {
+      const el = v.celdas[x.f][x.c];
+      if (!el.classList.contains('encontrada')) { el.classList.add('encontrada'); el.style.setProperty('--color-palabra', color); }
+      el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+    });
+    this.actualizarLista(api, palabras);
+
+    const d = this.datos(p);
+    const ultima = lista.length >= palabras.length;
+    await dialogo({
+      titulo: `🎉 ¡Encontraste ${this.mayus(p)}!`,
+      html: globoAurora(`<p><strong>${esc(d.mostrar)}:</strong> ${esc(d.definicion)}</p><p><strong>En preprimaria:</strong> ${esc(d.ejemplo)}</p>`),
+      botones: [{ texto: ultima ? '✨ Continuar' : '🔍 Continuar buscando', valor: true, clase: 'btn-primario' }]
+    });
+    if (ultima && this.vista === v) {
+      this.mostrarReflexion(api, palabras);
+      try { v.cont.querySelector('#sopaReflexion').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    }
+  },
+
+  /* ---------- Pistas progresivas ---------- */
+  pista(api){
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return null;
+    const r = api.respuestas;
+    const palabras = this.palabrasAsignadas(api);
+    if (!this.verificar(r.cuadricula, palabras)) return null;
+    const ya = new Set(this.encontradas(api, palabras).map(e => e.palabra));
+    const pendientes = palabras.filter(p => !ya.has(p));
+    if (!pendientes.length) return null;
+
+    let st = r.estadoPistas && typeof r.estadoPistas === 'object' ? { objetivo: r.estadoPistas.objetivo, nivel: r.estadoPistas.nivel || 0 } : { objetivo: null, nivel: 0 };
+    if (!st.objetivo || ya.has(st.objetivo) || !palabras.includes(st.objetivo) || st.nivel > 2) {
+      const desde = palabras.indexOf(st.objetivo);
+      let siguiente = pendientes[0];
+      for (let k = 1; k <= palabras.length; k++) {
+        const cand = palabras[(desde + k + palabras.length) % palabras.length];
+        if (!ya.has(cand)) { siguiente = cand; break; }
+      }
+      st = { objetivo: siguiente, nivel: 0 };
+    }
+    const p = st.objetivo, d = this.datos(p);
+    let texto;
+    if (st.nivel === 0) texto = `Busca la palabra que significa: «${d.definicion}»`;
+    else if (st.nivel === 1) texto = `La palabra que buscas comienza con la letra «${p[0]}» y tiene ${p.length} letras.`;
+    else { texto = 'Observa la casilla que brilla en la sopa de letras: ahí comienza la palabra que buscas.'; this.resaltarInicio(p, r.cuadricula); }
+    api.registrarEvento(`Pista nivel ${st.nivel + 1} sobre ${p}`);
+    st.nivel++;
+    api.responder('estadoPistas', st);
+    return texto;
+  },
+  resaltarInicio(p, sopa){
+    const v = this.vista;
+    const u = sopa.ubicaciones[p];
+    if (!v || !u) return;
+    const el = v.celdas[u.f][u.c];
+    v.todas.forEach(x => x.classList.remove('pista'));
+    el.classList.add('pista');
+    clearTimeout(this.temporizadorPista);
+    this.temporizadorPista = setTimeout(() => el.classList.remove('pista'), 12000);
+  },
+
+  /* ---------- Reflexión pedagógica final ---------- */
+  mostrarReflexion(api, palabras){
+    const v = this.vista; if (!v) return;
+    const zona = v.cont.querySelector('#sopaReflexion');
+    if (!zona || zona.childElementCount) return;
+    const n = esc(primerNombre(api.nombre));
+    const borr = api.respuestas.borradorReflexion && typeof api.respuestas.borradorReflexion === 'object' ? api.respuestas.borradorReflexion : {};
+    zona.innerHTML = `
+      <div class="tarjeta">
+        ${globoAurora(`<p>¡Lo lograste, <strong>${n}</strong>! Encontraste todas las palabras. Pero antes de continuar, quiero hacerte una última pregunta como futura maestra.</p>`)}
+        <h3>💭 Pregunta de Aurora</h3>
+        <p>${esc(this.PREGUNTA)}</p>
+        <label for="sopaPalabra">Elige una palabra</label>
+        <select id="sopaPalabra">
+          <option value="">— Elige una palabra —</option>
+          ${palabras.map(p => `<option value="${p}"${borr.palabra === p ? ' selected' : ''}>${esc(this.nombre(p))}</option>`).join('')}
+        </select>
+        <label for="sopaTexto" style="margin-top:14px">Tu respuesta</label>
+        <textarea id="sopaTexto" rows="6" maxlength="1500" placeholder="Escribe aquí cómo la utilizarías con los niños y las niñas…">${esc(borr.texto || '')}</textarea>
+        <small id="sopaConteo"></small>
+        <p class="error" id="sopaError" role="alert"></p>
+        <button type="button" id="sopaEntregar" class="btn btn-primario">📨 Entregar mi reflexión</button>
+      </div>`;
+    const sel = zona.querySelector('#sopaPalabra'), txt = zona.querySelector('#sopaTexto');
+    const conteo = zona.querySelector('#sopaConteo'), error = zona.querySelector('#sopaError');
+    const significativos = (t) => t.replace(/\s/g, '').length;
+    const refrescar = () => {
+      const k = significativos(txt.value);
+      conteo.textContent = k >= this.MIN_CARACTERES ? `✓ ${k} caracteres` : `${k} de ${this.MIN_CARACTERES} caracteres mínimos`;
+    };
+    const borrador = () => { api.responder('borradorReflexion', { palabra: sel.value, texto: txt.value }); error.textContent = ''; };
+    refrescar();
+    txt.addEventListener('input', () => { refrescar(); borrador(); });
+    sel.addEventListener('change', borrador);
+    zona.querySelector('#sopaEntregar').addEventListener('click', (ev) => {
+      if (!this.completo(api, palabras)) { error.textContent = 'Primero encuentra todas las palabras.'; return; }
+      const p = sel.value;
+      const texto = txt.value.trim();
+      if (!p || !palabras.includes(p)) { error.textContent = 'Elige una de tus palabras.'; sel.focus(); return; }
+      if (significativos(texto) < this.MIN_CARACTERES || (texto.match(/\p{L}/gu) || []).length < 20) {
+        error.textContent = `Escribe una respuesta un poco más completa (al menos ${this.MIN_CARACTERES} caracteres, sin contar espacios).`;
+        txt.focus(); return;
+      }
+      ev.currentTarget.disabled = true;
+      const fecha = ahoraISO();
+      api.responder('reflexion', { pregunta: this.PREGUNTA, palabra: p, palabraMostrada: this.nombre(p), respuesta: texto, fecha });
+      api.registrarEvento('Entregó su reflexión pedagógica', { palabra: p });
+      const fe = api.estadoFase, it = intentoAbierto(fe);
+      api.completar({
+        palabrasAsignadas: palabras.map(w => this.nombre(w)),
+        palabrasEncontradas: this.encontradas(api, palabras).map(e => this.nombre(e.palabra)),
+        intentos: fe.intentos.length,
+        pistasIntento: it ? it.pistas : 0,
+        pistasTotales: fe.pistas.length,
+        pistasUtilizadas: fe.pistas.map(x => x.texto),
+        seleccionesIncorrectas: Number(api.respuestas.seleccionesIncorrectas) || 0,
+        palabraReflexion: this.nombre(p),
+        pregunta: this.PREGUNTA,
+        reflexion: texto,
+        fechaFinalizacion: fecha
+      });
+    });
+  },
+
+  /* ---------- Consulta de la misión completada ---------- */
+  htmlRepaso(api, palabras){
+    const fe = api.estadoFase, res = fe.resultado || {};
+    const original = fe.intentos.find(i => i.estado === 'completado');
+    const refl = (original && original.respuestas && original.respuestas.reflexion) || {};
+    const palabraR = res.palabraReflexion || refl.palabraMostrada || '';
+    const textoR = res.reflexion || refl.respuesta || '';
+    const tarjetas = palabras.map((p, i) => {
+      const d = this.datos(p);
+      return `<div class="tarjeta-palabra" style="--color-palabra:${this.COLORES[i % this.COLORES.length]}">
+        <strong>${esc(this.mayus(p))}</strong><p>${esc(d.definicion)}</p><p><strong>En preprimaria:</strong> ${esc(d.ejemplo)}</p></div>`;
+    }).join('');
+    return `
+      <div class="tarjeta"><h3>📚 Tus palabras y sus significados</h3>${tarjetas}</div>
+      ${textoR ? `<div class="tarjeta"><h3>💭 Tu reflexión</h3><p><small>${esc(this.PREGUNTA)}</small></p>
+        <div class="cita">${palabraR ? `<strong>${esc(palabraR)}:</strong> ` : ''}${esc(textoR)}</div></div>` : ''}`;
+  },
+  mostrarConsulta(cont, api, palabras){
+    const fe = api.estadoFase;
+    const original = fe.intentos.find(i => i.estado === 'completado');
+    const ro = original && original.respuestas;
+    const grid = ro && this.verificar(ro.cuadricula, palabras)
+      ? this.htmlCuadricula(ro.cuadricula, Array.isArray(ro.encontradas) ? ro.encontradas : [], false) : '';
+    cont.innerHTML = `
+      <div class="tarjeta sopa-tarjeta">
+        <p class="sopa-contador">✅ ${palabras.length} de ${palabras.length} palabras encontradas</p>
+        ${grid}
+      </div>
+      ${this.htmlRepaso(api, palabras)}
+      <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tu resultado original se conserva.</p>`;
+  }
+};
+
+registrarMotor('sopa', {
+  asignar(azar, bancos){
+    const banco = ((bancos && bancos.preguntas && bancos.preguntas.sopa) || []).map(x => x.palabra);
+    return { palabras: azar.elegir(banco, Sopa.CANTIDAD), fecha: ahoraISO() };
+  },
+  iniciar(contenedor, api){ Sopa.montar(contenedor, api, false); },
+  reiniciar(contenedor, api){ Sopa.montar(contenedor, api, true); },
+  pista(api){ return Sopa.pista(api); }
+});
 
 /* =========================================================
-   14. ARRANQUE
+   13.2 MOTOR · FASE 2: «Memoria de una futura maestra»
+   - asignar(): 6 de las 20 parejas, UNA sola vez
+     (estado.fases.memoria.asignacion.parejas).
+   - Datos del intento (api.respuestas):
+       orden [{id, lado:'concepto'|'pareja'}] (12 tarjetas)
+       encontradas [ids], comparaciones, comparacionesIncorrectas,
+       comparacionesDetalle [{a, b, acierto, fecha}], estadoPistas {n}
+   - Recargar NO vuelve a mezclar; reiniciar sí (mismas 6 parejas).
+   - Temporizadores protegidos: si la estudiante sale o reinicia,
+     ninguna animación pendiente actúa sobre la pantalla nueva.
+   ========================================================= */
+const Memoria = {
+  CANTIDAD: 6,
+  ESPERA_ERROR: 2000,
+  DURACION_VISTAZO: 3000,
+  DURACION_RECUERDA: 2200,
+  DURACION_AYUDA: 2600,
+  PAUSA_PISTAS: 1500,
+  FONDOS: ['#fbd3e3','#d6e8fb','#cdeedd','#fff0b3','#e9def8','#ffe0cc'],
+  MENSAJES: { 1:'¡Encontraste una pareja!', 2:'¡Tu memoria está trabajando!', 3:'¡Muy bien! Ya llevas tres parejas.',
+              4:'¡Excelente! Ya son cuatro parejas.', 5:'¡Solo falta una pareja!' },
+  vista: null,
+  timers: [],
+  pistaPendiente: null,
+  finPistaEn: 0,
+
+  /* ---------- Datos ---------- */
+  datos(id){ return BANCO_PREGUNTAS.memoria.find(x => x.id === id) || null; },
+  parejasAsignadas(api){
+    const a = api.asignacion;
+    const lista = a && Array.isArray(a.parejas) ? a.parejas : [];
+    return lista.filter(id => this.datos(id));
+  },
+  encontradas(api, ids){
+    const l = Array.isArray(api.respuestas.encontradas) ? api.respuestas.encontradas : [];
+    return l.filter((id, i) => ids.includes(id) && l.indexOf(id) === i);
+  },
+  ordenValido(orden, ids){
+    if (!Array.isArray(orden) || orden.length !== ids.length * 2) return false;
+    const vistos = new Set();
+    return orden.every(t => {
+      if (!t || !ids.includes(t.id) || (t.lado !== 'concepto' && t.lado !== 'pareja')) return false;
+      const k = t.id + ':' + t.lado;
+      if (vistos.has(k)) return false;
+      vistos.add(k); return true;
+    });
+  },
+  mezclar(ids, anterior){
+    const base = [];
+    ids.forEach(id => { base.push({ id, lado: 'concepto' }); base.push({ id, lado: 'pareja' }); });
+    let orden = Azar.barajar(base);
+    for (let k = 0; k < 12 && anterior && JSON.stringify(orden) === JSON.stringify(anterior); k++) orden = Azar.barajar(base);
+    return orden;
+  },
+  nuevoTablero(api, ids){
+    const fe = api.estadoFase;
+    const previo = fe.intentos.slice().reverse().find(i => i.estado !== 'en_curso' && i.respuestas && Array.isArray(i.respuestas.orden));
+    const orden = this.mezclar(ids, previo ? previo.respuestas.orden : null);
+    api.responder('orden', orden);
+    api.responder('encontradas', []);
+    api.responder('comparaciones', 0);
+    api.responder('comparacionesIncorrectas', 0);
+    api.responder('comparacionesDetalle', []);
+    api.responder('estadoPistas', { n: 0 });
+    api.registrarEvento('Se mezclaron las tarjetas');
+    api.guardar();
+  },
+
+  /* ---------- Temporizadores seguros ---------- */
+  limpiar(){
+    this.timers.forEach(t => clearTimeout(t));
+    this.timers = [];
+    this.vista = null;
+    this.pistaPendiente = null;
+    this.finPistaEn = 0;
+  },
+  despues(ms, fn){
+    const v = this.vista;
+    const t = setTimeout(() => {
+      this.timers = this.timers.filter(x => x !== t);
+      if (v && this.vista === v && v.cont.isConnected) fn(v);   // Solo si sigue en pantalla
+    }, ms);
+    this.timers.push(t);
+  },
+
+  /* ---------- Entrada del motor ---------- */
+  montar(cont, api, esReinicio){
+    this.limpiar();
+    const ids = this.parejasAsignadas(api);
+    if (ids.length < 2) throw new Error('La asignación de parejas no es válida.');
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return this.mostrarConsulta(cont, api, ids);
+    const r = api.respuestas;
+    if (!this.ordenValido(r.orden, ids)) {
+      const yaJugo = fe.intentos.some(i => i.respuestas && i.respuestas.orden);
+      if (r.orden) api.registrarEvento('El orden guardado no era válido; se mezclaron de nuevo las tarjetas.');
+      if (!esReinicio && !yaJugo && !r.orden) return this.mostrarIntro(cont, api, ids);
+      this.nuevoTablero(api, ids);
+    }
+    this.mostrarJuego(cont, api, ids);
+  },
+
+  mostrarIntro(cont, api, ids){
+    const n = esc(primerNombre(api.nombre));
+    cont.innerHTML = `
+      <div class="tarjeta">
+        ${globoAurora(`<p>¡Qué alegría verte nuevamente, <strong>${n}</strong>! Esta vez vamos a poner a prueba tu memoria. Durante nuestras clases descubrimos muchas formas de desarrollar la comunicación en los niños y las niñas. Ahora tendrás que encontrar las parejas escondidas. ¡Confío en tu memoria, futura maestra!</p>`)}
+        <button type="button" id="btnMemComenzar" class="btn btn-primario btn-mision">¡Comenzar el desafío!</button>
+      </div>`;
+    cont.querySelector('#btnMemComenzar').addEventListener('click', () => {
+      api.registrarEvento('Escuchó la presentación de Aurora y comenzó a jugar');
+      this.nuevoTablero(api, ids);
+      this.mostrarJuego(cont, api, ids);
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+
+  /* ---------- Tablero ---------- */
+  htmlCarta(t, i, encontrada){
+    const d = this.datos(t.id);
+    const texto = t.lado === 'concepto' ? d.concepto : d.pareja;
+    return `<button type="button" class="mem-carta${encontrada ? ' volteada encontrada' : ''}" data-i="${i}" style="--fondo-carta:${this.FONDOS[i % this.FONDOS.length]}"
+        aria-label="${encontrada ? esc(texto) : `Tarjeta ${i + 1}, boca abajo`}">
+      <span class="mem-interior">
+        <span class="mem-cara mem-dorso" aria-hidden="true"><span class="mem-signo">?</span></span>
+        <span class="mem-cara mem-frente ${t.lado}"><small>${t.lado === 'concepto' ? 'Concepto' : 'Significado'}</small><span class="mem-texto">${esc(texto)}</span></span>
+      </span></button>`;
+  },
+  htmlParejas(ids){
+    return `<div class="mem-relaciones">${ids.map((id, i) => {
+      const d = this.datos(id);
+      return `<div class="mem-relacion" style="--fondo-carta:${this.FONDOS[i % this.FONDOS.length]}"><strong>${esc(d.concepto)}</strong><span>↔ ${esc(d.pareja)}</span></div>`;
+    }).join('')}</div>`;
+  },
+
+  mostrarJuego(cont, api, ids){
+    const r = api.respuestas, fe = api.estadoFase;
+    const ya = new Set(this.encontradas(api, ids));
+    cont.innerHTML = `
+      <div class="tarjeta mem-panel">
+        <div class="mem-marcadores"><span id="memParejas"></span><span class="neutro" id="memComparaciones"></span></div>
+        <div class="barra"><span id="memBarra"></span></div>
+        <div class="mem-mensaje" id="memMensaje" aria-live="polite"></div>
+        <div class="mem-tablero" id="memTablero">${r.orden.map((t, i) => this.htmlCarta(t, i, ya.has(t.id))).join('')}</div>
+        <p class="ayuda" style="text-align:center">Toca dos tarjetas: un concepto y su significado.</p>
+      </div>
+      <div id="memFinal"></div>
+      ${fe.estado === 'completada' ? `<details class="tarjeta"><summary>📖 Ver las parejas que encontraste</summary>${this.htmlParejas(ids)}</details>` : ''}`;
+
+    const tablero = cont.querySelector('#memTablero');
+    this.vista = { cont, tablero, cartas: Array.from(tablero.querySelectorAll('.mem-carta')), orden: r.orden,
+                   ids, api, abiertas: [], bloqueado: false, enPista: false, finalizando: false };
+    this.actualizarMarcadores();
+    tablero.addEventListener('click', e => {
+      const carta = e.target.closest('.mem-carta');
+      if (carta) this.tocar(+carta.dataset.i);
+    });
+    // Si ya estaban todas (p. ej. salió durante la celebración), finalizar ahora
+    if (ya.size >= ids.length) this.finalizar();
+  },
+
+  actualizarMarcadores(){
+    const v = this.vista; if (!v) return;
+    const k = this.encontradas(v.api, v.ids).length;
+    v.cont.querySelector('#memParejas').textContent = `Parejas encontradas: ${k} de ${v.ids.length}`;
+    v.cont.querySelector('#memComparaciones').textContent = `Comparaciones: ${Number(v.api.respuestas.comparaciones) || 0}`;
+    v.cont.querySelector('#memBarra').style.width = Math.round(k / v.ids.length * 100) + '%';
+  },
+
+  mensaje(texto){
+    const v = this.vista; if (!v) return;
+    const el = v.cont.querySelector('#memMensaje');
+    el.innerHTML = `${imgAurora('diminuta')}<span>${esc(texto)}</span>`;
+    el.classList.add('visible');
+    clearTimeout(v.tMensaje);
+    v.tMensaje = setTimeout(() => el.classList.remove('visible'), 2300);
+  },
+
+  voltear(carta, mostrar){
+    carta.classList.toggle('volteada', mostrar);
+    const i = +carta.dataset.i, t = this.vista.orden[i], d = this.datos(t.id);
+    carta.setAttribute('aria-label', mostrar ? (t.lado === 'concepto' ? d.concepto : d.pareja) : `Tarjeta ${i + 1}, boca abajo`);
+  },
+  estaEncontrada(i){
+    const v = this.vista;
+    return this.encontradas(v.api, v.ids).includes(v.orden[i].id);
+  },
+
+  tocar(i){
+    const v = this.vista;
+    if (!v || v.bloqueado || v.finalizando || !(i >= 0 && i < v.cartas.length)) return;
+    if (this.estaEncontrada(i) || v.abiertas.includes(i) || v.abiertas.length >= 2) return;
+    this.voltear(v.cartas[i], true);
+    v.abiertas.push(i);
+    if (v.abiertas.length === 2) this.comparar();
+  },
+
+  comparar(){
+    const v = this.vista, api = v.api, r = api.respuestas;
+    const [a, b] = v.abiertas;
+    const ta = v.orden[a], tb = v.orden[b];
+    const acierto = ta.id === tb.id && ta.lado !== tb.lado;
+    api.responder('comparaciones', (Number(r.comparaciones) || 0) + 1);
+    const detalle = Array.isArray(r.comparacionesDetalle) ? r.comparacionesDetalle.slice() : [];
+    detalle.push({ a: `${ta.id}:${ta.lado}`, b: `${tb.id}:${tb.lado}`, acierto, fecha: ahoraISO() });
+    api.responder('comparacionesDetalle', detalle);
+
+    if (acierto) {
+      const lista = this.encontradas(api, v.ids).concat(ta.id);
+      api.responder('encontradas', lista);
+      api.registrarEvento(`Encontró la pareja «${this.datos(ta.id).concepto}»`);
+      api.guardar();                                         // Guardado inmediato
+      [a, b].forEach(i => {
+        const c = v.cartas[i];
+        c.classList.add('encontrada'); c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop');
+      });
+      v.abiertas = [];
+      this.actualizarMarcadores();
+      if (lista.length >= v.ids.length) this.finalizar();
+      else this.mensaje(this.MENSAJES[lista.length] || '¡Encontraste una pareja!');
+    } else {
+      api.responder('comparacionesIncorrectas', (Number(r.comparacionesIncorrectas) || 0) + 1);
+      this.actualizarMarcadores();
+      v.bloqueado = true;                                    // No permitir una tercera tarjeta
+      this.despues(this.ESPERA_ERROR, vv => {
+        vv.abiertas.forEach(i => { if (!this.estaEncontrada(i)) this.voltear(vv.cartas[i], false); });
+        vv.abiertas = [];
+        vv.bloqueado = false;
+      });
+    }
+  },
+
+  /* ---------- Finalización automática ---------- */
+  finalizar(){
+    const v = this.vista;
+    if (!v || v.finalizando) return;
+    v.finalizando = true; v.bloqueado = true;
+    const api = v.api, fe = api.estadoFase, it = intentoAbierto(fe);
+    const nombre = primerNombre(api.nombre);
+    const texto = `¡Lo lograste, ${nombre}! Encontraste todas las parejas. Has demostrado que también podemos aprender y recordar mientras jugamos. ¡Tengo otra sorpresa preparada para ti!`;
+    v.tablero.classList.add('celebrar');
+    v.cont.querySelector('#memFinal').innerHTML = `
+      <div class="tarjeta mem-celebracion"><span class="confeti" aria-hidden="true">🎉✨🧠✨🎉</span>${globoAurora(`<p>${esc(texto)}</p>`)}</div>`;
+    const r = api.respuestas;
+    const resultado = {
+      parejasAsignadas: v.ids.map(id => ({ concepto: this.datos(id).concepto, pareja: this.datos(id).pareja })),
+      parejasEncontradas: this.encontradas(api, v.ids).map(id => this.datos(id).concepto),
+      comparaciones: Number(r.comparaciones) || 0,
+      comparacionesIncorrectas: Number(r.comparacionesIncorrectas) || 0,
+      intentos: fe.intentos.length,
+      pistasIntento: it ? it.pistas : 0,
+      pistasTotales: fe.pistas.length,
+      pistasUtilizadas: fe.pistas.map(p => p.texto),
+      fechaInicio: fe.fechaInicio,
+      fechaFinalizacion: ahoraISO()
+    };
+    api.registrarEvento('Encontró todas las parejas');
+    this.despues(1600, () => api.completar(resultado, { mensaje: texto }));
+  },
+
+  /* ---------- Pistas prácticas ---------- */
+  pistaDisponible(api){
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return 'Ya completaste esta misión. Usa «Jugar de nuevo» si quieres practicar.';
+    const v = this.vista;
+    if (!v) return 'Primero presiona «¡Comenzar el desafío!».';
+    if (v.finalizando) return '¡Ya encontraste todas las parejas!';
+    if (v.enPista) return 'Espera a que termine la pista anterior.';
+    if (v.bloqueado || v.abiertas.length >= 2) return 'Espera a que las tarjetas vuelvan a su lugar.';
+    if (Date.now() < this.finPistaEn + this.PAUSA_PISTAS) return 'Espera un momento antes de pedir otra pista.';
+    return true;
+  },
+  pendientes(){
+    const v = this.vista, ya = this.encontradas(v.api, v.ids);
+    return v.cartas.map((c, i) => i).filter(i => !ya.includes(v.orden[i].id));
+  },
+  pareja(i){
+    const v = this.vista, t = v.orden[i];
+    return v.orden.findIndex((x, k) => k !== i && x.id === t.id);
+  },
+  pista(api){
+    if (this.pistaDisponible(api) !== true) return null;
+    const v = this.vista;
+    const pend = this.pendientes();
+    if (!pend.length) return null;
+    const st = api.respuestas.estadoPistas && typeof api.respuestas.estadoPistas === 'object' ? api.respuestas.estadoPistas : { n: 0 };
+    const n = Number(st.n) || 0;
+    const ocultas = pend.filter(i => !v.abiertas.includes(i));
+    const paresLibres = Azar.barajar(ocultas.filter(i => v.orden[i].lado === 'concepto' && ocultas.includes(this.pareja(i))));
+    let tipo = ['vistazo', 'recuerda', 'ayuda'][n % 3];
+    if (tipo === 'vistazo' && ocultas.length < 2) tipo = 'ayuda';
+    if (tipo === 'recuerda' && !paresLibres.length) tipo = 'ayuda';
+
+    let cartas, texto;
+    if (tipo === 'vistazo') {
+      cartas = Azar.elegir(ocultas, 2);
+      texto = '👀 Un vistazo: cuando cierres este mensaje, dos tarjetas se mostrarán durante unos segundos. ¡Obsérvalas bien!';
+    } else if (tipo === 'recuerda') {
+      cartas = [paresLibres[0], this.pareja(paresLibres[0])];
+      texto = '📍 Recuerda esta posición: una tarjeta y su pareja se mostrarán por un instante. ¡Memoriza dónde están!';
+    } else if (v.abiertas.length === 1) {
+      cartas = [this.pareja(v.abiertas[0])];
+      texto = '✨ Una pequeña ayuda: la pareja de tu tarjeta descubierta va a brillar por un instante.';
+    } else {
+      const base = Azar.elegir(pend.filter(i => v.orden[i].lado === 'concepto'), 1)[0];
+      cartas = [base, this.pareja(base)];
+      texto = '✨ Una pequeña ayuda: dos tarjetas que forman pareja van a brillar por un instante.';
+    }
+    this.pistaPendiente = { tipo, cartas };
+    api.registrarEvento(`Pista «${tipo}»`, { tarjetas: cartas });
+    api.responder('estadoPistas', { n: n + 1 });
+    return texto;
+  },
+  alCerrarPista(api){
+    const p = this.pistaPendiente, v = this.vista;
+    this.pistaPendiente = null;
+    if (!p || !v || v.finalizando) return;
+    const validas = p.cartas.filter(i => i >= 0 && !this.estaEncontrada(i));
+    if (p.tipo === 'ayuda') {
+      validas.forEach(i => v.cartas[i].classList.add('brillo'));
+      this.finPistaEn = Date.now() + this.DURACION_AYUDA;
+      this.despues(this.DURACION_AYUDA, vv => validas.forEach(i => vv.cartas[i].classList.remove('brillo')));
+      return;
+    }
+    // Vistazo / Recuerda: se muestran unos segundos y vuelven boca abajo.
+    // Mientras tanto se bloquea la selección para no mezclar con la pista.
+    const dur = p.tipo === 'vistazo' ? this.DURACION_VISTAZO : this.DURACION_RECUERDA;
+    const mostrar = validas.filter(i => !v.abiertas.includes(i));
+    v.enPista = true; v.bloqueado = true;
+    mostrar.forEach(i => { v.cartas[i].classList.add('pista'); this.voltear(v.cartas[i], true); });
+    this.finPistaEn = Date.now() + dur;
+    this.despues(dur, vv => {
+      mostrar.forEach(i => {
+        vv.cartas[i].classList.remove('pista');
+        if (!vv.abiertas.includes(i) && !this.estaEncontrada(i)) this.voltear(vv.cartas[i], false);
+      });
+      vv.enPista = false; vv.bloqueado = false;
+    });
+  },
+
+  /* ---------- Consulta de la misión completada ---------- */
+  mostrarConsulta(cont, api, ids){
+    cont.innerHTML = `
+      <div class="tarjeta">
+        <p class="sopa-contador">✅ Parejas encontradas: ${ids.length} de ${ids.length}</p>
+        <h3 style="margin-top:10px">🧠 Tus parejas: conceptos y significados</h3>
+        ${this.htmlParejas(ids)}
+      </div>
+      <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tu resultado original se conserva.</p>`;
+  }
+};
+
+registrarMotor('memoria', {
+  asignar(azar, bancos){
+    const banco = ((bancos && bancos.preguntas && bancos.preguntas.memoria) || []).map(x => x.id);
+    return { parejas: azar.elegir(banco, Memoria.CANTIDAD), fecha: ahoraISO() };
+  },
+  iniciar(contenedor, api){ Memoria.montar(contenedor, api, false); },
+  reiniciar(contenedor, api){ Memoria.montar(contenedor, api, true); },
+  pista(api){ return Memoria.pista(api); },
+  pistaDisponible(api){ return Memoria.pistaDisponible(api); },
+  alCerrarPista(api){ Memoria.alCerrarPista(api); }
+});
+
+/* =========================================================
+   13.3 MOTOR · FASE 3: «Crucigrama misterioso»
+   - asignar(): genera UNA vez un crucigrama de 6 a 8 palabras con
+     cruces reales (o usa una plantilla verificada si no se logra).
+     Se guarda completo en estado.fases.crucigrama.asignacion
+     (palabras, cuadrícula, coordenadas y numeración).
+   - Recargar o recuperar el JSON NO regenera el crucigrama.
+   - Reiniciar conserva la misma distribución (estabilidad) y
+     limpia solo las respuestas del intento.
+   - Datos del intento (api.respuestas):
+       letras {"f,c": "A"}, reveladas ["f,c"], palabrasResueltas ["1H"],
+       comprobaciones, ayudas [{tipo, palabra, celdas, fecha}],
+       preferencias {teclado:'app'|'celular'}
+   ========================================================= */
+/* Generador de crucigramas: cruces reales, sin adyacencias inválidas,
+   conectado, compacto y con validación independiente. */
+const GeneradorCrucigrama = {
+  MIN: 6,
+  MAX: 8,
+  MAX_LADO: 11,
+  clave(f, c){ return f + ',' + c; },
+
+  generar(respuestas, rnd){
+    for (let intento = 0; intento < 80; intento++) {
+      const objetivo = this.MIN + rnd.entero(this.MAX - this.MIN + 1);
+      const cw = this.construir(rnd.barajar(respuestas), objetivo, rnd);
+      if (cw && this.validar(cw, respuestas).ok) return cw;
+    }
+    return null;
+  },
+
+  construir(lista, objetivo, rnd){
+    const celdas = new Map();
+    const palabras = [];
+    const poner = (p, f, c, dir) => {
+      for (let k = 0; k < p.length; k++) {
+        const ff = dir === 'V' ? f + k : f, cc = dir === 'H' ? c + k : c;
+        const key = this.clave(ff, cc);
+        const x = celdas.get(key) || { letra: p[k], H: false, V: false };
+        x[dir] = true;
+        celdas.set(key, x);
+      }
+      palabras.push({ respuesta: p, fila: f, col: c, dir });
+    };
+    const primera = lista.find(p => p.length >= 6 && p.length <= 9) || lista[0];
+    poner(primera, 0, 0, rnd.entero(2) ? 'H' : 'V');
+    for (const p of lista) {
+      if (palabras.length >= objetivo) break;
+      if (palabras.some(w => w.respuesta === p)) continue;
+      const ops = this.opciones(p, celdas, palabras, rnd);
+      if (!ops.length) continue;
+      ops.sort((a, b) => b.puntaje - a.puntaje);
+      const top = ops.slice(0, Math.min(3, ops.length));
+      const o = top[rnd.entero(top.length)];
+      poner(p, o.f, o.c, o.dir);
+    }
+    if (palabras.length < this.MIN) return null;
+    return this.normalizar(palabras);
+  },
+
+  limites(palabras){
+    let f0 = Infinity, c0 = Infinity, f1 = -Infinity, c1 = -Infinity;
+    palabras.forEach(w => {
+      const L = w.respuesta.length;
+      f0 = Math.min(f0, w.fila); c0 = Math.min(c0, w.col);
+      f1 = Math.max(f1, w.dir === 'V' ? w.fila + L - 1 : w.fila);
+      c1 = Math.max(c1, w.dir === 'H' ? w.col + L - 1 : w.col);
+    });
+    return { f0, c0, f1, c1 };
+  },
+
+  evaluar(p, f, c, dir, celdas){
+    const df = dir === 'V' ? 1 : 0, dc = dir === 'H' ? 1 : 0;
+    if (celdas.has(this.clave(f - df, c - dc)) || celdas.has(this.clave(f + df * p.length, c + dc * p.length))) return 0;
+    let cruces = 0;
+    for (let k = 0; k < p.length; k++) {
+      const ff = f + df * k, cc = c + dc * k;
+      const x = celdas.get(this.clave(ff, cc));
+      if (x) {
+        if (x.letra !== p[k] || x[dir]) return 0;
+        cruces++;
+      } else {
+        const n1 = dir === 'H' ? this.clave(ff - 1, cc) : this.clave(ff, cc - 1);
+        const n2 = dir === 'H' ? this.clave(ff + 1, cc) : this.clave(ff, cc + 1);
+        if (celdas.has(n1) || celdas.has(n2)) return 0;
+      }
+    }
+    return cruces;
+  },
+
+  opciones(p, celdas, palabras, rnd){
+    const res = [];
+    const lim = this.limites(palabras);
+    celdas.forEach((x, key) => {
+      if (x.H && x.V) return;
+      const dir = x.H ? 'V' : 'H';
+      const [f, c] = key.split(',').map(Number);
+      for (let i = 0; i < p.length; i++) {
+        if (p[i] !== x.letra) continue;
+        const sf = dir === 'V' ? f - i : f, sc = dir === 'H' ? c - i : c;
+        const cruces = this.evaluar(p, sf, sc, dir, celdas);
+        if (!cruces) continue;
+        const nf0 = Math.min(lim.f0, sf), nc0 = Math.min(lim.c0, sc);
+        const nf1 = Math.max(lim.f1, dir === 'V' ? sf + p.length - 1 : sf);
+        const nc1 = Math.max(lim.c1, dir === 'H' ? sc + p.length - 1 : sc);
+        const alto = nf1 - nf0 + 1, ancho = nc1 - nc0 + 1;
+        if (alto > this.MAX_LADO || ancho > this.MAX_LADO) continue;
+        res.push({ f: sf, c: sc, dir, puntaje: cruces * 12 - alto * ancho * 0.15 - Math.abs(alto - ancho) * 0.8 + rnd.entero(100) / 100 });
+      }
+    });
+    return res;
+  },
+
+  normalizar(palabras){
+    const { f0, c0, f1, c1 } = this.limites(palabras);
+    const cw = {
+      filas: f1 - f0 + 1,
+      columnas: c1 - c0 + 1,
+      palabras: palabras.map(w => ({ respuesta: w.respuesta, fila: w.fila - f0, col: w.col - c0, dir: w.dir }))
+    };
+    this.numerar(cw);
+    return cw;
+  },
+
+  numeracion(cw){
+    const inicios = new Set(cw.palabras.map(w => this.clave(w.fila, w.col)));
+    const numeros = {};
+    let n = 0;
+    for (let f = 0; f < cw.filas; f++) for (let c = 0; c < cw.columnas; c++) {
+      const k = this.clave(f, c);
+      if (inicios.has(k)) numeros[k] = ++n;
+    }
+    return numeros;
+  },
+  numerar(cw){
+    const numeros = this.numeracion(cw);
+    cw.palabras.forEach(w => { w.numero = numeros[this.clave(w.fila, w.col)]; });
+    cw.palabras.sort((a, b) => a.numero - b.numero || (a.dir === 'H' ? -1 : 1));
+  },
+
+  /* Validación independiente: se usa al generar, al cargar y al recuperar */
+  validar(cw, banco){
+    const mal = (error) => ({ ok: false, error });
+    if (!cw || typeof cw !== 'object' || !Array.isArray(cw.palabras)) return mal('sin palabras');
+    const { filas, columnas, palabras } = cw;
+    if (!Number.isInteger(filas) || !Number.isInteger(columnas) || filas < 2 || columnas < 2 || filas > 15 || columnas > 15) return mal('tamaño');
+    if (palabras.length < this.MIN || palabras.length > this.MAX) return mal('cantidad');
+    const celdas = new Map();
+    const vistas = new Set();
+    for (const w of palabras) {
+      if (!w || typeof w.respuesta !== 'string' || !/^[A-ZÑ]{2,}$/.test(w.respuesta)) return mal('respuesta');
+      if (banco && !banco.includes(w.respuesta)) return mal('fuera del banco');
+      if (vistas.has(w.respuesta)) return mal('repetida');
+      vistas.add(w.respuesta);
+      if (w.dir !== 'H' && w.dir !== 'V') return mal('dirección');
+      if (!Number.isInteger(w.fila) || !Number.isInteger(w.col) || w.fila < 0 || w.col < 0) return mal('posición');
+      for (let k = 0; k < w.respuesta.length; k++) {
+        const f = w.dir === 'V' ? w.fila + k : w.fila, c = w.dir === 'H' ? w.col + k : w.col;
+        if (f >= filas || c >= columnas) return mal('fuera de la cuadrícula');
+        const key = this.clave(f, c);
+        const x = celdas.get(key) || { letra: w.respuesta[k], H: false, V: false };
+        if (x.letra !== w.respuesta[k]) return mal('cruce contradictorio');
+        if (x[w.dir]) return mal('superposición');
+        x[w.dir] = true;
+        celdas.set(key, x);
+      }
+    }
+    // Cada tramo de 2+ letras debe ser exactamente una palabra del crucigrama
+    let tramos = 0;
+    const buscar = (f, c, dir, largo) => palabras.some(w => w.fila === f && w.col === c && w.dir === dir && w.respuesta.length === largo);
+    for (let f = 0; f < filas; f++) {
+      let c = 0;
+      while (c < columnas) {
+        if (!celdas.has(this.clave(f, c))) { c++; continue; }
+        let fin = c; while (fin + 1 < columnas && celdas.has(this.clave(f, fin + 1))) fin++;
+        const largo = fin - c + 1;
+        if (largo >= 2) { tramos++; if (!buscar(f, c, 'H', largo)) return mal('palabra horizontal accidental'); }
+        c = fin + 1;
+      }
+    }
+    for (let c = 0; c < columnas; c++) {
+      let f = 0;
+      while (f < filas) {
+        if (!celdas.has(this.clave(f, c))) { f++; continue; }
+        let fin = f; while (fin + 1 < filas && celdas.has(this.clave(fin + 1, c))) fin++;
+        const largo = fin - f + 1;
+        if (largo >= 2) { tramos++; if (!buscar(f, c, 'V', largo)) return mal('palabra vertical accidental'); }
+        f = fin + 1;
+      }
+    }
+    if (tramos !== palabras.length) return mal('tramos');
+    // Conectividad: todas las palabras unidas por cruces
+    const celdasDe = w => Array.from({ length: w.respuesta.length }, (_, k) =>
+      this.clave(w.dir === 'V' ? w.fila + k : w.fila, w.dir === 'H' ? w.col + k : w.col));
+    const conjuntos = palabras.map(w => new Set(celdasDe(w)));
+    const visit = new Set([0]), cola = [0];
+    while (cola.length) {
+      const i = cola.shift();
+      palabras.forEach((_, j) => {
+        if (!visit.has(j) && celdasDe(palabras[j]).some(k => conjuntos[i].has(k))) { visit.add(j); cola.push(j); }
+      });
+    }
+    if (visit.size !== palabras.length) return mal('palabras aisladas');
+    // Sin filas o columnas vacías en los bordes (compacto) y numeración correcta
+    const usadas = [...celdas.keys()].map(k => k.split(',').map(Number));
+    if (!usadas.some(([f]) => f === 0) || !usadas.some(([, c]) => c === 0) ||
+        !usadas.some(([f]) => f === filas - 1) || !usadas.some(([, c]) => c === columnas - 1)) return mal('bordes vacíos');
+    const numeros = this.numeracion(cw);
+    if (palabras.some(w => w.numero !== numeros[this.clave(w.fila, w.col)])) return mal('numeración');
+    return { ok: true };
+  }
+};
+/* Plantillas de respaldo, generadas y verificadas previamente */
+const PLANTILLAS_CRUCIGRAMA = [
+  {"filas":9,"columnas":9,"palabras":[{"respuesta":"IMITACION","fila":0,"col":6,"dir":"V","numero":1},{"respuesta":"CANCION","fila":0,"col":8,"dir":"V","numero":2},{"respuesta":"DRAMA","fila":1,"col":3,"dir":"V","numero":3},{"respuesta":"EXPRESION","fila":2,"col":0,"dir":"H","numero":4},{"respuesta":"ESCUCHA","fila":2,"col":0,"dir":"V","numero":4},{"respuesta":"GESTO","fila":7,"col":2,"dir":"H","numero":5}]},
+  {"filas":10,"columnas":10,"palabras":[{"respuesta":"DRAMA","fila":0,"col":2,"dir":"V","numero":1},{"respuesta":"DIALOGO","fila":2,"col":0,"dir":"H","numero":2},{"respuesta":"VOZ","fila":3,"col":8,"dir":"V","numero":3},{"respuesta":"NARRACION","fila":4,"col":1,"dir":"H","numero":4},{"respuesta":"CUENTO","fila":4,"col":6,"dir":"V","numero":5},{"respuesta":"SECUENCIA","fila":7,"col":1,"dir":"H","numero":6},{"respuesta":"SONIDO","fila":9,"col":1,"dir":"H","numero":7}]},
+  {"filas":10,"columnas":10,"palabras":[{"respuesta":"NARRACION","fila":0,"col":7,"dir":"V","numero":1},{"respuesta":"LENGUAJE","fila":0,"col":9,"dir":"V","numero":2},{"respuesta":"PERSONAJE","fila":1,"col":1,"dir":"H","numero":3},{"respuesta":"SECUENCIA","fila":1,"col":4,"dir":"V","numero":4},{"respuesta":"GESTO","fila":3,"col":1,"dir":"V","numero":5},{"respuesta":"ESCUCHA","fila":4,"col":1,"dir":"H","numero":6},{"respuesta":"VOZ","fila":7,"col":0,"dir":"H","numero":7},{"respuesta":"RIMA","fila":9,"col":1,"dir":"H","numero":8}]},
+  {"filas":10,"columnas":10,"palabras":[{"respuesta":"NARRACION","fila":0,"col":4,"dir":"V","numero":1},{"respuesta":"VOZ","fila":0,"col":6,"dir":"V","numero":2},{"respuesta":"DIALOGO","fila":1,"col":2,"dir":"H","numero":3},{"respuesta":"TEATRO","fila":3,"col":0,"dir":"H","numero":4},{"respuesta":"TITERE","fila":3,"col":0,"dir":"V","numero":4},{"respuesta":"CANCION","fila":3,"col":7,"dir":"V","numero":5},{"respuesta":"CUENTO","fila":5,"col":4,"dir":"H","numero":6},{"respuesta":"SONIDO","fila":8,"col":2,"dir":"H","numero":7}]}
+];
+const Cruci = {
+  TECLAS: ['QWERTYUIOP', 'ASDFGHJKLÑ', 'ZXCVBNM'],
+  vista: null,
+  timers: [],
+  eventosGlobales: false,
+
+  /* ---------- Datos ---------- */
+  banco(){ return BANCO_PREGUNTAS.crucigrama.map(x => x.respuesta); },
+  datos(r){ return BANCO_PREGUNTAS.crucigrama.find(x => x.respuesta === r) || { respuesta: r, pista: '' }; },
+  layout(api){ const a = api.asignacion; return a && a.crucigrama; },
+  idPalabra(w){ return w.numero + w.dir; },
+  textoDir(w){ return w.dir === 'H' ? 'Horizontal' : 'Vertical'; },
+  crear(azar){
+    const banco = this.banco();
+    let cw = GeneradorCrucigrama.generar(banco, azar), origen = 'generado';
+    if (!cw) {
+      const validas = PLANTILLAS_CRUCIGRAMA.filter(t => GeneradorCrucigrama.validar(t, banco).ok);
+      cw = copiaProfunda(validas[azar.entero(validas.length)]);
+      origen = 'plantilla';
+    }
+    cw.palabras.forEach(w => { w.pista = this.datos(w.respuesta).pista; });
+    return { palabras: cw.palabras.map(w => w.respuesta), crucigrama: cw, origen, fecha: ahoraISO() };
+  },
+
+  /* ---------- Temporizadores seguros ---------- */
+  limpiar(){ this.timers.forEach(t => clearTimeout(t)); this.timers = []; this.vista = null; },
+  despues(ms, fn){
+    const v = this.vista;
+    const t = setTimeout(() => {
+      this.timers = this.timers.filter(x => x !== t);
+      if (v && this.vista === v && v.cont.isConnected) fn(v);
+    }, ms);
+    this.timers.push(t);
+  },
+  activa(){ const v = this.vista; return v && v.cont.isConnected && !v.soloLectura ? v : null; },
+
+  /* ---------- Entrada del motor ---------- */
+  montar(cont, api, esReinicio){
+    this.limpiar();
+    this.registrarEventosGlobales();
+    const fe = api.estadoFase;
+    if (!GeneradorCrucigrama.validar(this.layout(api), this.banco()).ok) {
+      // Solo ocurre si el respaldo estuviera dañado: se reconstruye y se deja constancia
+      fe.asignacion = this.crear(Azar);
+      api.registrarEvento('El crucigrama guardado no era válido; se construyó uno nuevo.');
+      api.guardar();
+    }
+    const btnPista = document.getElementById('btnPista');
+    if (btnPista) btnPista.hidden = true;           // Este juego usa su propio botón «Necesito una pista»
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return this.mostrarConsulta(cont, api);
+    if (!api.respuestas.iniciado) {
+      const yaJugo = fe.intentos.some(i => i.respuestas && i.respuestas.iniciado);
+      if (!esReinicio && !yaJugo) return this.mostrarIntro(cont, api);
+      this.iniciarRespuestas(api);
+    }
+    this.mostrarJuego(cont, api);
+  },
+
+  iniciarRespuestas(api){
+    api.responder('iniciado', true);
+    api.responder('letras', {});
+    api.responder('reveladas', []);
+    api.responder('palabrasResueltas', []);
+    api.responder('comprobaciones', 0);
+    api.responder('ayudas', []);
+    api.registrarEvento('Comenzó el crucigrama');
+    api.guardar();
+  },
+
+  mostrarIntro(cont, api){
+    const n = esc(primerNombre(api.nombre));
+    cont.innerHTML = `
+      <div class="tarjeta">
+        ${globoAurora(`<p>¡Hola de nuevo, <strong>${n}</strong>! Has demostrado que tienes buena memoria, pero ahora necesitamos descubrir algunas palabras misteriosas. Te daré pistas para que completes un crucigrama con conceptos que hemos aprendido durante nuestras clases. ¡No te preocupes si alguna palabra se te dificulta, estaré aquí para ayudarte!</p>`)}
+        <button type="button" id="btnCruComenzar" class="btn btn-primario btn-mision">¡Descubrir el crucigrama!</button>
+      </div>`;
+    cont.querySelector('#btnCruComenzar').addEventListener('click', () => {
+      api.registrarEvento('Escuchó la presentación de Aurora');
+      this.iniciarRespuestas(api);
+      this.mostrarJuego(cont, api);
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+
+  /* ---------- Construcción de la vista ---------- */
+  prepararVista(cont, api, soloLectura){
+    const cw = this.layout(api);
+    const v = { cont, api, cw, soloLectura, mapa: new Map(), celdasPalabra: [], numeros: {}, el: {},
+                activa: null, dir: 'H', marcas: {}, finalizando: false };
+    cw.palabras.forEach((w, i) => {
+      const ks = [];
+      for (let k = 0; k < w.respuesta.length; k++) {
+        const key = GeneradorCrucigrama.clave(w.dir === 'V' ? w.fila + k : w.fila, w.dir === 'H' ? w.col + k : w.col);
+        ks.push(key);
+        if (!v.mapa.has(key)) v.mapa.set(key, []);
+        v.mapa.get(key).push(i);
+      }
+      v.celdasPalabra.push(ks);
+      v.numeros[ks[0]] = w.numero;
+    });
+    return v;
+  },
+  htmlCuadricula(v){
+    let html = '';
+    for (let f = 0; f < v.cw.filas; f++) for (let c = 0; c < v.cw.columnas; c++) {
+      const k = GeneradorCrucigrama.clave(f, c);
+      html += v.mapa.has(k)
+        ? `<div class="cru-celda" data-k="${k}">${v.numeros[k] ? `<span class="cru-n">${v.numeros[k]}</span>` : ''}<span class="cru-l"></span></div>`
+        : `<div class="cru-vacia" aria-hidden="true"></div>`;
+    }
+    return `<div class="cru-grid" id="cruGrid" style="--cols:${v.cw.columnas}" role="grid" aria-label="Crucigrama">${html}</div>`;
+  },
+  htmlListas(v, conRespuestas){
+    const item = (w, i) => `<li data-p="${i}"><strong>${w.numero}.</strong> ${conRespuestas ? `<strong>${esc(this.datos(w.respuesta).respuesta)}</strong> — ` : ''}${esc(w.pista || this.datos(w.respuesta).pista)}</li>`;
+    const h = v.cw.palabras.map((w, i) => w.dir === 'H' ? item(w, i) : '').join('');
+    const vv = v.cw.palabras.map((w, i) => w.dir === 'V' ? item(w, i) : '').join('');
+    return `<h3>➡️ Horizontales</h3><ol class="cru-lista" id="cruListaH">${h}</ol><h3>⬇️ Verticales</h3><ol class="cru-lista" id="cruListaV">${vv}</ol>`;
+  },
+
+  mostrarJuego(cont, api){
+    const v = this.prepararVista(cont, api, false);
+    const r = api.respuestas;
+    const modo = r.preferencias && r.preferencias.teclado === 'celular' ? 'celular' : 'app';
+    v.modo = modo;
+    (Array.isArray(r.palabrasResueltas) ? r.palabrasResueltas : []).forEach(id => {
+      const i = v.cw.palabras.findIndex(w => this.idPalabra(w) === id);
+      if (i >= 0) v.marcas[i] = 'correcta';
+    });
+    const filas = this.TECLAS.map((fila, n) => `<div class="cru-fila">${fila.split('').map(L => `<button type="button" class="cru-tecla" data-l="${L}">${L}</button>`).join('')}${n === 2 ? `<button type="button" class="cru-tecla ancha" data-accion="borrar" aria-label="Borrar letra">⌫</button>` : ''}</div>`).join('');
+    cont.innerHTML = `
+      <div class="cru-pista" id="cruPista" aria-live="polite"><span class="cru-ref" id="cruRef"></span><p id="cruTexto"></p></div>
+      <div class="tarjeta cru-panel">
+        <p class="sopa-contador" id="cruContador"></p>
+        <div class="cru-marco" id="cruMarco">
+          ${this.htmlCuadricula(v)}
+          <input type="text" id="cruEntrada" class="cru-entrada" value="_" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" aria-label="Escribir letra">
+        </div>
+        <p class="cru-mensaje" id="cruMensaje" aria-live="polite"></p>
+        <div class="cru-acciones">
+          <button type="button" class="btn btn-secundario" id="cruDir">⇄ Cambiar dirección</button>
+          <button type="button" class="btn btn-secundario" id="cruBorrar">⌫ Borrar</button>
+        </div>
+        <div class="cru-teclado" id="cruTeclado"${modo === 'celular' ? ' hidden' : ''}>${filas}</div>
+        <button type="button" class="btn btn-texto" id="cruModo"></button>
+        <button type="button" class="btn btn-primario" id="cruComprobar">✔️ Comprobar mis palabras</button>
+        ${CONFIG_DOCENTE.PERMITIR_PISTAS ? `<button type="button" class="btn btn-suave" id="cruAyuda">💡 Necesito una pista</button>` : ''}
+      </div>
+      <div class="tarjeta">${this.htmlListas(v, false)}</div>
+      <div id="cruFinal"></div>
+      ${api.estadoFase.estado === 'completada' ? `<details class="tarjeta"><summary>📖 Ver tu crucigrama resuelto</summary>${this.htmlResuelto(api)}</details>` : ''}`;
+
+    cont.querySelectorAll('.cru-celda').forEach(el => { v.el[el.dataset.k] = el; });
+    v.grid = cont.querySelector('#cruGrid');
+    v.entrada = cont.querySelector('#cruEntrada');
+    this.vista = v;
+
+    // Selección inicial: primera palabra sin resolver
+    const pend = v.cw.palabras.findIndex((w, i) => !this.palabraCorrecta(i)) ;
+    this.seleccionarPalabra(pend >= 0 ? pend : 0, false);
+    this.enlazar(v);
+    this.ajustarTam();
+    this.pintar();
+    if (this.todasCorrectas()) this.finalizar();
+  },
+
+  /* ---------- Estado de letras ---------- */
+  letras(){ const r = this.vista.api.respuestas; return r.letras && typeof r.letras === 'object' ? r.letras : {}; },
+  reveladas(){ const r = this.vista.api.respuestas; return new Set(Array.isArray(r.reveladas) ? r.reveladas : []); },
+  correcta(k){
+    const v = this.vista, i = v.mapa.get(k)[0], w = v.cw.palabras[i];
+    return w.respuesta[v.celdasPalabra[i].indexOf(k)];
+  },
+  palabraCorrecta(i){
+    const L = this.letras(), w = this.vista.cw.palabras[i];
+    return this.vista.celdasPalabra[i].every((k, n) => L[k] === w.respuesta[n]);
+  },
+  palabraCompleta(i){ const L = this.letras(); return this.vista.celdasPalabra[i].every(k => !!L[k]); },
+  todasCorrectas(){ return this.vista.cw.palabras.every((w, i) => this.palabraCorrecta(i)); },
+  resueltas(){ const r = this.vista.api.respuestas; return Array.isArray(r.palabrasResueltas) ? r.palabrasResueltas.slice() : []; },
+
+  /* ---------- Selección ---------- */
+  palabraActiva(){
+    const v = this.vista; if (!v.activa) return -1;
+    return (v.mapa.get(v.activa) || []).find(i => v.cw.palabras[i].dir === v.dir) ?? -1;
+  },
+  seleccionarPalabra(i, pintar = true){
+    const v = this.vista, rev = this.reveladas(), L = this.letras();
+    const ks = v.celdasPalabra[i];
+    v.dir = v.cw.palabras[i].dir;
+    v.activa = ks.find(k => !L[k] && !rev.has(k)) || ks.find(k => !rev.has(k)) || ks[0];
+    if (pintar) this.pintar();
+  },
+  tocarCelda(k){
+    const v = this.activa(); if (!v || v.finalizando) return;
+    const ws = v.mapa.get(k); if (!ws) return;
+    if (k === v.activa && ws.length > 1) v.dir = v.dir === 'H' ? 'V' : 'H';
+    else if (!ws.some(i => v.cw.palabras[i].dir === v.dir)) v.dir = v.cw.palabras[ws[0]].dir;
+    v.activa = k;
+    this.pintar();
+    if (v.modo === 'celular') this.enfocarEntrada();
+  },
+  cambiarDireccion(){
+    const v = this.activa(); if (!v || !v.activa) return;
+    if ((v.mapa.get(v.activa) || []).length > 1) { v.dir = v.dir === 'H' ? 'V' : 'H'; this.pintar(); }
+    else toast('Esta casilla pertenece a una sola palabra');
+    if (v.modo === 'celular') this.enfocarEntrada();
+  },
+  mover(df, dc){
+    const v = this.activa(); if (!v || !v.activa) return;
+    let [f, c] = v.activa.split(',').map(Number);
+    for (let paso = 0; paso < Math.max(v.cw.filas, v.cw.columnas); paso++) {
+      f += df; c += dc;
+      if (f < 0 || c < 0 || f >= v.cw.filas || c >= v.cw.columnas) return;
+      const k = GeneradorCrucigrama.clave(f, c);
+      if (v.mapa.has(k)) {
+        const dir = dc !== 0 ? 'H' : 'V';
+        v.activa = k;
+        if (v.mapa.get(k).some(i => v.cw.palabras[i].dir === dir)) v.dir = dir;
+        else v.dir = v.cw.palabras[v.mapa.get(k)[0]].dir;
+        this.pintar(); return;
+      }
+    }
+  },
+
+  /* ---------- Escritura ---------- */
+  escribir(letra){
+    const v = this.activa(); if (!v || v.finalizando || !v.activa) return;
+    letra = String(letra).normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+    if (!/^[A-ZÑ]$/.test(letra)) return;
+    const rev = this.reveladas();
+    const i = this.palabraActiva();
+    if (!rev.has(v.activa)) {
+      const L = Object.assign({}, this.letras());
+      L[v.activa] = letra;
+      v.api.responder('letras', L);
+      this.olvidarMarcas([v.activa]);
+    }
+    // Avanzar a la siguiente casilla de la palabra (saltando letras reveladas)
+    if (i >= 0) {
+      const ks = v.celdasPalabra[i];
+      let n = ks.indexOf(v.activa) + 1;
+      while (n < ks.length && rev.has(ks[n])) n++;
+      if (n < ks.length) v.activa = ks[n];
+    }
+    this.pintar();
+    this.revisarFin();
+  },
+  borrar(){
+    const v = this.activa(); if (!v || v.finalizando || !v.activa) return;
+    const rev = this.reveladas(), L = Object.assign({}, this.letras());
+    let k = v.activa;
+    if (!L[k] || rev.has(k)) {
+      const i = this.palabraActiva();
+      if (i >= 0) {
+        const ks = v.celdasPalabra[i];
+        let n = ks.indexOf(k) - 1;
+        while (n >= 0 && rev.has(ks[n])) n--;
+        if (n >= 0) k = ks[n];
+      }
+    }
+    v.activa = k;
+    if (L[k] && !rev.has(k)) {
+      delete L[k];
+      v.api.responder('letras', L);
+      this.olvidarMarcas([k]);
+    }
+    this.pintar();
+  },
+  olvidarMarcas(claves){
+    const v = this.vista;
+    const afectadas = new Set();
+    claves.forEach(k => (v.mapa.get(k) || []).forEach(i => afectadas.add(i)));
+    let res = this.resueltas();
+    afectadas.forEach(i => { delete v.marcas[i]; res = res.filter(id => id !== this.idPalabra(v.cw.palabras[i])); });
+    v.api.responder('palabrasResueltas', res);
+  },
+
+  /* ---------- Comprobación ---------- */
+  comprobar(){
+    const v = this.activa(); if (!v || v.finalizando) return;
+    const api = v.api;
+    api.responder('comprobaciones', (Number(api.respuestas.comprobaciones) || 0) + 1);
+    let correctas = 0, revisar = 0, completas = 0;
+    const res = [];
+    v.cw.palabras.forEach((w, i) => {
+      if (!this.palabraCompleta(i)) { delete v.marcas[i]; return; }
+      completas++;
+      if (this.palabraCorrecta(i)) { v.marcas[i] = 'correcta'; correctas++; res.push(this.idPalabra(w)); }
+      else { v.marcas[i] = 'revisar'; revisar++; }
+    });
+    api.responder('palabrasResueltas', res);
+    api.registrarEvento('Comprobó sus palabras', { correctas, revisar, completas });
+    api.guardar();
+    let texto;
+    if (!completas) texto = 'Completa al menos una palabra y vuelve a comprobar. ¡Tú puedes!';
+    else if (revisar) texto = '¡Vas muy bien! Algunas palabras necesitan una segunda mirada.';
+    else if (correctas < v.cw.palabras.length) texto = '¡Excelente! Tus palabras completas están correctas. Sigue con las que faltan.';
+    else texto = '¡Todas tus palabras están correctas!';
+    this.mensaje(texto);
+    this.pintar();
+    this.revisarFin();
+  },
+  mensaje(texto){
+    const v = this.vista; if (!v) return;
+    const el = v.cont.querySelector('#cruMensaje');
+    el.textContent = texto;
+    clearTimeout(v.tMensaje);
+    v.tMensaje = setTimeout(() => { if (el.textContent === texto) el.textContent = ''; }, 6000);
+  },
+
+  /* ---------- Ayudas prácticas ---------- */
+  async pedirAyuda(){
+    const v = this.activa(); if (!v || v.finalizando) return;
+    if (!CONFIG_DOCENTE.PERMITIR_PISTAS) return;
+    let i = this.palabraActiva();
+    if (i < 0 || this.palabraCorrecta(i)) {
+      const pend = v.cw.palabras.findIndex((w, n) => !this.palabraCorrecta(n));
+      if (pend < 0) return;
+      if (i >= 0) toast('🎉 Esa palabra ya está resuelta. Te llevo a una pendiente.');
+      this.seleccionarPalabra(pend);
+      i = pend;
+    }
+    const w = v.cw.palabras[i], L = this.letras();
+    const primeraOk = L[v.celdasPalabra[i][0]] === w.respuesta[0];
+    const botones = [{ texto: '🔤 Descubrir una letra', valor: 'letra', clase: 'btn-primario' }];
+    if (!primeraOk) botones.push({ texto: '1️⃣ Mostrar la primera letra', valor: 'primera', clase: 'btn-secundario' });
+    botones.push({ texto: '✨ Descubrir la palabra completa', valor: 'palabra', clase: 'btn-secundario' });
+    botones.push({ texto: 'Seguir intentando', valor: null, clase: 'btn-texto' });
+    const elegido = await dialogo({
+      titulo: '💡 ¿Cómo te ayudo?',
+      html: globoAurora(`<p>Estás trabajando en la palabra <strong>${w.numero} ${this.textoDir(w).toLowerCase()}</strong>: «${esc(w.pista || this.datos(w.respuesta).pista)}».</p><p>Elige la ayuda que prefieras. ¡Pedir ayuda también es aprender!</p>`),
+      botones
+    });
+    if (!elegido || this.vista !== v) return;
+    this.aplicarAyuda(i, elegido, true);
+  },
+  aplicarAyuda(i, tipo, registrar){
+    const v = this.vista, api = v.api, w = v.cw.palabras[i];
+    const L = Object.assign({}, this.letras()), rev = this.reveladas();
+    const pendientes = v.celdasPalabra[i].filter(k => L[k] !== this.correcta(k));
+    if (!pendientes.length) return null;
+    let elegidas;
+    if (tipo === 'palabra') elegidas = pendientes;
+    else if (tipo === 'primera' && pendientes.includes(v.celdasPalabra[i][0])) elegidas = [v.celdasPalabra[i][0]];
+    else { tipo = 'letra'; elegidas = [pendientes[Azar.entero(pendientes.length)]]; }
+    elegidas.forEach(k => { L[k] = this.correcta(k); rev.add(k); });
+    api.responder('letras', L);
+    api.responder('reveladas', [...rev]);
+    this.olvidarMarcas(elegidas);
+    if (tipo === 'palabra' || this.palabraCorrecta(i)) {
+      v.marcas[i] = 'correcta';
+      const res = this.resueltas(); if (!res.includes(this.idPalabra(w))) res.push(this.idPalabra(w));
+      api.responder('palabrasResueltas', res);
+    }
+    const nombres = { letra: 'Descubrir una letra', primera: 'Mostrar la primera letra', palabra: 'Descubrir la palabra completa' };
+    const ayudas = Array.isArray(api.respuestas.ayudas) ? api.respuestas.ayudas.slice() : [];
+    ayudas.push({ tipo, palabra: w.respuesta, numero: w.numero, dir: w.dir, celdas: elegidas.length, fecha: ahoraISO() });
+    api.responder('ayudas', ayudas);
+    const texto = `${nombres[tipo]} en la palabra ${w.numero} ${this.textoDir(w).toLowerCase()}`;
+    if (registrar) api.registrarPista(texto);
+    api.registrarEvento(`Ayuda: ${texto}`, { palabra: w.respuesta, celdas: elegidas });
+    api.guardar();
+    // Ubicar la escritura en la siguiente casilla libre
+    const libre = v.celdasPalabra[i].find(k => !rev.has(k) && L[k] !== this.correcta(k));
+    v.dir = w.dir; v.activa = libre || elegidas[elegidas.length - 1];
+    this.pintar();
+    elegidas.forEach(k => { const el = v.el[k]; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); });
+    this.mensaje(tipo === 'palabra' ? '✨ ¡Palabra descubierta!' : '✨ ¡Letra descubierta!');
+    this.revisarFin();
+    return texto;
+  },
+
+  /* ---------- Dibujo ---------- */
+  pintar(){
+    const v = this.vista; if (!v) return;
+    const L = this.letras(), rev = this.reveladas();
+    const i = this.palabraActiva();
+    const enPalabra = new Set(i >= 0 ? v.celdasPalabra[i] : []);
+    const estadoCelda = {};
+    Object.keys(v.marcas).forEach(n => v.celdasPalabra[n].forEach(k => {
+      if (estadoCelda[k] !== 'revisar') estadoCelda[k] = v.marcas[n];
+    }));
+    Object.entries(v.el).forEach(([k, el]) => {
+      el.querySelector('.cru-l').textContent = L[k] || '';
+      el.classList.toggle('en-palabra', enPalabra.has(k));
+      el.classList.toggle('activa', k === v.activa);
+      el.classList.toggle('revelada', rev.has(k));
+      el.classList.toggle('correcta', estadoCelda[k] === 'correcta');
+      el.classList.toggle('revisar', estadoCelda[k] === 'revisar');
+    });
+    const total = v.cw.palabras.length;
+    const res = this.resueltas();
+    v.cont.querySelector('#cruContador').textContent = `Palabras resueltas: ${res.length} de ${total}`;
+    if (i >= 0) {
+      const w = v.cw.palabras[i];
+      v.cont.querySelector('#cruRef').textContent = `${w.numero} · ${this.textoDir(w)} · ${w.respuesta.length} letras`;
+      v.cont.querySelector('#cruTexto').textContent = w.pista || this.datos(w.respuesta).pista;
+    }
+    v.cont.querySelectorAll('.cru-lista li').forEach(li => {
+      const n = +li.dataset.p;
+      li.classList.toggle('activa', n === i);
+      li.classList.toggle('resuelta', res.includes(this.idPalabra(v.cw.palabras[n])));
+    });
+    v.cont.querySelector('#cruDir').disabled = !(v.activa && (v.mapa.get(v.activa) || []).length > 1);
+    v.cont.querySelector('#cruModo').textContent = v.modo === 'app' ? '📱 Prefiero usar el teclado de mi celular' : '⌨️ Usar el teclado de letras de Aurora';
+    // Llevar la entrada oculta junto a la casilla activa (el teclado del celular no la tapa)
+    const el = v.el[v.activa];
+    if (el && v.entrada) { v.entrada.style.left = el.offsetLeft + 'px'; v.entrada.style.top = el.offsetTop + 'px'; }
+  },
+  ajustarTam(){
+    const v = this.vista; if (!v || !v.grid) return;
+    const marco = v.cont.querySelector('#cruMarco');
+    const disponible = marco.clientWidth - 8 - (v.cw.columnas - 1) * 2;
+    const tam = Math.max(24, Math.min(46, Math.floor(disponible / v.cw.columnas)));
+    v.grid.style.setProperty('--tam', tam + 'px');
+  },
+  enfocarEntrada(){
+    const v = this.vista; if (!v || !v.entrada) return;
+    try { v.entrada.focus({ preventScroll: false }); v.entrada.setSelectionRange(1, 1); } catch (e) {}
+  },
+
+  /* ---------- Eventos ---------- */
+  enlazar(v){
+    v.grid.addEventListener('click', e => {
+      const el = e.target.closest('.cru-celda');
+      if (el) this.tocarCelda(el.dataset.k);
+    });
+    v.cont.querySelectorAll('.cru-lista li').forEach(li => li.addEventListener('click', () => {
+      if (v.finalizando) return;
+      this.seleccionarPalabra(+li.dataset.p);
+      try { v.cont.querySelector('#cruPista').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+      if (v.modo === 'celular') this.enfocarEntrada();
+    }));
+    v.cont.querySelector('#cruTeclado').addEventListener('click', e => {
+      const t = e.target.closest('.cru-tecla'); if (!t) return;
+      if (t.dataset.accion === 'borrar') this.borrar(); else this.escribir(t.dataset.l);
+    });
+    v.cont.querySelector('#cruDir').addEventListener('click', () => this.cambiarDireccion());
+    v.cont.querySelector('#cruBorrar').addEventListener('click', () => { this.borrar(); if (v.modo === 'celular') this.enfocarEntrada(); });
+    v.cont.querySelector('#cruComprobar').addEventListener('click', () => this.comprobar());
+    const ayuda = v.cont.querySelector('#cruAyuda');
+    if (ayuda) ayuda.addEventListener('click', () => this.pedirAyuda());
+    v.cont.querySelector('#cruModo').addEventListener('click', () => {
+      v.modo = v.modo === 'app' ? 'celular' : 'app';
+      v.api.responder('preferencias', { teclado: v.modo });
+      v.cont.querySelector('#cruTeclado').hidden = v.modo === 'celular';
+      this.pintar();
+      if (v.modo === 'celular') this.enfocarEntrada(); else v.entrada.blur();
+    });
+
+    // Teclado del celular (entrada oculta). Se mantiene un carácter "_" para
+    // detectar el borrado aun en teclados Android que no envían Backspace.
+    const inp = v.entrada;
+    inp.addEventListener('keydown', e => {
+      if (e.isComposing || e.keyCode === 229) return;
+      if (e.key === 'Backspace') { e.preventDefault(); this.borrar(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); this.mover(0, -1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); this.mover(0, 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); this.mover(-1, 0); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); this.mover(1, 0); }
+      else if (e.key.length === 1 && /\p{L}/u.test(e.key)) { e.preventDefault(); this.escribir(e.key); }
+    });
+    inp.addEventListener('input', e => {
+      const val = inp.value;
+      if ((e.inputType && e.inputType.indexOf('delete') === 0) || !val.length) this.borrar();
+      else {
+        const nuevas = val.replace(/_/g, '').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/[^A-ZÑ]/g, '');
+        if (nuevas) this.escribir(nuevas[nuevas.length - 1]);
+      }
+      inp.value = '_';
+      try { inp.setSelectionRange(1, 1); } catch (err) {}
+    });
+  },
+  registrarEventosGlobales(){
+    if (this.eventosGlobales) return;
+    this.eventosGlobales = true;
+    // Teclado físico en computadoras (sin depender de él en celulares)
+    document.addEventListener('keydown', e => {
+      const v = this.activa();
+      if (!v || v.finalizando || !$('#modal').hidden) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.target && e.target.matches && e.target.matches('input, textarea, select')) return;
+      if (e.key === 'Backspace') { e.preventDefault(); this.borrar(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); this.mover(0, -1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); this.mover(0, 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); this.mover(-1, 0); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); this.mover(1, 0); }
+      else if (e.key.length === 1 && /\p{L}/u.test(e.key)) { e.preventDefault(); this.escribir(e.key); }
+    });
+    window.addEventListener('resize', () => { if (this.activa()) this.ajustarTam(); });
+  },
+
+  /* ---------- Finalización automática ---------- */
+  revisarFin(){ if (this.todasCorrectas()) this.finalizar(); },
+  finalizar(){
+    const v = this.vista;
+    if (!v || v.finalizando) return;
+    v.finalizando = true;
+    const api = v.api, fe = api.estadoFase, r = api.respuestas, it = intentoAbierto(fe);
+    try { v.entrada.blur(); } catch (e) {}
+    v.cw.palabras.forEach((w, i) => { v.marcas[i] = 'correcta'; });
+    api.responder('palabrasResueltas', v.cw.palabras.map(w => this.idPalabra(w)));
+    this.pintar();
+    v.grid.classList.add('celebrar');
+    const texto = `¡Misterio resuelto, ${primerNombre(api.nombre)}! Completaste el crucigrama y descubriste todas las palabras. Lo importante no es hacerlo todo sin ayuda, sino seguir intentando hasta encontrar una solución. ¡Vamos a descubrir qué otra aventura nos espera!`;
+    v.cont.querySelector('#cruFinal').innerHTML = `<div class="tarjeta mem-celebracion"><span class="confeti" aria-hidden="true">🎉🧩✨🧩🎉</span>${globoAurora(`<p>${esc(texto)}</p>`)}</div>`;
+    const ayudas = Array.isArray(r.ayudas) ? r.ayudas : [];
+    const conAyuda = [...new Set(ayudas.map(a => a.palabra))];
+    const resultado = {
+      palabras: v.cw.palabras.map(w => ({ numero: w.numero, direccion: this.textoDir(w), respuesta: w.respuesta, pista: w.pista || this.datos(w.respuesta).pista,
+                                          resueltaConAyuda: conAyuda.includes(w.respuesta) })),
+      totalPalabras: v.cw.palabras.length,
+      comprobaciones: Number(r.comprobaciones) || 0,
+      ayudasUtilizadas: ayudas.map(a => ({ tipo: a.tipo, palabra: a.palabra, letras: a.celdas })),
+      letrasReveladas: Array.isArray(r.reveladas) ? r.reveladas.length : 0,
+      palabrasDescubiertasCompletas: ayudas.filter(a => a.tipo === 'palabra').map(a => a.palabra),
+      intentos: fe.intentos.length,
+      pistasIntento: it ? it.pistas : 0,
+      pistasTotales: fe.pistas.length,
+      origenCrucigrama: api.asignacion.origen || 'generado',
+      fechaInicio: fe.fechaInicio,
+      fechaFinalizacion: ahoraISO()
+    };
+    api.registrarEvento('Completó todas las palabras del crucigrama');
+    this.despues(1600, () => api.completar(resultado, { mensaje: texto }));
+  },
+
+  /* ---------- Interfaz de pistas del sistema general ---------- */
+  pistaDisponible(api){
+    const v = this.activa();
+    if (!v) return 'Primero presiona «¡Descubrir el crucigrama!».';
+    if (v.finalizando) return '¡Ya completaste el crucigrama!';
+    return true;
+  },
+  pista(api){
+    const v = this.activa(); if (!v) return null;
+    let i = this.palabraActiva();
+    if (i < 0 || this.palabraCorrecta(i)) i = v.cw.palabras.findIndex((w, n) => !this.palabraCorrecta(n));
+    if (i < 0) return null;
+    return this.aplicarAyuda(i, 'letra', false);   // El sistema general registra la pista
+  },
+
+  /* ---------- Consulta de la misión completada ---------- */
+  htmlResuelto(api){
+    const v = this.prepararVista(null, api, true);
+    let html = '';
+    for (let f = 0; f < v.cw.filas; f++) for (let c = 0; c < v.cw.columnas; c++) {
+      const k = GeneradorCrucigrama.clave(f, c);
+      if (!v.mapa.has(k)) { html += `<div class="cru-vacia"></div>`; continue; }
+      const i = v.mapa.get(k)[0], w = v.cw.palabras[i];
+      html += `<div class="cru-celda correcta">${v.numeros[k] ? `<span class="cru-n">${v.numeros[k]}</span>` : ''}<span class="cru-l">${w.respuesta[v.celdasPalabra[i].indexOf(k)]}</span></div>`;
+    }
+    return `<div class="cru-marco"><div class="cru-grid" style="--cols:${v.cw.columnas};--tam:28px">${html}</div></div>
+            <div style="margin-top:12px">${this.htmlListas(v, true)}</div>`;
+  },
+  mostrarConsulta(cont, api){
+    const total = this.layout(api).palabras.length;
+    cont.innerHTML = `
+      <div class="tarjeta">
+        <p class="sopa-contador">✅ Palabras resueltas: ${total} de ${total}</p>
+        ${this.htmlResuelto(api)}
+      </div>
+      <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tu resultado original se conserva.</p>`;
+    // Ajustar el tamaño de la cuadrícula de consulta al ancho disponible
+    const grid = cont.querySelector('.cru-grid'), marco = cont.querySelector('.cru-marco');
+    const cols = this.layout(api).columnas;
+    grid.style.setProperty('--tam', Math.max(24, Math.min(40, Math.floor((marco.clientWidth - 8 - (cols - 1) * 2) / cols))) + 'px');
+  }
+};
+
+registrarMotor('crucigrama', {
+  asignar(azar){ return Cruci.crear(azar); },
+  iniciar(contenedor, api){ Cruci.montar(contenedor, api, false); },
+  reiniciar(contenedor, api){ Cruci.montar(contenedor, api, true); },
+  pista(api){ return Cruci.pista(api); },
+  pistaDisponible(api){ return Cruci.pistaDisponible(api); }
+});
+
+/* =========================================================
+   13.4 MOTOR · FASE 4: «Cacería de evidencias» (retos fotográficos)
+   - asignar(): 5 de los 15 retos, UNA sola vez
+     (estado.fases.evidencias.asignacion.retos).
+   - Las fotos se comprimen (comprimirImagen) y se guardan como
+     evidencias en estado.evidencias (IndexedDB + respaldo JSON),
+     con: imagen Base64, reto, número, intento y mensaje de Aurora.
+   - Datos del intento (api.respuestas):
+       retos {idReto: {evidencia, fecha}}, estadoIdeas {idReto: n}
+   - Reiniciar elimina SOLO las fotos del intento que se cierra;
+     nunca las de una misión ya completada ni las de otras misiones.
+   ========================================================= */
+const Evidencias = {
+  CANTIDAD: 5,
+  AVISO: 'Antes de tomar fotografías con otras personas, pide su permiso. Evita fotografiar a niños o niñas y respeta los espacios donde no esté permitido tomar imágenes.',
+  ALTERNATIVA: 'Si no puedes fotografiar a otra persona, represéntalo con objetos, un dibujo o una fotografía tuya.',
+  vista: null,
+  timers: [],
+
+  /* ---------- Datos ---------- */
+  datos(id){ return BANCO_RETOS.evidencias.find(x => x.id === id) || null; },
+  asignados(api){
+    const a = api.asignacion;
+    return (a && Array.isArray(a.retos) ? a.retos : []).filter(id => this.datos(id));
+  },
+  registro(api){ const r = api.respuestas.retos; return r && typeof r === 'object' ? r : {}; },
+  evidencia(id){ return id ? estado.evidencias.find(ev => ev.id === id && ev.fase === 'evidencias') || null : null; },
+  fotoDe(api, idReto){
+    const reg = this.registro(api)[idReto];
+    const ev = reg && this.evidencia(reg.evidencia);
+    return ev && fotoValida(ev) ? ev : null;
+  },
+  completados(api, ids){ return ids.filter(id => this.fotoDe(api, id)); },
+
+  /* ---------- Temporizadores seguros ---------- */
+  limpiar(){ this.timers.forEach(t => clearTimeout(t)); this.timers = []; this.vista = null; },
+  despues(ms, fn){
+    const v = this.vista;
+    const t = setTimeout(() => {
+      this.timers = this.timers.filter(x => x !== t);
+      if (v && this.vista === v && v.cont.isConnected) fn(v);
+    }, ms);
+    this.timers.push(t);
+  },
+
+  /* ---------- Entrada del motor ---------- */
+  montar(cont, api, esReinicio){
+    this.limpiar();
+    const ids = this.asignados(api);
+    if (!ids.length) throw new Error('La asignación de retos no es válida.');
+    const btnPista = document.getElementById('btnPista');
+    if (btnPista) btnPista.hidden = true;            // Cada reto tiene su botón «Necesito una idea»
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return this.mostrarConsulta(cont, api, ids);
+    if (!api.respuestas.iniciado) {
+      const yaJugo = fe.intentos.some(i => i.respuestas && i.respuestas.iniciado);
+      if (!esReinicio && !yaJugo) return this.mostrarIntro(cont, api, ids);
+      this.iniciarRespuestas(api);
+    }
+    this.mostrarJuego(cont, api, ids);
+  },
+  iniciarRespuestas(api){
+    api.responder('iniciado', true);
+    api.responder('retos', {});
+    api.responder('estadoIdeas', {});
+    api.registrarEvento('Comenzó la cacería de evidencias');
+    api.guardar();
+  },
+  borrarFotosDelIntentoCerrado(api){
+    const fe = api.estadoFase;
+    const cerrado = fe.intentos[fe.intentos.length - 2];          // El intento que acaba de cerrarse
+    if (!cerrado || cerrado.estado !== 'reiniciado') return;
+    const reg = (cerrado.respuestas && cerrado.respuestas.retos) || {};
+    let n = 0;
+    Object.values(reg).forEach(x => {
+      const ev = x && this.evidencia(x.evidencia);
+      if (ev && ev.intento === cerrado.numero && api.quitarEvidencia(ev.id)) n++;
+    });
+    if (n) api.registrarEvento(`Se eliminaron ${n} fotografías del intento reiniciado`);
+  },
+
+  mostrarIntro(cont, api, ids){
+    const n = esc(primerNombre(api.nombre));
+    cont.innerHTML = `
+      <div class="tarjeta">
+        ${globoAurora(`<p>¡<strong>${n}</strong>, llegó el momento de levantarte y vivir una aventura fuera de la pantalla! Esta vez necesitarás tu creatividad, tu cámara y muchas ganas de divertirte. Tendrás que completar algunos desafíos fotográficos que he preparado especialmente para ti. ¿Estás lista para convertirte en una cazadora de recuerdos?</p>`)}
+        <div class="aviso" style="margin:4px 0 0">🔒 ${esc(this.AVISO)}</div>
+        <button type="button" id="btnEvComenzar" class="btn btn-primario btn-mision">¡Comenzar la cacería!</button>
+      </div>`;
+    cont.querySelector('#btnEvComenzar').addEventListener('click', () => {
+      api.registrarEvento('Escuchó la presentación de Aurora y leyó el aviso de privacidad');
+      this.iniciarRespuestas(api);
+      this.mostrarJuego(cont, api, ids);
+      try { cont.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  },
+
+  /* ---------- Tarjetas de retos ---------- */
+  mostrarJuego(cont, api, ids){
+    cont.innerHTML = `
+      <div class="aviso">🔒 ${esc(this.AVISO)}<br><small>Tus fotografías se guardan solo en este teléfono y en tu archivo de respaldo.</small></div>
+      <div class="tarjeta"><p class="sopa-contador" id="evContador"></p><div class="barra"><span id="evBarra"></span></div></div>
+      <div id="evRetos">${ids.map(id => `<article class="tarjeta ev-reto" data-id="${id}"></article>`).join('')}</div>
+      <div id="evFinal"></div>
+      <input type="file" id="evArchivo" accept="image/*" hidden>
+      ${api.estadoFase.estado === 'completada' ? `<details class="tarjeta"><summary>📖 Ver tu cacería completada</summary>${this.htmlGaleria(api, ids)}</details>` : ''}`;
+    const v = { cont, api, ids, previas: {}, cargando: {}, objetivo: null, finalizando: false };
+    this.vista = v;
+    ids.forEach(id => this.pintarReto(id));
+    this.actualizarContador();
+
+    const archivo = cont.querySelector('#evArchivo');
+    archivo.addEventListener('change', () => {
+      const f = archivo.files && archivo.files[0];
+      const id = v.objetivo;
+      archivo.value = '';
+      if (f && id) this.prepararFoto(id, f);
+    });
+    cont.querySelector('#evRetos').addEventListener('click', e => {
+      const b = e.target.closest('button[data-accion]'); if (!b || v.finalizando) return;
+      const id = b.closest('.ev-reto').dataset.id;
+      const accion = b.dataset.accion;
+      if (accion === 'elegir') { v.objetivo = id; archivo.value = ''; archivo.click(); }
+      else if (accion === 'usar') this.confirmar(id);
+      else if (accion === 'cancelar') { delete v.previas[id]; this.pintarReto(id); }
+      else if (accion === 'idea') this.darIdea(id);
+    });
+    if (this.completados(api, ids).length >= ids.length) this.finalizar();
+  },
+
+  pintarReto(id){
+    const v = this.vista; if (!v) return;
+    const el = v.cont.querySelector(`.ev-reto[data-id="${id}"]`); if (!el) return;
+    const d = this.datos(id), n = v.ids.indexOf(id) + 1;
+    const ev = this.fotoDe(v.api, id), previa = v.previas[id], cargando = v.cargando[id];
+    el.classList.toggle('ok', !!ev && !previa);
+    let foto, botones;
+    if (cargando) {
+      foto = `<div class="ev-vacia"><span aria-hidden="true">⏳</span>Preparando tu fotografía…</div>`;
+      botones = '';
+    } else if (previa) {
+      foto = `<img class="ev-previa" src="${previa.dataURL}" alt="Vista previa para el reto ${n}">`;
+      botones = `<button type="button" class="btn btn-primario" data-accion="usar">✅ Usar esta fotografía</button>
+                 <button type="button" class="btn btn-secundario" data-accion="elegir">🔁 Elegir otra</button>
+                 <button type="button" class="btn btn-texto" data-accion="cancelar">Cancelar</button>`;
+    } else if (ev) {
+      foto = `<img src="${ev.imagen}" alt="Fotografía del reto ${n}: ${esc(d.titulo)}">`;
+      botones = `<button type="button" class="btn btn-secundario" data-accion="elegir">🔄 Cambiar fotografía</button>`;
+    } else {
+      foto = `<div class="ev-vacia"><span aria-hidden="true">📷</span>Aquí aparecerá tu fotografía</div>`;
+      botones = `<button type="button" class="btn btn-primario" data-accion="elegir">📷 Tomar o subir fotografía</button>
+                 ${CONFIG_DOCENTE.PERMITIR_PISTAS ? `<button type="button" class="btn btn-suave" data-accion="idea">💡 Necesito una idea</button>` : ''}`;
+    }
+    el.innerHTML = `
+      <div class="ev-cab"><span class="ev-num">${n}</span>
+        <div><h3>${esc(d.titulo)}</h3><span class="ev-estado">${previa ? '👀 Revisa tu fotografía' : ev ? '✅ Reto completado' : '⏳ Pendiente'}</span></div></div>
+      <p>${esc(d.instruccion)}</p>
+      ${d.conOtras ? `<p class="ev-alt">🤝 ${esc(this.ALTERNATIVA)}</p>` : ''}
+      <div class="ev-foto">${foto}</div>
+      <div class="ev-botones">${botones}</div>`;
+  },
+  actualizarContador(){
+    const v = this.vista; if (!v) return;
+    const k = this.completados(v.api, v.ids).length;
+    v.cont.querySelector('#evContador').textContent = `Retos completados: ${k} de ${v.ids.length}`;
+    v.cont.querySelector('#evBarra').style.width = Math.round(k / v.ids.length * 100) + '%';
+  },
+
+  /* ---------- Fotografías ---------- */
+  async prepararFoto(id, archivo){
+    const v = this.vista; if (!v) return;
+    v.cargando[id] = true; this.pintarReto(id);
+    try {
+      let r = await comprimirImagen(archivo, { maxLado: 1280, calidad: 0.72 });
+      if (r.bytes > 700 * 1024) r = await comprimirImagen(archivo, { maxLado: 1024, calidad: 0.62 });  // Evitar archivos pesados
+      if (this.vista !== v) return;
+      v.previas[id] = r;
+    } catch (err) {
+      await dialogo({ titulo: 'No se pudo usar esa imagen', mensaje: (err && err.message ? err.message + ' ' : '') + 'Intenta con otra fotografía de tu galería o toma una nueva.' });
+    } finally {
+      if (this.vista === v) { delete v.cargando[id]; this.pintarReto(id); }
+    }
+  },
+  confirmar(id){
+    const v = this.vista; if (!v) return;
+    const previa = v.previas[id]; if (!previa) return;
+    const api = v.api, d = this.datos(id), it = intentoAbierto(api.estadoFase);
+    const reg = Object.assign({}, this.registro(api));
+    const anterior = reg[id] && reg[id].evidencia;
+    const nuevoId = api.agregarEvidencia({
+      imagen: previa.dataURL, ancho: previa.ancho, alto: previa.alto, bytes: previa.bytes,
+      reto: d.titulo, retoId: id, numero: v.ids.indexOf(id) + 1, intento: it ? it.numero : null,
+      mensajeAurora: d.mensajeAurora
+    });
+    if (anterior && anterior !== nuevoId) api.quitarEvidencia(anterior);       // Reemplazo
+    reg[id] = { evidencia: nuevoId, fecha: ahoraISO() };
+    api.responder('retos', reg);
+    api.registrarEvento(`${anterior ? 'Cambió' : 'Agregó'} la fotografía del reto «${d.titulo}»`, { kb: Math.round(previa.bytes / 1024) });
+    api.guardar();                                                             // Guardado inmediato
+    delete v.previas[id];
+    this.pintarReto(id);
+    this.actualizarContador();
+    const k = this.completados(api, v.ids).length;
+    if (k >= v.ids.length) this.finalizar();
+    else toast(`📸 ¡Reto completado! Llevas ${k} de ${v.ids.length}`);
+  },
+
+  /* ---------- Ideas prácticas (pistas) ---------- */
+  textoIdea(api, id, avanzar){
+    const d = this.datos(id);
+    const st = Object.assign({}, api.respuestas.estadoIdeas || {});
+    const n = Number(st[id]) || 0;
+    const texto = d.ideas[n % d.ideas.length];
+    if (avanzar) { st[id] = n + 1; api.responder('estadoIdeas', st); }
+    return texto;
+  },
+  async darIdea(id){
+    const v = this.vista; if (!v || !CONFIG_DOCENTE.PERMITIR_PISTAS) return;
+    const d = this.datos(id);
+    const texto = this.textoIdea(v.api, id, true);
+    v.api.registrarPista(`Idea para «${d.titulo}»: ${texto}`);
+    v.api.registrarEvento(`Pidió una idea para «${d.titulo}»`);
+    await dialogo({ titulo: '💡 Una idea de Aurora', html: globoAurora(`<p>${esc(texto)}</p>`),
+                    botones: [{ texto: '¡Gracias, Aurora!', valor: true, clase: 'btn-primario' }] });
+  },
+  pistaDisponible(api){
+    const fe = api.estadoFase;
+    if (fe.estado === 'completada' && !intentoAbierto(fe)) return 'Ya completaste esta misión.';
+    return this.vista ? true : 'Primero presiona «¡Comenzar la cacería!».';
+  },
+  pista(api){
+    const v = this.vista; if (!v) return null;
+    const pendiente = v.ids.find(id => !this.fotoDe(api, id));
+    if (!pendiente) return null;
+    return `Para «${this.datos(pendiente).titulo}»: ${this.textoIdea(api, pendiente, true)}`;
+  },
+
+  /* ---------- Finalización ---------- */
+  finalizar(){
+    const v = this.vista;
+    if (!v || v.finalizando) return;
+    v.finalizando = true;
+    const api = v.api, fe = api.estadoFase, it = intentoAbierto(fe);
+    const texto = `¡Cacería completada, ${primerNombre(api.nombre)}! Hoy no solamente cumpliste desafíos: también creaste recuerdos que forman parte de tu historia como futura maestra. Guarda esas sonrisas y esos momentos, porque volveremos a encontrarlos al final de nuestra aventura.`;
+    const fotos = v.ids.map(id => this.fotoDe(api, id));
+    v.cont.querySelector('#evFinal').innerHTML = `
+      <div class="tarjeta mem-celebracion"><span class="confeti" aria-hidden="true">🎉📸✨📸🎉</span>
+        <div class="ev-tira">${fotos.map((ev, i) => `<img src="${ev.imagen}" alt="Reto ${i + 1}">`).join('')}</div>
+        ${globoAurora(`<p>${esc(texto)}</p>`)}</div>`;
+    try { v.cont.querySelector('#evFinal').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+    const resultado = {
+      retos: v.ids.map((id, i) => {
+        const d = this.datos(id), reg = this.registro(api)[id];
+        return { numero: i + 1, retoId: id, titulo: d.titulo, instruccion: d.instruccion, evidencia: reg.evidencia, fecha: reg.fecha };
+      }),
+      fotografias: fotos.length,
+      intentos: fe.intentos.length,
+      pistasIntento: it ? it.pistas : 0,
+      pistasTotales: fe.pistas.length,
+      pistasUtilizadas: fe.pistas.map(p => p.texto),
+      fechaInicio: fe.fechaInicio,
+      fechaFinalizacion: ahoraISO()
+    };
+    api.registrarEvento('Completó los cinco retos fotográficos');
+    this.despues(1500, () => api.completar(resultado, { mensaje: texto, boton: '🗺️ Volver al mapa y descubrir mi siguiente misión' }));
+  },
+
+  /* ---------- Consulta ---------- */
+  htmlGaleria(api, ids){
+    const fe = api.estadoFase, res = fe.resultado || {};
+    const lista = Array.isArray(res.retos) ? res.retos : [];
+    return `<div class="ev-galeria">${ids.map((id, i) => {
+      const d = this.datos(id), item = lista.find(x => x.retoId === id);
+      const ev = item && this.evidencia(item.evidencia);
+      return `<div class="ev-item"><strong>${i + 1}. ${esc(d.titulo)}</strong>
+        ${ev && fotoValida(ev) ? `<img src="${ev.imagen}" alt="Fotografía del reto ${esc(d.titulo)}">` : `<div class="ev-vacia"><span>📷</span>Fotografía no disponible</div>`}
+        <p class="ev-alt">💬 ${esc(d.mensajeAurora)}</p></div>`;
+    }).join('')}</div>`;
+  },
+  mostrarConsulta(cont, api, ids){
+    cont.innerHTML = `
+      <div class="tarjeta"><p class="sopa-contador">✅ Retos completados: ${ids.length} de ${ids.length}</p>
+        <h3 style="margin-top:10px">📸 Tus recuerdos de la cacería</h3>${this.htmlGaleria(api, ids)}</div>
+      <p class="ayuda" style="text-align:center;margin-bottom:12px">Si quieres, puedes usar «Jugar de nuevo»: tus fotografías originales se conservan.</p>`;
+  },
+  mensajeReinicio(api){
+    return api.estadoFase.estado === 'completada'
+      ? 'Comenzarás una nueva cacería con tus mismos cinco retos. Las fotografías de tu misión completada se conservan; solo se borrarán las que tomes en este nuevo intento si vuelves a reiniciar.'
+      : 'La cacería volverá a empezar con tus mismos cinco retos. Se eliminarán las fotografías de este intento. Las fotografías y resultados de otras misiones no se tocan.';
+  }
+};
+
+registrarMotor('evidencias', {
+  asignar(azar, bancos){
+    const banco = ((bancos && bancos.retos && bancos.retos.evidencias) || []).map(x => x.id);
+    return { retos: azar.elegir(banco, Evidencias.CANTIDAD), fecha: ahoraISO() };
+  },
+  iniciar(contenedor, api){ Evidencias.montar(contenedor, api, false); },
+  reiniciar(contenedor, api){ Evidencias.borrarFotosDelIntentoCerrado(api); Evidencias.montar(contenedor, api, true); },
+  pista(api){ return Evidencias.pista(api); },
+  pistaDisponible(api){ return Evidencias.pistaDisponible(api); },
+  mensajeReinicio(api){ return Evidencias.mensajeReinicio(api); }
+});
+
+/* =========================================================
+   14. RECORRIDO FINAL (fase 9: «El recorrido de nuestra aventura»)
+   Construye los recuerdos SOLO con datos reales guardados:
+   juegos completados, logros, fotografías, respuestas
+   pedagógicas y momentos (reintentos, pistas, fechas).
+   Si una categoría no tiene datos, ese recuerdo se omite.
+   Pendiente: fase 8 (felicitación y «Descargar mi aventura
+   completa» con informe HTML independiente).
+   ========================================================= */
+function fechaDia(iso){
+  try { return new Date(iso).toLocaleDateString('es-GT', { day:'numeric', month:'long', year:'numeric' }); }
+  catch (e) { return ''; }
+}
+
+/* Respuestas escritas de una fase: usa el último intento completado */
+function respuestasDeFase(faseId){
+  const fe = estado.fases[faseId];
+  let origen = fe.respuestas || {};
+  const ultimo = fe.intentos.slice().reverse().find(i => i.estado === 'completado');
+  if (ultimo && ultimo.respuestas && Object.keys(ultimo.respuestas).length) origen = ultimo.respuestas;
+  const lista = [];
+  Object.keys(origen).forEach(clave => {
+    const v = origen[clave];
+    if (v && typeof v === 'object' && typeof v.respuesta === 'string' && v.respuesta.trim())
+      lista.push({ pregunta: typeof v.pregunta === 'string' ? v.pregunta : '', respuesta: v.respuesta.trim(),
+                  palabra: typeof v.palabraMostrada === 'string' ? v.palabraMostrada : '' });
+    else if (typeof v === 'string' && v.trim().length >= 3)
+      lista.push({ pregunta: '', respuesta: v.trim() });
+  });
+  return lista;
+}
+
+function fotoValida(ev){
+  const src = ev && (ev.imagen || ev.dataURL);
+  return typeof src === 'string' && /^data:image\/(jpeg|jpg|png|webp);base64,/i.test(src) ? src : null;
+}
+
+function construirRecuerdos(){
+  const n = esc(primerNombre(estado.nombre));
+  const recuerdos = [];
+  const hechas = FASES.filter(f => f.id !== 'recorrido' && f.id !== 'despedida' && faseCompletada(f.id));
+
+  recuerdos.push({ emoji:'🎞️', titulo:`Nuestro recorrido, ${n}`,
+    html:`<p>Antes de despedirnos, quiero que recordemos juntas todo lo que viviste en esta aventura.</p><p>Presiona «Siguiente recuerdo» para comenzar.</p>` });
+
+  if (hechas.length) {
+    recuerdos.push({ emoji:'🏆', titulo:'Los juegos que completaste',
+      html:`<ul>${hechas.map(f => `<li>${f.emoji} <strong>${esc(f.titulo)}</strong></li>`).join('')}</ul>` });
+    recuerdos.push({ emoji:'🌟', titulo:'Algunos de tus logros',
+      html:`<ul>${hechas.map(f => `<li>${esc(f.logro)}</li>`).join('')}</ul>` });
+  }
+
+  const resEv = estado.fases.evidencias && estado.fases.evidencias.resultado;
+  const fotosCaceria = resEv && Array.isArray(resEv.retos) ? new Set(resEv.retos.map(x => x.evidencia)) : null;
+  const fotos = estado.evidencias.filter(ev => fotoValida(ev) && (ev.fase !== 'evidencias' || !fotosCaceria || fotosCaceria.has(ev.id)));
+  fotos.forEach((ev, i) => {
+    const titulo = ev.reto || ev.titulo || '';
+    recuerdos.push({ emoji:'📸', titulo: fotos.length > 1 ? `Tu fotografía ${i + 1} de ${fotos.length}` : 'Tu fotografía',
+      html:`${titulo ? `<p><strong>${esc(titulo)}</strong></p>` : ''}<img class="foto" src="${fotoValida(ev)}" alt="Evidencia fotográfica ${i + 1}">${ev.descripcion ? `<p>${esc(ev.descripcion)}</p>` : ''}${ev.mensajeAurora ? globoAurora(`<p>${esc(ev.mensajeAurora)}</p>`) : ''}` });
+  });
+
+  ['sopa', 'planificacion', 'ruta'].forEach(id => {
+    if (!faseCompletada(id)) return;
+    const lista = respuestasDeFase(id).slice(0, 3);
+    if (!lista.length) return;
+    const f = FASES.find(x => x.id === id);
+    recuerdos.push({ emoji: f.emoji, titulo:`Tus palabras en «${esc(f.titulo)}»`,
+      html: lista.map(r => `<div class="cita">${r.pregunta ? `<small>${esc(r.pregunta)}</small>` : ''}${r.palabra ? `<strong>${esc(r.palabra)}:</strong> ` : ''}${esc(r.respuesta)}</div>`).join('') });
+  });
+
+  const reintentos = FASES.reduce((s, f) => s + estado.fases[f.id].intentos.filter(i => i.estado === 'reiniciado').length, 0);
+  const pistas = FASES.reduce((s, f) => s + estado.fases[f.id].pistas.length, 0);
+  const momentos = [`El ${fechaDia(estado.fechaInicio)} comenzaste esta aventura con entusiasmo.`];
+  if (reintentos) momentos.push(`Volviste a intentarlo ${reintentos} ${reintentos === 1 ? 'vez' : 'veces'}: las buenas maestras no se rinden.`);
+  if (pistas) momentos.push(`Pediste ayuda ${pistas} ${pistas === 1 ? 'vez' : 'veces'} cuando lo necesitaste, y eso también es aprender.`);
+  if (fotos.length) momentos.push(`Capturaste ${fotos.length} ${fotos.length === 1 ? 'evidencia' : 'evidencias'} de tu camino.`);
+  if (hechas.length) momentos.push(`Superaste ${hechas.length} ${hechas.length === 1 ? 'misión' : 'misiones'} junto a Aurora.`);
+  recuerdos.push({ emoji:'💞', titulo:'Momentos que compartimos', html:`<ul>${momentos.map(m => `<li>${m}</li>`).join('')}</ul>` });
+
+  recuerdos.push({ aurora:true, titulo:'Un mensaje de Aurora',
+    html:`<p><strong>${n}</strong>, recorriste cada misión con esfuerzo, creatividad y corazón de maestra.</p>
+          <p>Cada juego, cada fotografía y cada reflexión muestran cuánto has crecido. Reconozco tu dedicación: estás construyendo la maestra que los niños y las niñas necesitan.</p>` });
+  return recuerdos;
+}
+
+registrarMotor('recorrido', {
+  iniciar(contenedor, api){
+    const recuerdos = construirRecuerdos();
+    let i = Math.min(Math.max(0, Number(api.respuestas.recuerdoActual) || 0), recuerdos.length - 1);
+    api.responder('recuerdosPreparados', recuerdos.map(r => r.titulo.replace(/<[^>]+>/g, '')));
+
+    const pintar = (desplazar) => {
+      const r = recuerdos[i];
+      const ultimo = i === recuerdos.length - 1;
+      const yaCompletada = faseCompletada('recorrido');
+      contenedor.innerHTML = `
+        <div class="tarjeta recuerdo">
+          <span class="contador-recuerdo">Recuerdo ${i + 1} de ${recuerdos.length}</span>
+          ${r.aurora ? imgAurora('grande') : `<span class="emoji-recuerdo" aria-hidden="true">${r.emoji}</span>`}
+          <h3>${r.titulo}</h3>
+          ${r.html}
+        </div>
+        <div class="fila-botones">
+          ${i > 0 ? `<button type="button" id="btnRecAnterior" class="btn btn-secundario">⬅️ Anterior</button>` : ''}
+          ${!ultimo ? `<button type="button" id="btnRecSiguiente" class="btn btn-primario">Siguiente recuerdo ➡️</button>` : ''}
+        </div>
+        ${ultimo && !yaCompletada ? `<button type="button" id="btnRecFin" class="btn btn-primario">🎓 Terminar el recorrido</button>` : ''}`;
+      const ir = (paso) => {
+        i = Math.min(Math.max(0, i + paso), recuerdos.length - 1);
+        api.responder('recuerdoActual', i);
+        api.responder('recuerdosVistos', Math.max(Number(api.respuestas.recuerdosVistos) || 0, i + 1));
+        pintar(true);
+      };
+      const ant = contenedor.querySelector('#btnRecAnterior');
+      const sig = contenedor.querySelector('#btnRecSiguiente');
+      const fin = contenedor.querySelector('#btnRecFin');
+      if (ant) ant.addEventListener('click', () => ir(-1));
+      if (sig) sig.addEventListener('click', () => ir(1));
+      if (fin) fin.addEventListener('click', () => {
+        fin.disabled = true;
+        api.registrarEvento('Terminó el recorrido de recuerdos', { recuerdos: recuerdos.length });
+        api.completar({ recuerdosVistos: recuerdos.length });
+      });
+      if (desplazar) { try { contenedor.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
+    };
+    pintar(false);
+  },
+  reiniciar(contenedor, api){
+    api.responder('recuerdoActual', 0);
+    this.iniciar(contenedor, api);
+  }
+});
+
+/* =========================================================
+   15. ARRANQUE
    ========================================================= */
 $('#btnGuardar').addEventListener('click', () => exportarJSON());
 $('#inputImportar').addEventListener('change', e => importarJSON(e.target.files && e.target.files[0]));
