@@ -236,7 +236,7 @@ input.cru-entrada[type=text]{position:absolute;left:0;top:0;width:1px;height:1px
 .cru-lista li.resuelta{background:#effaf3}
 .cru-lista li.resuelta::before{content:"✅ "}
 
-/* ---------- Fase 4 · Cacería de evidencias ---------- */
+/* ---------- Fase 6 · Cacería de evidencias ---------- */
 .ev-reto{padding:14px}
 .ev-reto.ok{border-color:#9fd8b7;background:#fbfffc}
 .ev-cab{display:flex;gap:12px;align-items:center;margin-bottom:8px}
@@ -260,7 +260,7 @@ input.cru-entrada[type=text]{position:absolute;left:0;top:0;width:1px;height:1px
 .tarjeta-ampliar{background:var(--amarillo);border-color:#f2dc86}
 .ev-item strong{display:block;color:var(--primario-osc);margin-bottom:6px}
 
-/* ---------- Fase 5 · Defiende tu planificación ---------- */
+/* ---------- Fase 4 · Defiende tu planificación ---------- */
 .pl-sit{padding:14px}
 .pl-cab{display:flex;justify-content:space-between;align-items:center}
 .pl-num{display:inline-block;background:var(--cielo);color:var(--primario-osc);font-weight:800;font-size:.85rem;border-radius:99px;padding:4px 12px}
@@ -286,7 +286,7 @@ input.cru-entrada[type=text]{position:absolute;left:0;top:0;width:1px;height:1px
 .pl-resumen p{margin:4px 0}
 .pl-adecuada{color:var(--exito);font-weight:700}
 
-/* ---------- Fase 6 · Ruta de aprendizaje ---------- */
+/* ---------- Fase 5 · Ruta de aprendizaje ---------- */
 .ruta-panel{padding:12px}
 .ruta-inicio,.ruta-meta{text-align:center;font-weight:800;color:var(--primario-osc);font-size:.92rem;margin:4px 0}
 .ruta-camino{list-style:none;margin:6px 0;padding:0;position:relative;display:flex;flex-direction:column;gap:10px}
@@ -542,15 +542,15 @@ const FASES = [
   { id:'crucigrama',   numero:3,  emoji:'🧩', color:'#cdeedd', titulo:'Crucigrama misterioso',             subtitulo:'Pistas y palabras',
     instrucciones:'Toca una casilla para elegir una palabra y lee su pista arriba. Escribe con el teclado de letras de Aurora o con el de tu celular. Si una casilla está en un cruce, tócala otra vez para cambiar de dirección.',
     logro:'¡Resolviste el misterio!' },
-  { id:'evidencias',   numero:4,  emoji:'📸', color:'#ffe0cc', titulo:'Cacería de evidencias',             subtitulo:'Retos fotográficos',
-    instrucciones:'Cumple tus retos fotográficos en el orden que prefieras. Toca «Tomar o subir fotografía» para usar la cámara o elegir una imagen de tu galería.',
-    logro:'¡Reuniste tus evidencias!' },
-  { id:'planificacion',numero:5,  emoji:'🛡️', color:'#d6e8fb', titulo:'Defiende tu planificación general',subtitulo:'Argumenta tus decisiones',
+  { id:'planificacion',numero:4,  emoji:'🛡️', color:'#d6e8fb', titulo:'Defiende tu planificación general',subtitulo:'Argumenta tus decisiones',
     instrucciones:'Lee cada situación, elige la decisión que tomarías como maestra y confírmala. Si conviene reconsiderarla, Aurora te explicará por qué y podrás intentarlo de nuevo.',
     logro:'¡Defendiste tu planificación!' },
-  { id:'ruta',         numero:6,  emoji:'🗺️', color:'#cdeedd', titulo:'Mi ruta de aprendizaje semanal',   subtitulo:'Estaciones del curso',
+  { id:'ruta',         numero:5,  emoji:'🗺️', color:'#cdeedd', titulo:'Mi ruta de aprendizaje semanal',   subtitulo:'Estaciones del curso',
     instrucciones:'Organiza las ocho estaciones del curso, desde los fundamentos de la comunicación hasta su aplicación como maestra. Toca una estación y luego otra para intercambiarlas, o usa ▲ ▼. Cuando estés lista, presiona «Comprobar mi ruta».',
     logro:'¡Trazaste tu ruta de aprendizaje!' },
+  { id:'evidencias',   numero:6,  emoji:'📸', color:'#ffe0cc', titulo:'Cacería de evidencias',             subtitulo:'Retos fotográficos',
+    instrucciones:'Cumple tus retos fotográficos en el orden que prefieras. Toca «Tomar o subir fotografía» para usar la cámara o elegir una imagen de tu galería.',
+    logro:'¡Reuniste tus evidencias!' },
   { id:'recorrido',    numero:7,  emoji:'🎞️', color:'#fbd3e3', titulo:'El recorrido de nuestra aventura',  subtitulo:'Libro de recuerdos',
     instrucciones:'Abre tu libro de recuerdos y recórrelo página por página con los botones «Anterior» y «Siguiente». Toca cualquier fotografía para verla en grande.',
     logro:'¡Reviviste tu aventura!' },
@@ -680,7 +680,7 @@ const BANCO_PREGUNTAS = {
    5. BANCOS DE RETOS
    ========================================================= */
 const BANCO_RETOS = {
-  // Fase 4 · «Cacería de evidencias»: banco de 15 retos; cada estudiante recibe 5 al azar.
+  // Fase 6 · «Cacería de evidencias»: banco de 15 retos; 9 al azar + «Un recuerdo para Aurora» fijo.
   // conOtras: el reto involucra a otras personas (se ofrece una alternativa sin terceros).
   evidencias: [
     { id:'r01', titulo:'Una sonrisa contagiosa', conOtras:true,
@@ -744,7 +744,7 @@ const BANCO_RETOS = {
       ideas:['Puede ser un lugar, un objeto, un cuaderno o un momento con tus compañeras.', 'Piensa: ¿qué te gustaría recordar dentro de muchos años?', 'Elige lo que te haga sonreír.'],
       mensajeAurora:'Guardaré este recuerdo con mucho cariño. ¡Gracias por compartirlo!' }
   ],
-  // Fase 5 · «Defiende tu planificación general»: banco de 12 situaciones; cada estudiante recibe 5.
+  // Fase 4 · «Defiende tu planificación general»: banco de 12 situaciones; cada estudiante recibe 10.
   // Cada situación tiene 3 decisiones; una es la más adecuada (correcta:true).
   planificacion: [
     { id:'s01', emoji:'🗣️', tema:'Participación oral',
@@ -844,7 +844,7 @@ const BANCO_RETOS = {
       acierto:'Observar a los niños y ajustar el ritmo muestra una planificación flexible; las pausas activas renuevan la atención y la disposición para escuchar.',
       pistas:['Considera qué decisión respeta los diferentes ritmos de aprendizaje.', 'Piensa en una opción que ajuste la actividad sin abandonar su propósito.'] }
   ],
-  // Fase 6 · «Mi ruta de aprendizaje semanal»: 8 estaciones temáticas (síntesis del curso,
+  // Fase 5 · «Mi ruta de aprendizaje semanal»: 8 estaciones temáticas (síntesis del curso,
   // no semanas calendario). «orden» es la secuencia pedagógica que se comprueba.
   ruta: [
     { id:'e1', orden:1, icono:'💬', color:'#fbd3e3', titulo:'La comunicación comienza',
@@ -1351,7 +1351,7 @@ async function importarJSON(archivo){
 }
 
 /* =========================================================
-   11. FOTOGRAFÍAS (utilidad lista para la fase 6)
+   11. FOTOGRAFÍAS (utilidad para la fase 6, «Cacería de evidencias»)
    Comprime a JPEG y devuelve Base64 (dataURL).
    ========================================================= */
 async function comprimirImagen(archivo, { maxLado = 1280, calidad = 0.72 } = {}){
@@ -3492,7 +3492,7 @@ registrarMotor('crucigrama', {
 });
 
 /* =========================================================
-   13.4 MOTOR · FASE 4: «Cacería de evidencias» (retos fotográficos)
+   13.4 MOTOR · FASE 6: «Cacería de evidencias» (retos fotográficos)
    - asignar(): 5 de los 15 retos, UNA sola vez
      (estado.fases.evidencias.asignacion.retos).
    - Las fotos se comprimen (comprimirImagen) y se guardan como
@@ -3846,7 +3846,7 @@ registrarMotor('evidencias', {
 });
 
 /* =========================================================
-   13.5 MOTOR · FASE 5: «Defiende tu planificación general»
+   13.5 MOTOR · FASE 4: «Defiende tu planificación general»
    - asignar(): 5 de las 12 situaciones y el orden mezclado de sus
      alternativas, UNA sola vez (estado.fases.planificacion.asignacion).
    - Datos del intento (api.respuestas):
@@ -4244,7 +4244,7 @@ registrarMotor('planificacion', {
 });
 
 /* =========================================================
-   13.6 MOTOR · FASE 6: «Mi ruta de aprendizaje semanal»
+   13.6 MOTOR · FASE 5: «Mi ruta de aprendizaje semanal»
    - Ocho estaciones temáticas (síntesis del curso, sin fechas).
    - Se ordenan intercambiando tarjetas: tocar una y luego otra,
      botones ▲ ▼, o arrastrar y soltar en computadoras.
@@ -4804,6 +4804,9 @@ const LibroRecuerdos = {
           ${Array.isArray(r.preguntasAbiertas) ? `<p class="lr-sub" style="margin-top:14px">Los aprendizajes que llevarás a tu aula:</p>${r.preguntasAbiertas.map(x => `<div class="lr-defensa"><small>${esc(x.pregunta)}</small><blockquote>${esc(x.respuesta)}</blockquote></div>`).join('')}` : ''}`
           : this.aviso('ruta') });
     })();
+    // Las estaciones siguen el orden de las misiones en FASES
+    const pos = id => FASES.findIndex(f => f.id === id);
+    P.sort((x, y) => pos(x.id) - pos(y.id));
     return P;
   },
 
@@ -5230,11 +5233,11 @@ async function generarRecuerdoHTML(){
   if (sopa && sopa.reflexion)
     reflex.push(`<article class="hoja"><h3>🔤 Misión 1 · Palabras escondidas</h3><div class="respuesta"><p class="pregunta">${esc(sopa.pregunta || 'Reflexión')}${sopa.palabraReflexion ? ` (palabra elegida: «${esc(sopa.palabraReflexion)}»)` : ''}</p><blockquote>${esc(sopa.reflexion)}</blockquote></div></article>`);
   if (pl && ((pl.defensa && pl.defensa.respuesta) || Array.isArray(pl.preguntasAbiertas)))
-    reflex.push(`<article class="hoja"><h3>🛡️ Misión 5 · Ahora defiendo mi propio trabajo</h3>
+    reflex.push(`<article class="hoja"><h3>🛡️ Misión ${FASES.find(f => f.id === 'planificacion').numero} · Ahora defiendo mi propio trabajo</h3>
       ${Array.isArray(pl.preguntasAbiertas) ? bloqueRespuestas(pl.preguntasAbiertas) : ''}
       ${pl.defensa && pl.defensa.respuesta ? `<div class="respuesta"><p class="pregunta">${esc(pl.defensa.pregunta || 'Reflexión personal')}</p><blockquote>${esc(pl.defensa.respuesta)}</blockquote></div>` : ''}</article>`);
   if (ruta && Array.isArray(ruta.preguntasAbiertas))
-    reflex.push(`<article class="hoja"><h3>🎒 Misión 6 · Los aprendizajes que llevaré a mi aula</h3>${bloqueRespuestas(ruta.preguntasAbiertas)}</article>`);
+    reflex.push(`<article class="hoja"><h3>🎒 Misión ${FASES.find(f => f.id === 'ruta').numero} · Los aprendizajes que llevaré a mi aula</h3>${bloqueRespuestas(ruta.preguntasAbiertas)}</article>`);
 
   /* ---- Álbum fotográfico (todas las fotos reales, en el orden de los retos) ---- */
   const album = fotos.length ? `<div class="album">${fotos.map((ev, i) => `
