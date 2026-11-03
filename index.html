@@ -499,10 +499,21 @@ const CONFIG_DOCENTE = {
   PERMITIR_PISTAS: true,
   PERMITIR_REINTENTOS: true,
   GUARDADO_AUTOMATICO: true,
-  // ⚠️ SOLO PARA VERIFICACIONES DEL DOCENTE. Cambiar a false ANTES DE PUBLICAR.
-  // Activa un «perfil de prueba» separado (nunca toca la aventura real de una
-  // estudiante) con los botones «Completar fase (prueba)» y «Reiniciar pruebas».
+  // Perfil de prueba del docente (separado de la aventura real de las estudiantes),
+  // con los botones «Completar fase (prueba)» y «Reiniciar pruebas».
+  // Para entrar: escribir la contraseña del docente en el campo «nombre completo»
+  // y presionar «Comenzar mi aventura». En el código solo se guarda una huella
+  // cifrada (PBKDF2-SHA-256 con sal), nunca la contraseña.
+  // Con false, el perfil de prueba queda deshabilitado por completo.
   MODO_PRUEBA_DOCENTE: true
+};
+
+/* Huella de la contraseña del modo prueba (no es la contraseña).
+   Para cambiarla, generar una nueva sal y huella PBKDF2-SHA-256 (150 000 iteraciones). */
+const CLAVE_PRUEBA_DOCENTE = {
+  sal: '8d3fc546a27ac1823878733b03bdccdf',
+  huella: '3f7bda2b51d248286a90e3e11b5bb91ef70138b9266ff5b933c9afc6c2abdc63',
+  iteraciones: 150000
 };
 
 /* =========================================================
@@ -1095,15 +1106,32 @@ function cerrarIntento(fe, nuevoEstado, resultado){
    real de una estudiante nunca puede completarse con estos botones. */
 const NOMBRE_PERFIL_PRUEBA = 'Docente (perfil de prueba)';
 function modoPruebaActivo(){
-  return CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE === true && !!estado && estado.perfilPrueba === true;
+  return CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE === true && pruebaAutorizada && !!estado && estado.perfilPrueba === true;
 }
 function crearPerfilPrueba(){
   const e = crearEstadoNuevo(NOMBRE_PERFIL_PRUEBA);
   e.perfilPrueba = true;
   return e;
 }
+/* Verificación de la contraseña: se calcula la huella de lo escrito y se compara
+   con la guardada. La autorización dura solo mientras la página esté abierta. */
+let pruebaAutorizada = false;
+const hexABytes = h => new Uint8Array(h.match(/../g).map(x => parseInt(x, 16)));
+const bytesAHex = b => Array.from(new Uint8Array(b), x => x.toString(16).padStart(2, '0')).join('');
+async function verificarClavePrueba(texto){
+  if (CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE !== true || !texto || texto.length > 64) return false;
+  if (!(window.crypto && crypto.subtle)) return false;        // Requiere https (GitHub Pages lo usa)
+  try {
+    const clave = await crypto.subtle.importKey('raw', new TextEncoder().encode(texto), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: hexABytes(CLAVE_PRUEBA_DOCENTE.sal), iterations: CLAVE_PRUEBA_DOCENTE.iteraciones }, clave, 256);
+    const calculada = bytesAHex(bits), guardada = CLAVE_PRUEBA_DOCENTE.huella;
+    let dif = calculada.length ^ guardada.length;
+    for (let i = 0; i < Math.min(calculada.length, guardada.length); i++) dif |= calculada.charCodeAt(i) ^ guardada.charCodeAt(i);
+    return dif === 0;
+  } catch (e) { return false; }
+}
 async function entrarPerfilPrueba(){
-  if (CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE !== true) return;
+  if (CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE !== true || !pruebaAutorizada) return;
   let previo = null;
   try { previo = await Persistencia.cargarPrueba(); } catch (e) {}
   estado = previo && previo.perfilPrueba === true && validarRespaldo(previo).ok ? normalizarEstado(previo) : crearPerfilPrueba();
@@ -1317,7 +1345,7 @@ async function importarJSON(archivo){
     catch (e) { throw new Error('El archivo está dañado o no es un respaldo .json de la aventura.'); }
     const v = validarRespaldo(obj);
     if (!v.ok) throw new Error(v.error);
-    if (obj.perfilPrueba === true && !CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE)
+    if (obj.perfilPrueba === true && (!CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE || !pruebaAutorizada))
       throw new Error('Este archivo pertenece al perfil de prueba del docente y no puede usarse en la aventura.');
 
     delete obj.exportado;
@@ -1487,13 +1515,6 @@ function mostrarBienvenida(){
       <button type="button" id="btnRecuperar" class="btn btn-secundario">📂 Recuperar mi aventura</button>
       <p class="ayuda">Usa «Recuperar mi aventura» si tienes el archivo de respaldo (.json) que descargaste antes.</p>
     </div>
-    ${CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE === true ? `
-      <div class="tarjeta tarjeta-prueba">
-        <h3>🧪 Modo prueba docente activo</h3>
-        <p>Permite recorrer las misiones en un perfil separado, sin afectar la aventura de ninguna estudiante.</p>
-        <p><strong>Recuerda cambiar <code>MODO_PRUEBA_DOCENTE</code> a <code>false</code> antes de publicar.</strong></p>
-        <button type="button" id="btnPerfilPrueba" class="btn btn-prueba">🧪 Entrar al perfil de prueba</button>
-      </div>` : ''}
     <p class="pie">${APP.curso}<br>${APP.programa}</p>
   `);
 
@@ -1504,8 +1525,6 @@ function mostrarBienvenida(){
     mostrarMenu();
   });
   $('#btnComenzar').addEventListener('click', comenzarAventura);
-  const btnPrueba = $('#btnPerfilPrueba');
-  if (btnPrueba) btnPrueba.addEventListener('click', entrarPerfilPrueba);
   $('#inputNombre').addEventListener('keydown', e => { if (e.key === 'Enter') comenzarAventura(); });
   $('#inputNombre').addEventListener('input', () => { $('#errorNombre').textContent = ''; });
   $('#btnRecuperar').addEventListener('click', () => { const i = $('#inputImportar'); i.value = ''; i.click(); });
@@ -1519,7 +1538,24 @@ function validarNombre(nombre){
   return '';
 }
 
+let comprobandoNombre = false;
 async function comenzarAventura(){
+  if (comprobandoNombre) return;
+  const escrito = $('#inputNombre').value.trim();
+  // Acceso del docente: la contraseña se escribe en el campo de nombre (sin pistas visibles)
+  // Solo se comprueba lo que no parece un nombre completo (sin espacios o con números/símbolos)
+  if (CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE === true && escrito && (!/\s/.test(escrito) || !/^[\p{L}\s'.-]+$/u.test(escrito))) {
+    comprobandoNombre = true;
+    let valida = false;
+    try { valida = await verificarClavePrueba(escrito); } finally { comprobandoNombre = false; }
+    if (valida) {
+      pruebaAutorizada = true;
+      $('#inputNombre').value = '';
+      await entrarPerfilPrueba();
+      toast('🧪 Perfil de prueba docente');
+      return;
+    }
+  }
   const nombre = limpiarNombre($('#inputNombre').value);
   const error = validarNombre(nombre);
   if (error) { $('#errorNombre').textContent = error; $('#inputNombre').focus(); return; }
