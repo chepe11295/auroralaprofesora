@@ -70,6 +70,10 @@ small{color:var(--suave)}
 .pie{text-align:center;font-size:.85rem;color:var(--suave);margin-top:18px}
 .ayuda{font-size:.9rem;color:var(--suave);margin:10px 0 0}
 .error{color:var(--error);font-weight:600;font-size:.95rem;min-height:1.2em;margin:6px 0}
+.aviso.aviso-canvas{background:#eef6ff;border-color:#9cc3ef}
+.aviso-canvas p{margin:0 0 8px}.aviso-canvas .paso{font-size:.92rem}
+.aviso-canvas .btn{margin-top:8px;text-decoration:none}
+.aviso-canvas a.btn-primario{color:#fff}
 .aviso{background:var(--durazno);border:2px solid #f5c3a3;border-radius:16px;padding:12px;font-size:.95rem;margin-bottom:16px}
 
 /* ---------- Formularios ---------- */
@@ -1277,6 +1281,116 @@ async function guardarAhora(){
 }
 
 /* =========================================================
+   9.5 ENTORNOS LIMITADOS (Canvas y otras aplicaciones)
+   Dentro de la app de Canvas, de una página de Canvas (iframe) o de otras
+   aplicaciones, el navegador puede bloquear descargas, el selector de fotos
+   y el guardado. Aquí se detecta esa situación y se ofrecen alternativas:
+   abrir en el navegador, compartir el archivo o copiar/pegar el progreso.
+   ========================================================= */
+function contextoLimitado(){
+  let iframe = false;
+  try { iframe = window.self !== window.top; } catch (e) { iframe = true; }
+  const ua = navigator.userAgent || '';
+  const canvas = /candroid|iCanvas|Canvas ?Student|Canvas ?Teacher|androidTeacher|iosTeacher|instructure/i.test(ua);
+  const webview = /; wv\)/.test(ua) || (/iPhone|iPad|iPod/.test(ua) && !/Safari\//.test(ua));
+  const otraApp = navegadorInterno();
+  return { limitado: iframe || canvas || webview || otraApp, iframe, canvas: canvas || iframe, android: /Android/i.test(ua) };
+}
+function urlAventura(){ return location.href.split('#')[0]; }
+function urlChromeAndroid(){
+  const u = new URL(urlAventura());
+  return `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=${u.protocol.replace(':', '')};package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(u.href)};end`;
+}
+async function copiarTexto(texto){
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(texto); return true; } } catch (e) {}
+  try {
+    const t = document.createElement('textarea');
+    t.value = texto; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0'; t.style.top = '0';
+    document.body.appendChild(t); t.select(); t.setSelectionRange(0, texto.length);
+    const ok = document.execCommand('copy'); t.remove(); return ok;
+  } catch (e) { return false; }
+}
+/* Si el teléfono no permite copiar automáticamente, se muestra el texto seleccionado */
+async function mostrarParaCopiar(titulo, texto, ayuda){
+  await dialogo({ titulo, html: `<p>${ayuda}</p><textarea id="textoManual" readonly rows="6" style="width:100%;font-size:.8rem">${esc(texto)}</textarea>`,
+                  botones: [{ texto: 'Listo', valor: true, clase: 'btn-primario' }] });
+}
+function htmlAvisoLimitado(conProgreso){
+  const c = contextoLimitado();
+  if (!c.limitado) return '';
+  const donde = c.canvas ? 'dentro de <strong>Canvas</strong>' : 'dentro de otra aplicación';
+  return `
+    <div class="aviso aviso-canvas">
+      <p><strong>📌 Estás usando la aventura ${donde}.</strong> Aquí pueden fallar las descargas, las fotografías y el guardado. Para que todo funcione, ábrela en el navegador de tu teléfono o computadora.</p>
+      ${conProgreso ? `<p class="paso">1️⃣ Primero toca <strong>«Copiar mi progreso»</strong>. 2️⃣ Abre el navegador. 3️⃣ Allí toca «Recuperar mi aventura» → <strong>«Pegar mi progreso»</strong>.</p>
+        <button type="button" class="btn btn-secundario" data-copiar-progreso>📋 Copiar mi progreso</button>` : ''}
+      <a class="btn btn-primario" href="${esc(urlAventura())}" target="_blank" rel="noopener">🌐 Abrir en el navegador</a>
+      ${c.android ? `<a class="btn btn-secundario" href="${esc(urlChromeAndroid())}">🟢 Abrir en Chrome</a>` : ''}
+      <button type="button" class="btn btn-texto" data-copiar-enlace>🔗 Copiar el enlace para pegarlo en el navegador</button>
+    </div>`;
+}
+function textoRespaldo(){
+  return JSON.stringify(Object.assign({}, estado, { exportado: { fecha: ahoraISO(), appVersion: APP.version, tipo: 'respaldo-recuperable' } }));
+}
+async function copiarProgreso(){
+  if (!estado) return;
+  await guardarAhora();
+  const texto = textoRespaldo();
+  agregarHistorial('respaldo', 'Copió su progreso como texto.');
+  guardarAuto();
+  if (await copiarTexto(texto)) {
+    await dialogo({ titulo: '📋 Progreso copiado', html: `<p>Tu progreso quedó copiado.</p><p>Ahora abre la aventura en el navegador y toca <strong>«Recuperar mi aventura» → «Pegar mi progreso»</strong>. Pega el texto y listo.</p><p><small>No copies otra cosa antes de pegarlo.</small></p>` });
+  } else {
+    await mostrarParaCopiar('📋 Copia tu progreso', texto, 'Tu teléfono no permitió copiarlo solo. Mantén presionado el texto, elige <strong>«Seleccionar todo»</strong> y luego <strong>«Copiar»</strong>. Después, en el navegador, usa «Recuperar mi aventura» → «Pegar mi progreso».');
+  }
+}
+document.addEventListener('click', async e => {
+  if (e.target.closest('[data-copiar-progreso]')) { e.preventDefault(); copiarProgreso(); }
+  else if (e.target.closest('[data-copiar-enlace]')) {
+    e.preventDefault();
+    if (await copiarTexto(urlAventura())) toast('🔗 Enlace copiado. Pégalo en Chrome o Safari.');
+    else mostrarParaCopiar('🔗 Enlace de la aventura', urlAventura(), 'Copia este enlace y pégalo en el navegador de tu teléfono.');
+  }
+});
+
+/* Entrega de un archivo. Fuera de Canvas: descarga directa (como siempre).
+   En entornos limitados: compartir el archivo, intentar descargar, copiar
+   el progreso o abrir en el navegador. Devuelve lo que ocurrió. */
+async function entregarArchivo(nombre, contenido, tipo, esAlbum){
+  const c = contextoLimitado();
+  if (!c.limitado) { descargarArchivo(nombre, contenido, tipo); return 'descargado'; }
+  // Android no comparte .json: se ofrece como .txt (la recuperación lo acepta igual)
+  let archivoCompartir = null;
+  try {
+    const candidatos = [new File([contenido], nombre, { type: tipo })];
+    if (!esAlbum) candidatos.push(new File([contenido], nombre.replace(/\.json$/, '.txt'), { type: 'text/plain' }));
+    archivoCompartir = candidatos.find(f => navigator.canShare && navigator.canShare({ files: [f] })) || null;
+  } catch (e) {}
+  const opcion = await dialogo({
+    titulo: c.canvas ? '📌 Estás dentro de Canvas' : '📌 Estás dentro de otra aplicación',
+    html: `<p>Aquí la descarga puede no funcionar. Elige una opción:</p>
+      ${esAlbum ? '<p><small>Para entregar tu álbum, lo más seguro es abrir la aventura en el navegador, recuperar tu progreso y descargarlo allí.</small></p>' : ''}`,
+    botones: [
+      archivoCompartir ? { texto: esAlbum ? '📤 Compartir mi álbum (Drive, WhatsApp…)' : '📤 Compartir el archivo (Drive, WhatsApp…)', valor: 'compartir', clase: 'btn-primario' } : null,
+      { texto: '📥 Intentar descargar aquí', valor: 'descargar', clase: archivoCompartir ? 'btn-secundario' : 'btn-primario' },
+      { texto: '📋 Copiar mi progreso para el navegador', valor: 'copiar', clase: 'btn-secundario' },
+      { texto: 'Cancelar', valor: null, clase: 'btn-texto' }
+    ].filter(Boolean)
+  });
+  if (opcion === 'compartir') {
+    try { await navigator.share({ files: [archivoCompartir], title: archivoCompartir.name }); return 'compartido'; }
+    catch (e) { if (e && e.name === 'AbortError') return null; toast('No se pudo compartir. Prueba otra opción.'); return null; }
+  }
+  if (opcion === 'descargar') {
+    descargarArchivo(nombre, contenido, tipo);
+    await dialogo({ titulo: '¿Se descargó?', html: `<p>Si no apareció la descarga, usa <strong>«Copiar mi progreso»</strong> y abre la aventura en el navegador.</p>${htmlAvisoLimitado(false)}` });
+    return 'descargado';
+  }
+  if (opcion === 'copiar') { await copiarProgreso(); return 'copiado'; }
+  return null;
+}
+
+/* =========================================================
    10. EXPORTACIÓN E IMPORTACIÓN (respaldo JSON)
    ========================================================= */
 function descargarArchivo(nombreArchivo, contenido, tipo){
@@ -1306,9 +1420,10 @@ async function exportarJSON(){
     });
   }
   const nombreArchivo = `${estado.perfilPrueba ? 'PRUEBA-DOCENTE' : 'aventura-aurora'}_${slug(estado.nombre)}_${sello()}.json`;
-  descargarArchivo(nombreArchivo, texto, 'application/json');
+  const r = await entregarArchivo(nombreArchivo, texto, 'application/json', false);
   await guardarAhora();
-  toast('📥 Respaldo descargado. ¡Guárdalo bien!');
+  if (r === 'descargado' && !contextoLimitado().limitado) toast('📥 Respaldo descargado. ¡Guárdalo bien!');
+  else if (r === 'compartido') toast('📤 Respaldo compartido. ¡Guárdalo bien!');
 }
 
 function validarRespaldo(obj){
@@ -1334,15 +1449,93 @@ function leerArchivoTexto(archivo){
   });
 }
 
+/* Lectura tolerante del respaldo. Acepta:
+   - el .json de «Guardar mi progreso» (también con BOM, espacios o caracteres nulos
+     que algunos celulares o aplicaciones de mensajería agregan);
+   - un JSON guardado dos veces como texto, o envuelto dentro de otro objeto;
+   - el álbum HTML descargado en la misión 8 (usa su registro completo incrustado). */
+function buscarAventura(valor, profundidad){
+  if (!valor || typeof valor !== 'object') return null;
+  if (valor.formato === 'registro-docente-aurora' && valor.estado && typeof valor.estado === 'object') return valor.estado;
+  if (valor.app === APP.id) return valor;
+  if (profundidad <= 0) return null;
+  for (const k of Object.keys(valor)) {
+    let hijo = valor[k];
+    if (typeof hijo === 'string' && hijo.length > 20 && /^\s*\{/.test(hijo)) { try { hijo = JSON.parse(hijo); } catch (e) {} }
+    const r = buscarAventura(hijo, profundidad - 1);
+    if (r) return r;
+  }
+  return null;
+}
+function pareceAventura(o){
+  // Estructura de la aventura aunque falte el identificador «app»
+  return !!o && typeof o === 'object' && typeof o.nombre === 'string' && o.fases && typeof o.fases === 'object' &&
+         FASES.filter(f => o.fases[f.id] && typeof o.fases[f.id] === 'object').length >= 3;
+}
+function extraerRespaldo(textoOriginal){
+  let t = String(textoOriginal || '').replace(/^\uFEFF/, '').replace(/\u0000/g, '').trim();
+  if (!t) return { error: 'El archivo está vacío.' };
+  if (t[0] === '<') {                                            // ¿Es el álbum HTML de la misión 8?
+    try {
+      const doc = new DOMParser().parseFromString(t, 'text/html');
+      const nodo = doc.getElementById('registro-docente');
+      if (!nodo) return { error: 'Es una página web, pero no contiene una aventura guardada.' };
+      t = nodo.textContent.trim();
+    } catch (e) { return { error: 'No se pudo leer la página.' }; }
+  }
+  let valor;
+  try { valor = JSON.parse(t); } catch (e) { return { error: 'El contenido no es un respaldo .json válido (puede estar incompleto o dañado).' }; }
+  if (typeof valor === 'string') { try { valor = JSON.parse(valor); } catch (e) {} }   // JSON guardado como texto
+  let obj = buscarAventura(valor, 3);
+  if (!obj && pareceAventura(valor)) { obj = valor; obj.app = APP.id; }
+  if (!obj) {
+    const claves = valor && typeof valor === 'object' ? Object.keys(valor).slice(0, 6).join(', ') : typeof valor;
+    return { error: 'Este archivo no pertenece a «La última misión de Aurora».', detalle: `Contenido encontrado: ${claves || 'vacío'}.` };
+  }
+  return { obj };
+}
+
 async function importarJSON(archivo){
   if (!archivo) return;
+  const kb = Math.max(1, Math.round((archivo.size || 0) / 1024));
+  const ficha = `Archivo elegido: «${archivo.name || 'sin nombre'}» (${kb} KB).`;
   try {
     if (archivo.size > APP.limiteImportarMB * 1048576)
       throw new Error('El archivo es demasiado grande para ser un respaldo de la aventura.');
     const texto = await leerArchivoTexto(archivo);
-    let obj;
-    try { obj = JSON.parse(texto); }
-    catch (e) { throw new Error('El archivo está dañado o no es un respaldo .json de la aventura.'); }
+    await importarTexto(texto, `el archivo «${archivo.name}»`);
+  } catch (err) {
+    await dialogo({ titulo: 'No se pudo recuperar', html: `
+      <p>${esc(err.message || 'Ocurrió un problema al leer el archivo.')}</p>
+      <p><small>${esc(ficha)}${err.detalle ? ' ' + esc(err.detalle) : ''}</small></p>
+      <p class="ayuda">Elige el archivo que descargaste con «Guardar mi progreso». Su nombre empieza con <strong>aventura-aurora_</strong> y termina en <strong>.json</strong>. Si lo enviaste por WhatsApp o correo, descárgalo de nuevo desde ahí antes de elegirlo.</p>` });
+  }
+}
+
+/* «Pegar mi progreso»: recupera desde el texto copiado con «Copiar mi progreso» */
+async function pegarProgreso(){
+  let pegado = '';
+  try { if (navigator.clipboard && navigator.clipboard.readText && window.isSecureContext) pegado = await navigator.clipboard.readText(); } catch (e) { pegado = ''; }
+  const r = await dialogo({
+    titulo: '📋 Pegar mi progreso',
+    html: `<p>Pega aquí el texto que copiaste con «Copiar mi progreso» (mantén presionado → «Pegar»).</p>
+      <textarea id="textoPegado" rows="6" style="width:100%;font-size:.8rem" placeholder="Pega aquí tu progreso…">${esc(/aurora-ultima-mision/.test(pegado) ? pegado : '')}</textarea>`,
+    botones: [{ texto: '📂 Recuperar mi aventura', valor: true, clase: 'btn-primario' }, { texto: 'Cancelar', valor: false, clase: 'btn-texto' }]
+  });
+  const texto = r ? ($('#textoPegado') ? $('#textoPegado').value : '') : '';
+  if (!r) return;
+  try { await importarTexto(texto, 'el texto pegado'); }
+  catch (err) {
+    await dialogo({ titulo: 'No se pudo recuperar', html: `<p>${esc(err.message || 'No se pudo leer el texto pegado.')}</p>
+      <p class="ayuda">Vuelve a la aventura donde la tenías, toca «Copiar mi progreso» y pégalo aquí sin copiar otra cosa antes.</p>` });
+  }
+}
+
+async function importarTexto(texto, origen){
+  {
+    const leido = extraerRespaldo(texto);
+    if (leido.error) { const er = new Error(leido.error); er.detalle = leido.detalle; throw er; }
+    const obj = leido.obj;
     const v = validarRespaldo(obj);
     if (!v.ok) throw new Error(v.error);
     if (obj.perfilPrueba === true && (!CONFIG_DOCENTE.MODO_PRUEBA_DOCENTE || !pruebaAutorizada))
@@ -1369,12 +1562,10 @@ async function importarJSON(archivo){
     }
 
     estado = recuperado;
-    agregarHistorial('recuperacion', `Recuperó su aventura desde el archivo «${archivo.name}».`);
+    agregarHistorial('recuperacion', `Recuperó su aventura desde ${origen}.`);
     await guardarAhora();
     mostrarMenu();
     toast(`📂 ¡Aventura recuperada, ${primerNombre(estado.nombre)}!`);
-  } catch (err) {
-    await dialogo({ titulo: 'No se pudo recuperar', mensaje: err.message || 'Ocurrió un problema al leer el archivo.' });
   }
 }
 
@@ -1498,7 +1689,7 @@ function mostrarBienvenida(){
     ${imgAurora('grande')}
     <h1 class="titulo-app">${APP.titulo}</h1>
     <p class="subtitulo">Una aventura para futuras maestras</p>
-    ${navegadorInterno() ? `<div class="aviso">⚠️ Parece que abriste el enlace dentro de otra aplicación. Para que el guardado y las descargas funcionen bien, ábrelo en <strong>Chrome</strong> (menú ⋮ → «Abrir en Chrome»).</div>` : ''}
+    ${htmlAvisoLimitado(!!g && tieneProgreso(g))}
     ${!Persistencia.disponible ? `<div class="aviso">⚠️ Este navegador limita el guardado automático. Usa con frecuencia el botón <strong>«Guardar mi progreso»</strong>.</div>` : ''}
     <div class="globo" style="margin-bottom:16px"><span class="quien">Aurora</span>${mensajeBienvenida()}</div>
     ${g ? `
@@ -1513,6 +1704,7 @@ function mostrarBienvenida(){
       <p id="errorNombre" class="error" role="alert"></p>
       <button type="button" id="btnComenzar" class="btn btn-primario">🚀 Comenzar mi aventura</button>
       <button type="button" id="btnRecuperar" class="btn btn-secundario">📂 Recuperar mi aventura</button>
+      <button type="button" id="btnPegar" class="btn btn-texto">📋 Pegar mi progreso (si lo copiaste como texto)</button>
       <p class="ayuda">Usa «Recuperar mi aventura» si tienes el archivo de respaldo (.json) que descargaste antes.</p>
     </div>
     <p class="pie">${APP.curso}<br>${APP.programa}</p>
@@ -1528,6 +1720,8 @@ function mostrarBienvenida(){
   $('#inputNombre').addEventListener('keydown', e => { if (e.key === 'Enter') comenzarAventura(); });
   $('#inputNombre').addEventListener('input', () => { $('#errorNombre').textContent = ''; });
   $('#btnRecuperar').addEventListener('click', () => { const i = $('#inputImportar'); i.value = ''; i.click(); });
+  $('#btnPegar').addEventListener('click', pegarProgreso);
+  if (g) $('#pantalla').querySelectorAll('[data-copiar-progreso]').forEach(b => b.addEventListener('click', () => { estado = g; }, true));
 }
 
 function validarNombre(nombre){
@@ -1635,6 +1829,7 @@ function mostrarMenu(){
 
   render(`
     ${globoAurora(saludo)}
+    ${htmlAvisoLimitado(true)}
     <div class="tarjeta">
       <strong>Tu recorrido</strong>
       <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="${FASES.length}" aria-valuenow="${actual}"><span style="width:${pct}%"></span></div>
@@ -3657,6 +3852,7 @@ const Evidencias = {
   /* ---------- Tarjetas de retos ---------- */
   mostrarJuego(cont, api, ids){
     cont.innerHTML = `
+      ${contextoLimitado().limitado ? htmlAvisoLimitado(true).replace('Aquí pueden fallar las descargas, las fotografías y el guardado.', 'Aquí es posible que no se abra la cámara ni la galería.') : ''}
       <div class="aviso">🔒 ${esc(this.AVISO)}<br><small>Tus fotografías se guardan solo en este teléfono y en tu archivo de respaldo.</small></div>
       <div class="tarjeta"><p class="sopa-contador" id="evContador"></p><div class="barra"><span id="evBarra"></span></div></div>
       <div id="evRetos">${ids.map(id => `<article class="tarjeta ev-reto" data-id="${id}"></article>`).join('')}</div>
@@ -5518,9 +5714,13 @@ const Despedida = {
         await dialogo({ titulo: 'Archivo grande', mensaje: `Tu recuerdo pesa aproximadamente ${mb.toFixed(1)} MB porque incluye tus fotografías. Se descargará igual; usa una conexión estable si vas a enviarlo.`,
                         botones: [{ texto: 'Descargar', valor: true, clase: 'btn-primario' }] });
       }
-      descargarArchivo(archivo, html, 'text/html');
-      estadoTxt.textContent = `✅ Se descargó «${archivo}». Ahora súbelo a la tarea de tu curso: la aplicación no lo entrega por ti. Puedes volver a descargarlo cuando quieras.`;
-      toast('📥 ¡Tu álbum se descargó! Recuerda subirlo a la tarea.');
+      const r = await entregarArchivo(archivo, html, 'text/html', true);
+      if (r === 'descargado' || r === 'compartido') {
+        estadoTxt.textContent = `✅ ${r === 'compartido' ? 'Compartiste' : 'Se descargó'} «${archivo}». Ahora súbelo a la tarea de tu curso: la aplicación no lo entrega por ti. Puedes volver a descargarlo cuando quieras.`;
+        if (!contextoLimitado().limitado) toast('📥 ¡Tu álbum se descargó! Recuerda subirlo a la tarea.');
+      } else if (r === 'copiado') {
+        estadoTxt.textContent = 'Abre la aventura en el navegador, pega tu progreso y descarga allí tu álbum para entregarlo.';
+      } else estadoTxt.textContent = '';
     } catch (err) {
       console.error(err);
       estadoTxt.textContent = 'No se pudo generar el álbum. Intenta de nuevo.';
